@@ -1,3 +1,4 @@
-⚠️ broker offline: 'str' object has no attribute 'get'
+⚠️ broker offline: JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ | File "/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/json/decoder.py", line 355, in raw_decode | raise JSONDecodeError("Expecting value", s, err.value) from None
 Letzte Bar -
 Noch kein Journal – erste Entscheidung am nächsten H4-Bar-Schluss.

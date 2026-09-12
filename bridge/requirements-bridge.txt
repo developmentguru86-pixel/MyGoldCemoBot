@@ -1,0 +1,3 @@
+# Windows machine with the MT5 terminal
+flask>=3.0
+MetaTrader5>=5.0.45

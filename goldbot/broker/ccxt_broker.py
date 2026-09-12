@@ -1,0 +1,172 @@
+"""Exchange broker via ccxt (Bybit USDT-perpetuals, demo or real). One-way position mode."""
+from __future__ import annotations
+
+import os
+
+import ccxt
+import pandas as pd
+
+from ..config import Config
+from ..data import from_records
+from .base import Account, Broker, Quote, SymbolInfo
+
+TF = {"M1": "1m", "M5": "5m", "M15": "15m", "M30": "30m", "H1": "1h", "H4": "4h", "D1": "1d"}
+
+
+class CcxtBroker(Broker):
+    def __init__(self, cfg: Config):
+        self.cfg = cfg
+        ex_cfg = cfg.exchange
+        key = ex_cfg.api_key or os.environ.get("BYBIT_API_KEY") or os.environ.get("EXCHANGE_API_KEY", "")
+        secret = ex_cfg.api_secret or os.environ.get("BYBIT_API_SECRET") or os.environ.get("EXCHANGE_API_SECRET", "")
+        self.ex = getattr(ccxt, ex_cfg.id)({
+            "apiKey": key, "secret": secret, "enableRateLimit": True,
+            "options": {"defaultType": "swap", "adjustForTimeDifference": True},
+        })
+        if ex_cfg.demo:
+            if hasattr(self.ex, "enable_demo_trading"):
+                self.ex.enable_demo_trading(True)
+            else:
+                self.ex.set_sandbox_mode(True)
+        # market data always from the public production endpoints (same prices, no auth needed)
+        self.pub = getattr(ccxt, ex_cfg.id)({"enableRateLimit": True, "options": {"defaultType": "swap"}})
+        self._markets = None
+        self._lev_set = False
+
+    # ---- helpers
+    def _m(self, symbol: str) -> dict:
+        if self._markets is None:
+            self._markets = self.pub.load_markets()
+            self.ex.load_markets()
+        if symbol not in self._markets:
+            raise ValueError(f"{symbol} not on {self.ex.id}; try one of: "
+                             + ", ".join(s for s in self._markets if s.endswith(":USDT"))[:300])
+        return self._markets[symbol]
+
+    def _ensure_leverage(self, symbol: str) -> None:
+        if self._lev_set or not self.cfg.exchange.leverage:
+            return
+        try:
+            self.ex.set_leverage(self.cfg.exchange.leverage, symbol)
+        except Exception as e:  # noqa: BLE001 — "leverage not modified" is normal
+            if "not modified" not in str(e).lower() and "110043" not in str(e):
+                raise
+        self._lev_set = True
+
+    # ---- Broker interface
+    def health(self) -> dict:
+        t = self.ex.fetch_time()
+        return {"ok": True, "exchange": self.ex.id, "demo": self.cfg.exchange.demo,
+                "server_time": pd.Timestamp(t, unit="ms", tz="UTC").isoformat()}
+
+    def get_account(self) -> Account:
+        bal = self.ex.fetch_balance()
+        equity = None
+        try:  # Bybit unified account exposes total equity incl. unrealised P&L
+            equity = float(bal["info"]["result"]["list"][0]["totalEquity"])
+        except Exception:  # noqa: BLE001
+            pass
+        usdt = bal.get("USDT", {}) or {}
+        wallet = float(usdt.get("total") or 0.0)
+        if equity is None:
+            unreal = sum(float(p.get("unrealizedPnl") or 0.0) for p in self.ex.fetch_positions())
+            equity = wallet + unreal
+        free = float(usdt.get("free") or 0.0)
+        return Account(equity, wallet, "USDT", free, 0 if self.cfg.exchange.demo else 2)
+
+    def get_symbol_info(self, symbol: str) -> SymbolInfo:
+        m = self._m(symbol)
+        return SymbolInfo(float(m.get("contractSize") or 1.0), float(m["limits"]["amount"]["min"]),
+                          float(m["precision"]["amount"]), float(m["limits"]["amount"].get("max") or 1e9), 
+                          float(m["precision"]["price"]), None, None)
+
+    def get_quote(self, symbol: str) -> Quote:
+        t = self.pub.fetch_ticker(symbol)
+        bid, ask = t.get("bid"), t.get("ask")
+        if not bid or not ask:  # some venues omit bid/ask in ticker; use order book top
+            ob = self.pub.fetch_order_book(symbol, 5)
+            bid, ask = ob["bids"][0][0], ob["asks"][0][0]
+        ts = pd.Timestamp(t.get("timestamp") or self.pub.milliseconds(), unit="ms", tz="UTC")
+        return Quote(float(bid), float(ask), ts.isoformat())
+
+    def get_bars(self, symbol: str, timeframe: str, count: int) -> pd.DataFrame:
+        tf = TF.get(timeframe.upper(), timeframe)
+        rows = self.pub.fetch_ohlcv(symbol, tf, limit=min(count, 1000))
+        recs = [{"time": pd.Timestamp(r[0], unit="ms", tz="UTC").isoformat(), "open": r[1], "high": r[2],
+                 "low": r[3], "close": r[4], "tick_volume": r[5]} for r in rows]
+        return from_records(recs)
+
+    def get_bars_range(self, symbol: str, timeframe: str, since_ms: int, until_ms: int) -> pd.DataFrame:
+        tf = TF.get(timeframe.upper(), timeframe)
+        out, cursor = [], since_ms
+        while cursor < until_ms:
+            rows = self.pub.fetch_ohlcv(symbol, tf, since=cursor, limit=1000)
+            if not rows:
+                break
+            out += rows
+            nxt = rows[-1][0] + 1
+            if nxt <= cursor:
+                break
+            cursor = nxt
+        recs = [{"time": pd.Timestamp(r[0], unit="ms", tz="UTC").isoformat(), "open": r[1], "high": r[2],
+                 "low": r[3], "close": r[4], "tick_volume": r[5]} for r in out if r[0] <= until_ms]
+        return from_records(recs) if recs else pd.DataFrame()
+
+    def get_position(self, symbol: str) -> float:
+        net = 0.0
+        for p in self.ex.fetch_positions([symbol]):
+            if p.get("symbol") != symbol:
+                continue
+            c = float(p.get("contracts") or 0.0)
+            if c:
+                net += c if p.get("side") == "long" else -c
+        return round(net, 10)
+
+    def _order(self, symbol: str, side: str, amount: float, reduce_only: bool) -> dict:
+        amt = float(self.ex.amount_to_precision(symbol, amount))
+        if amt <= 0:
+            return {"skipped": "amount rounds to 0"}
+        params = {"reduceOnly": True} if reduce_only else {}
+        o = self.ex.create_order(symbol, "market", side, amt, params=params)
+        return {"id": o.get("id"), "side": side, "amount": amt, "reduce_only": reduce_only,
+                "avg": o.get("average"), "status": o.get("status")}
+
+    def set_target_position(self, symbol: str, lots: float, comment: str = "") -> dict:
+        self._ensure_leverage(symbol)
+        cur = self.get_position(symbol)
+        step = self.get_symbol_info(symbol).lot_step
+        executed = []
+        if abs(lots - cur) < step / 2:
+            return {"ok": True, "noop": True, "net_lots": cur}
+        # flip or flatten: reduce-only close first
+        if cur != 0.0 and (lots == 0.0 or (lots > 0) != (cur > 0)):
+            executed.append(self._order(symbol, "sell" if cur > 0 else "buy", abs(cur), True))
+            cur = 0.0
+        delta = lots - cur
+        if abs(delta) >= step / 2:
+            reduce = cur != 0.0 and abs(lots) < abs(cur)
+            executed.append(self._order(symbol, "buy" if delta > 0 else "sell", abs(delta), reduce))
+        net = self.get_position(symbol)
+        return {"ok": abs(net - lots) < step, "executed": executed, "net_lots": net}
+
+    def close_all(self, symbol: str) -> dict:
+        return self.set_target_position(symbol, 0.0, "close_all")
+
+    def funding_annual(self, symbol: str) -> float | None:
+        """Current funding rate annualised (positive = longs pay). None if unavailable."""
+        try:
+            fr = self.pub.fetch_funding_rate(symbol)
+            rate = fr.get("fundingRate")
+            if rate is None:
+                return None
+            interval_h = 8.0
+            iv = fr.get("interval")
+            if isinstance(iv, str) and iv.endswith("h"):
+                interval_h = float(iv[:-1])
+            return float(rate) * (24.0 / interval_h) * 365.0
+        except Exception:  # noqa: BLE001
+            return None
+
+    def taker_fee(self, symbol: str) -> float | None:
+        m = self._m(symbol)
+        return float(m["taker"]) if m.get("taker") is not None else None

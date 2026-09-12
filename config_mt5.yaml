@@ -1,0 +1,61 @@
+# goldbot — XAU/USD systematic trend system. All amounts in ACCOUNT currency (check /account).
+symbol: XAUUSD
+timeframe: H4
+bars_per_day: 6            # H4 on a ~23h gold session
+trading_days_per_year: 260
+starting_equity: 5000      # backtest/paper start; live uses the real account equity
+
+contract:                  # MUST match /symbol_info of your broker (preflight aborts otherwise)
+  size: 100                # oz per lot
+  min_lot: 0.01
+  lot_step: 0.01
+  max_lot: 5.0
+
+strategy:
+  lookbacks: [30, 90, 180] # H4 bars ≈ 5 / 15 / 30 trading days
+  vol_span: 60
+  target_vol: 0.12         # annualised
+  max_leverage: 3.0
+  rebalance_threshold: 0.15
+  vol_floor: 0.05
+  kelly:
+    enabled: true
+    fraction: 0.5
+    window: 500
+    min_mult: 0.25
+
+costs:                     # replace with your broker's actual numbers (see scripts/fetch_history.py output)
+  spread: 0.30             # USD/oz, fallback when data has no spread column
+  slippage: 0.05           # USD/oz per side
+  swap_long_annual: -0.04  # annualised on notional; negative = you pay
+  swap_short_annual: 0.01
+  commission_per_lot: 0.0
+
+risk:
+  daily_loss_limit: 0.03   # flatten, no new trades until next day
+  max_drawdown_halt: 0.20  # flatten, permanent halt (manual --reset-halt)
+  max_spread: 0.80         # USD/oz, no new entries above this
+  max_bridge_failures: 3
+  poll_seconds: 30
+
+bridge:
+  url: http://127.0.0.1:5000
+  timeout: 10
+  deviation_points: 30
+  magic: 20260912
+
+telegram:                  # Fernbedienung vom Handy. Token von @BotFather, chat_id sagt dir der Bot selbst.
+  token: ""
+  chat_id: 0
+  mode: live               # live = echte Orders auf dem (Demo-)Konto, paper = simulierte Fills
+  autostart: true
+  daily_summary_hour: 21
+
+paths:
+  data: data/XAUUSD_H4.csv
+  reports: reports
+  state_live: state/live_state.json
+  state_paper: state/paper_state.json
+  paper_account: state/paper_account.json
+  journal_live: logs/journal_live.csv
+  journal_paper: logs/journal_paper.csv

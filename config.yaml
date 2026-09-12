@@ -1,0 +1,71 @@
+# goldbot — serverlos: GitHub Actions (Cron alle 4h) + Bybit Demo. Gold als PAXG-Perpetual.
+# Werte unter contract/costs werden vom Backtest-Workflow automatisch vom Exchange gesetzt.
+venue: exchange
+symbol: PAXG/USDT:USDT       # ccxt-Notation; Alternative: XAUT/USDT:USDT oder BTC/USDT:USDT
+timeframe: H4
+bars_per_day: 6
+trading_days_per_year: 365   # Krypto handelt 24/7
+starting_equity: 5000        # Backtest-Start (USDT); live zählt das Demo-Konto
+
+contract:                    # wird von fetch_history_ccxt --update-config gesetzt
+  size: 1
+  min_lot: 0.001
+  lot_step: 0.001
+  max_lot: 1000
+
+strategy:
+  lookbacks: [30, 90, 180]   # H4-Bars ≈ 5 / 15 / 30 Tage
+  vol_span: 60
+  target_vol: 0.12
+  max_leverage: 3.0
+  rebalance_threshold: 0.15
+  vol_floor: 0.05
+  kelly:
+    enabled: true
+    fraction: 0.5
+    window: 300
+    min_mult: 0.25
+
+costs:
+  spread: 1.0                # USDT je Einheit, Fallback; wird vom Ticker gesetzt
+  slippage: 0.3
+  swap_long_annual: -0.05    # Funding annualisiert, wird vom Exchange gesetzt (long zahlt bei positivem Funding)
+  swap_short_annual: 0.05
+  commission_per_lot: 0.0
+  fee_pct: 0.00055           # Bybit Taker 0.055 %, wird vom Exchange gesetzt
+
+risk:
+  daily_loss_limit: 0.03
+  max_drawdown_halt: 0.20
+  max_spread: 4.0            # USDT je Einheit; Illiquidität → kein neuer Einstieg
+  max_bridge_failures: 3
+  poll_seconds: 30
+
+exchange:
+  id: bybit
+  demo: true                 # false = Echtgeld; dann braucht run_once --allow-real-account
+  leverage: 3
+  api_key: ""                # leer lassen, kommt aus GitHub Secrets (BYBIT_API_KEY)
+  api_secret: ""             # BYBIT_API_SECRET
+
+telegram:
+  token: ""                  # GitHub Secret TELEGRAM_TOKEN
+  chat_id: 0                 # GitHub Secret TELEGRAM_CHAT_ID
+  mode: live                 # live = echte Orders auf dem Demo-Konto
+  autostart: true
+  daily_summary_hour: 21
+
+bridge:                      # nur für venue: mt5
+  url: http://127.0.0.1:5000
+  timeout: 10
+  deviation_points: 30
+  magic: 20260912
+
+paths:
+  data: data/PAXG_H4.csv
+  reports: reports
+  state_live: state/live_state.json
+  state_paper: state/paper_state.json
+  paper_account: state/paper_account.json
+  journal_live: logs/journal_live.csv
+  journal_paper: logs/journal_paper.csv

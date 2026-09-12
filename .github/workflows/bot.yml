@@ -1,0 +1,41 @@
+name: goldbot
+on:
+  schedule:
+    - cron: "6 */4 * * *"      # 6 min after every H4 close (UTC); GitHub may delay a few minutes
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "trade | status | flatten | reset_halt"
+        type: choice
+        options: [trade, status, flatten, reset_halt]
+        default: status
+concurrency:
+  group: goldbot
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: run
+        env:
+          BYBIT_API_KEY: ${{ secrets.BYBIT_API_KEY }}
+          BYBIT_API_SECRET: ${{ secrets.BYBIT_API_SECRET }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python scripts/run_once.py --action "${{ github.event.inputs.action || 'trade' }}"
+      - name: persist state
+        if: always()
+        run: |
+          git config user.name goldbot
+          git config user.email goldbot@users.noreply.github.com
+          git add state logs
+          git diff --cached --quiet || (git commit -m "state $(date -u +%FT%TZ)" && git push)

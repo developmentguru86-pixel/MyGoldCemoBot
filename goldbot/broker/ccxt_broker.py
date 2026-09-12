@@ -206,7 +206,11 @@ class CcxtBroker(Broker):
 
     def get_bars(self, symbol: str, timeframe: str, count: int) -> pd.DataFrame:
         tf = TF.get(timeframe.upper(), timeframe)
-        rows = self.pub.fetch_ohlcv(symbol, tf, limit=min(count, 1000))
+        limit = min(count, 1000)
+        if self.ex.id == "phemex":  # kline/last only accepts 5, 10, 50, 100, 500, 1000
+            limit = next(v for v in (5, 10, 50, 100, 500, 1000) if v >= min(count, 1000))
+        rows = self.pub.fetch_ohlcv(symbol, tf, limit=limit)
+        rows = rows[-count:]
         if len(rows) < count:  # venue caps the per-call limit -> paginate over a time range
             ms = self.pub.parse_timeframe(tf) * 1000
             now = self.pub.milliseconds()

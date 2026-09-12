@@ -1,30 +1,27 @@
-== https://demo-futures.kraken.com/derivatives/api/v3/instruments
-http 301 type text/html; charset=UTF-8 redirect->https://www.kraken.com/gb/features/futures
-<html> <head><title>301 Moved Permanently</title></head> <body> <center><h1>301 Moved Permanently</h1></center> <hr><center>cloudflare</center> </body> </html> 
--- with Accept: application/json
-http 301 type text/html; charset=UTF-8
-<html> <head><title>301 Moved Permanently</title></head> <body> <center><h1>301 Moved Permanently</h1></center> <hr><center>cloudflare</center> </body> </html> 
-== https://demo-futures.kraken.com/derivatives/api/v3/accounts
-http 301 type text/html; charset=UTF-8 redirect->https://www.kraken.com/gb/features/futures
-<html> <head><title>301 Moved Permanently</title></head> <body> <center><h1>301 Moved Permanently</h1></center> <hr><center>cloudflare</center> </body> </html> 
--- with Accept: application/json
-http 301 type text/html; charset=UTF-8
-<html> <head><title>301 Moved Permanently</title></head> <body> <center><h1>301 Moved Permanently</h1></center> <hr><center>cloudflare</center> </body> </html> 
-== https://demo-futures.kraken.com/api/v3/instruments
-http 301 type text/html; charset=UTF-8 redirect->https://www.kraken.com/gb/features/futures
-<html> <head><title>301 Moved Permanently</title></head> <body> <center><h1>301 Moved Permanently</h1></center> <hr><center>cloudflare</center> </body> </html> 
--- with Accept: application/json
-http 301 type text/html; charset=UTF-8
-<html> <head><title>301 Moved Permanently</title></head> <body> <center><h1>301 Moved Permanently</h1></center> <hr><center>cloudflare</center> </body> </html> 
-== https://futures.kraken.com/derivatives/api/v3/instruments
+== https://www.okx.com/api/v5/account/balance
+http 401 type application/json;charset=UTF-8 redirect->
+{"msg":"Request header OK-ACCESS-KEY can not be empty.","code":"50103"}
+== https://www.okx.com/api/v5/public/instruments?instType=SWAP&instId=XAU-USDT-SWAP
 http 200 type application/json redirect->
-{"result":"success","instruments":[{"symbol":"PI_XBTUSD","type":"futures_inverse","underlying":"rr_xbtusd","tickSize":0.5,"contractSize":1,"tradeable":true,"impactMidSize":1000.00,"maxPositionSize":75000000.00000000000,"openingDate":"2018-08-31T00:00:00Z","marginLevels":[{"contracts":0,"initialMargi
--- with Accept: application/json
-http 200 type application/json
-{"result":"success","instruments":[{"symbol":"PI_XBTUSD","type":"futures_inverse","underlying":"rr_xbtusd","tickSize":0.5,"contractSize":1,"tradeable":true,"impactMidSize":1000.00,"maxPositionSize":75
-== https://demo-futures.kraken.com/derivatives/api/v3/tickers
-http 301 type text/html; charset=UTF-8 redirect->https://www.kraken.com/gb/features/futures
-<html> <head><title>301 Moved Permanently</title></head> <body> <center><h1>301 Moved Permanently</h1></center> <hr><center>cloudflare</center> </body> </html> 
--- with Accept: application/json
-http 301 type text/html; charset=UTF-8
-<html> <head><title>301 Moved Permanently</title></head> <body> <center><h1>301 Moved Permanently</h1></center> <hr><center>cloudflare</center> </body> </html> 
+{"code":"0","data":[{"alias":"","auctionEndTime":"","baseCcy":"","category":"1","contTdSwTime":"1767155100000","ctMult":"1","ctType":"linear","ctVal":"0.001","ctValCcy":"XAU","expTime":"","floatPxLmtPct":"0.005","freq":"
+== https://testnet-api.phemex.com/accounts/accountPositions?currency=USDT
+http 401 type application/json;charset=UTF-8 redirect->
+{"code": "401","msg": "401 Miss Api Key."}
+== https://testnet-api.phemex.com/public/products
+http 200 type application/json redirect->
+{"code":0,"msg":"","data":{"currencies":[{"currency":"BTC","name":"Bitcoin","code":1,"valueScale":8,"minValueEv":1,"maxValueEv":5000000000000000000,"needAddrTag":0,"status":"Listed","displayCurrency":"BTC","inAssetsDispl
+== https://api.bitget.com/api/v2/mix/account/accounts?productType=SUSDT-FUTURES
+http 400 type application/json redirect->
+{"code":"40006","msg":"Invalid ACCESS_KEY","requestTime":1789241074539,"data":null}
+== https://open-api.bingx.com/openApi/swap/v2/user/balance
+http 200 type application/json redirect->
+{"code":100413,"msg":"Null apiKey,unable to find API KEY in HTTP header,please Pass the API Key with X-BX-APIKEY in HTTP request header,please refer to the API docs https://bingx-api.github.io/docs/","timestamp":17892410
+== https://open-api-vst.bingx.com/openApi/swap/v2/user/balance
+http 200 type application/json redirect->
+{"code":100413,"msg":"Null apiKey,unable to find API KEY in HTTP header,please Pass the API Key with X-BX-APIKEY in HTTP request header,please refer to the API docs https://bingx-api.github.io/docs/","timestamp":17892410
+== https://futures.kraken.com/derivatives/api/v3/accounts
+http 200 type application/json redirect->
+{"result":"error","error":"authenticationError","serverTime":"2026-09-12T19:24:35.542Z"}
+== https://api.hyperliquid-testnet.xyz/info
+http 405 type  redirect->
+

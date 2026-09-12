@@ -20,6 +20,9 @@ on:
       cv:
         description: "purged CV + direction diagnostics (slow): yes | no"
         default: "yes"
+concurrency:
+  group: backtest
+  cancel-in-progress: false
 permissions:
   contents: write
 jobs:

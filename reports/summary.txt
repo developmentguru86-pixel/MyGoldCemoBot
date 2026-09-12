@@ -1,68 +1,68 @@
-data: data/XAU_H4.csv  12918 bars  2020-09-12 08:00:00+00:00 .. 2026-09-12 12:00:00+00:00
+data: data/XAU_H4.csv  12917 bars  2020-09-12 08:00:00+00:00 .. 2026-09-12 08:00:00+00:00
 
 == In-sample, fixed params {'lookbacks': [30, 90, 180], 'target_vol': 0.12, 'vol_span': 60} ==
-  bars                   12917
+  bars                   12916
   years                  5.9
   start_equity           5000.0
-  end_equity             3999.89
-  total_return           -0.2
-  cagr                   -0.0371
-  ann_vol                0.0215
-  sharpe                 -1.747
-  sortino                -0.957
-  max_drawdown           -0.2007
+  end_equity             3997.6
+  total_return           -0.2005
+  cagr                   -0.0372
+  ann_vol                0.0181
+  sharpe                 -2.084
+  sortino                -0.921
+  max_drawdown           -0.2009
   calmar                 -0.185
   psr_gt_0               0.0
-  trades                 418
-  total_cost             459.3
+  trades                 268
+  total_cost             588.66
   total_swap             0.0
-  pnl_per_trading_day    -0.46
+  pnl_per_trading_day    -0.47
   worst_bar              -0.0077
   best_bar               0.007
-  time_in_market         0.255
-  avg_abs_lots           492.0234
-  halted_at              2022-04-11 08:00:00+00:00
+  time_in_market         0.176
+  avg_abs_lots           0.4207
+  halted_at              2021-10-18 16:00:00+00:00
 
 == Walk-forward OUT-OF-SAMPLE (stitched) ==
   bars                   7658
   years                  3.5
   start_equity           5000.0
-  end_equity             6161.45
-  total_return           0.2323
-  cagr                   0.0616
-  ann_vol                0.081
-  sharpe                 0.778
-  sortino                0.864
-  max_drawdown           -0.0876
-  calmar                 0.702
-  psr_gt_0               0.927
-  trades                 718
-  total_cost             756.12
+  end_equity             5137.16
+  total_return           0.0274
+  cagr                   0.0078
+  ann_vol                0.0642
+  sharpe                 0.153
+  sortino                0.166
+  max_drawdown           -0.1293
+  calmar                 0.06
+  psr_gt_0               0.612
+  trades                 623
+  total_cost             1107.95
   total_swap             0.0
-  pnl_per_trading_day    0.91
-  worst_bar              -0.019
-  best_bar               0.0262
+  pnl_per_trading_day    0.11
+  worst_bar              -0.0207
+  best_bar               0.0201
 
   windows:
-   2022-09-25..2023-04-02 lb=[60, 180, 360] tv=0.08 | train SR -1.558 -> test SR -0.323 ret -0.009 mdd -0.043 trades 68
-   2023-04-03..2023-10-11 lb=[60, 180, 360] tv=0.12 | train SR -0.564 -> test SR -0.444 ret -0.018 mdd -0.072 trades 150
-   2023-10-11..2024-04-11 lb=[60, 180, 360] tv=0.12 | train SR -0.274 -> test SR 1.128 ret +0.050 mdd -0.065 trades 130
-   2024-04-11..2024-10-10 lb=[60, 180, 360] tv=0.12 | train SR 0.209 -> test SR -0.28 ret -0.014 mdd -0.077 trades 118
-   2024-10-11..2025-04-14 lb=[60, 180, 360] tv=0.12 | train SR 0.206 -> test SR 0.634 ret +0.024 mdd -0.088 trades 101
-   2025-04-14..2025-10-18 lb=[60, 180, 360] tv=0.08 | train SR 0.352 -> test SR 2.293 ret +0.064 mdd -0.057 trades 77
-   2025-10-18..2026-04-20 lb=[60, 180, 360] tv=0.12 | train SR 0.94 -> test SR 2.131 ret +0.122 mdd -0.049 trades 74
+   2022-09-25..2023-04-02 lb=[60, 180, 360] tv=0.08 | train SR -2.459 -> test SR -0.86 ret -0.022 mdd -0.050 trades 68
+   2023-04-03..2023-10-11 lb=[60, 180, 360] tv=0.08 | train SR -1.374 -> test SR -1.163 ret -0.029 mdd -0.063 trades 115
+   2023-10-11..2024-04-11 lb=[60, 180, 360] tv=0.08 | train SR -1.077 -> test SR 0.429 ret +0.012 mdd -0.064 trades 96
+   2024-04-11..2024-10-10 lb=[60, 180, 360] tv=0.12 | train SR -0.618 -> test SR -1.016 ret -0.047 mdd -0.098 trades 123
+   2024-10-11..2025-04-14 lb=[60, 180, 360] tv=0.08 | train SR -0.56 -> test SR -0.054 ret -0.002 mdd -0.072 trades 82
+   2025-04-14..2025-10-18 lb=[60, 180, 360] tv=0.08 | train SR -0.371 -> test SR 1.964 ret +0.054 mdd -0.064 trades 77
+   2025-10-18..2026-04-20 lb=[60, 180, 360] tv=0.08 | train SR 0.348 -> test SR 1.613 ret +0.065 mdd -0.036 trades 62
 
 == Block bootstrap, 1-year horizon (from OOS bar returns) ==
   horizon_bars           2190
   sims                   2000
   block                  20
-  return_p05             -0.0759
-  return_p50             0.0643
-  return_p95             0.2262
-  maxdd_p05              -0.1384
-  maxdd_p50              -0.0718
-  maxdd_p95              -0.0391
-  prob_loss              0.257
+  return_p05             -0.0994
+  return_p50             0.0087
+  return_p95             0.1269
+  maxdd_p05              -0.1313
+  maxdd_p50              -0.0689
+  maxdd_p95              -0.0351
+  prob_loss              0.448
   prob_dd_gt_20pct       0.002
 
 written: reports/report.json, equity_*.csv, trades_insample.csv, backtest.png

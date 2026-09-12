@@ -9,10 +9,10 @@ starting_equity: 5000        # Backtest-Start
 equity_cap: 5000             # Demo-Konto hat ~100k; Bot handelt, als wären es 5.000 + realisierter P&L
 
 contract:                    # wird von fetch_history_ccxt --update-config gesetzt
-  size: 1
+  size: 1.0
   min_lot: 0.001
   lot_step: 0.001
-  max_lot: 100000
+  max_lot: 1000000000.0
 
 strategy:
   lookbacks: [30, 90, 180]   # H4-Bars ≈ 5 / 15 / 30 Tage
@@ -28,12 +28,12 @@ strategy:
     min_mult: 0.25
 
 costs:
-  spread: 0.1                # USDT je Einheit, Fallback; wird vom Ticker gesetzt
+  spread: 1.17                # USDT je Einheit, Fallback; wird vom Ticker gesetzt
   slippage: 0.3
   swap_long_annual: -0.0    # Funding annualisiert, wird vom Exchange gesetzt (long zahlt bei positivem Funding)
   swap_short_annual: 0.0
   commission_per_lot: 0.0
-  fee_pct: 0.0006            # Phemex Taker 0.06 %, wird vom Exchange gesetzt
+  fee_pct: 0.001            # Phemex Taker 0.06 %, wird vom Exchange gesetzt
 
 risk:
   daily_loss_limit: 0.03

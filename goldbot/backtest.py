@@ -13,7 +13,7 @@ import pandas as pd
 
 from .config import Config
 from .costs import swap_cost, trade_cost
-from .metrics import summarize
+from .metrics import deflated_sharpe, summarize
 from .risk import RiskManager
 from .sizing import exposure_to_lots, lots_to_exposure
 from .strategy import bars_needed, compute_exposure
@@ -133,6 +133,46 @@ def grid_label(p: dict) -> str:
             f"entry={p.get('entry_min_signal', 0)} er={'on' if r.get('er_window') else 'off'}")
 
 
+ROBUST_W = {"worst": 0.5, "stab": 0.3, "mdd": 2.0, "turnover": 0.1}
+
+
+def robust_score(sharpes: list[float], maxdds: list[float], trades_per_year: float, w: dict = ROBUST_W) -> float:
+    """Selection objective: median segment Sharpe, penalised for the worst segment, instability across
+    segments, drawdown and turnover. A parameter set that shines in two segments and fails in four
+    loses against one that is merely decent everywhere."""
+    if not sharpes:
+        return -np.inf
+    med, worst, stab = float(np.median(sharpes)), float(min(sharpes)), float(np.std(sharpes))
+    return (med - w["worst"] * max(0.0, -worst) - w["stab"] * stab
+            - w["mdd"] * float(np.mean([abs(m) for m in maxdds])) - w["turnover"] * trades_per_year / 100.0)
+
+
+def select_params(df: pd.DataFrame, expos: list[pd.Series], cfg: Config, k: int = 4,
+                  min_trades: int = 5, selector: str = "robust") -> tuple[int, float, list[float]]:
+    """Choose the grid index on a training slice. 'robust': score across k contiguous segments;
+    'sharpe': classic aggregate Sharpe. Returns (index, score, per-bar Sharpe of every trial for DSR)."""
+    n = len(df)
+    bpy = cfg.bars_per_year
+    segs = [(i * n // k, (i + 1) * n // k) for i in range(k)] if selector == "robust" else [(0, n)]
+    best_i, best_sc, trials = 0, -np.inf, []
+    for gi, ex in enumerate(expos):
+        shs, mdds, trades = [], [], 0
+        for (x, y) in segs:
+            m = simulate(df.iloc[x:y], ex.iloc[x:y], cfg).metrics
+            trades += m["trades"]
+            if m["trades"] >= min_trades:
+                shs.append(m["sharpe"]); mdds.append(m["max_drawdown"])
+        full_sr = float(np.mean(shs)) if shs else float("nan")
+        trials.append(full_sr / np.sqrt(bpy) if full_sr == full_sr else float("nan"))
+        if selector == "robust":
+            sc = robust_score(shs, mdds, trades / (n / bpy)) if len(shs) >= max(2, k // 2) else -np.inf
+        else:
+            sc = shs[0] if shs else -np.inf
+        if sc > best_sc:
+            best_i, best_sc = gi, sc
+    return best_i, best_sc, trials
+
+
 @dataclass
 class WalkForwardResult:
     equity: pd.Series
@@ -143,7 +183,7 @@ class WalkForwardResult:
 
 def walk_forward(df: pd.DataFrame, cfg: Config, grid: list[dict] | None = None,
                  train_bars: int | None = None, test_bars: int | None = None,
-                 min_trades: int = 10) -> WalkForwardResult:
+                 min_trades: int = 10, selector: str = "robust") -> WalkForwardResult:
     """Rolling walk-forward: pick params by in-sample Sharpe, apply to the next unseen window,
     chain the out-of-sample equity (equity level carries over, position is re-established)."""
     grid = grid or default_grid()
@@ -159,15 +199,13 @@ def walk_forward(df: pd.DataFrame, cfg: Config, grid: list[dict] | None = None,
     eq_start = cfg.starting_equity
     n_trades = 0
     tot_cost = tot_swap = 0.0
+    all_trials: list[float] = []
     start = train_bars
     while start + test_bars <= len(df):
         tr, te = slice(start - train_bars, start), slice(start, start + test_bars)
-        best_i, best_sc = 0, -np.inf
-        for i in range(len(grid)):
-            m = simulate(df.iloc[tr], expos[i].iloc[tr], cfg).metrics
-            sc = m["sharpe"] if m["trades"] >= min_trades else -np.inf
-            if sc > best_sc:
-                best_i, best_sc = i, sc
+        best_i, best_sc, trials = select_params(df.iloc[tr], [e.iloc[tr] for e in expos], cfg,
+                                                min_trades=max(3, min_trades // 3), selector=selector)
+        all_trials += trials
         res = simulate(df.iloc[te], expos[best_i].iloc[te], cfg, start_equity=eq_start)
         windows.append({
             "test_start": str(df.index[te.start]), "test_end": str(df.index[te.stop - 1]),
@@ -187,6 +225,10 @@ def walk_forward(df: pd.DataFrame, cfg: Config, grid: list[dict] | None = None,
 
     equity = pd.concat(parts)
     m = summarize(equity, bpy, cfg.bars_per_day, trades=n_trades, total_cost=tot_cost, total_swap=tot_swap)
+    dsr = deflated_sharpe(equity.pct_change().dropna(), all_trials)
+    m["dsr"] = round(float(dsr), 3) if dsr == dsr else None
+    m["selector"] = selector
+    m["n_trials"] = len(grid)
     return WalkForwardResult(equity, windows, m, n_trades)
 
 
@@ -211,15 +253,21 @@ def purged_cv(df: pd.DataFrame, cfg: Config, grid: list[dict] | None = None, k: 
     folds: list[dict] = []
     for fi, (a, b) in enumerate(bounds):
         lo, hi = max(0, a - embargo_bars), min(n, b + embargo_bars)
-        segs = [(x, y) for (x, y) in ((0, lo), (hi, n)) if y - x >= min_seg]
+        pieces = [(x, y) for (x, y) in ((0, lo), (hi, n)) if y - x >= min_seg]
+        # split every training piece in two -> up to 4 segments for the robust score
+        segs = []
+        for (x, y) in pieces:
+            mid = (x + y) // 2
+            segs += [(x, mid), (mid, y)] if (y - x) >= 2 * min_seg else [(x, y)]
         best_i, best_sc = 0, -np.inf
         for gi in range(len(grid)):
-            tot = w = 0.0
+            shs, mdds, trades = [], [], 0
             for (x, y) in segs:
                 m = simulate(df.iloc[x:y], expos[gi].iloc[x:y], cfg).metrics
-                if m["trades"] >= min_trades:
-                    tot += m["sharpe"] * (y - x); w += (y - x)
-            sc = tot / w if w else -np.inf
+                trades += m["trades"]
+                if m["trades"] >= max(3, min_trades // 3):
+                    shs.append(m["sharpe"]); mdds.append(m["max_drawdown"])
+            sc = robust_score(shs, mdds, trades / (sum(y - x for x, y in segs) / cfg.bars_per_year)) if len(shs) >= 2 else -np.inf
             if sc > best_sc:
                 best_i, best_sc = gi, sc
         res = simulate(df.iloc[a:b], expos[best_i].iloc[a:b], cfg)
@@ -233,3 +281,81 @@ def purged_cv(df: pd.DataFrame, cfg: Config, grid: list[dict] | None = None, k: 
                "median_oos_sharpe": round(float(np.median(sh)), 3), "positive_folds": int(sum(x > 0 for x in sh)),
                "worst_fold_sharpe": round(float(min(sh)), 3), "total_oos_trades": int(sum(f["test_trades"] for f in folds))}
     return PurgedCVResult(folds, summary)
+
+
+def _cap_weights(w: dict, cap: float) -> dict:
+    """Clip any weight above `cap`, redistribute the excess to the others (a few passes)."""
+    w = dict(w)
+    for _ in range(5):
+        over = {k: v - cap for k, v in w.items() if v > cap}
+        if not over:
+            break
+        excess = sum(over.values())
+        for k in over:
+            w[k] = cap
+        free = [k for k in w if k not in over and w[k] > 0]
+        if not free:
+            break
+        tot = sum(w[k] for k in free)
+        for k in free:
+            w[k] += excess * (w[k] / tot if tot > 0 else 1.0 / len(free))
+    return w
+
+
+def dynamic_portfolio(sleeves: dict[str, "WalkForwardResult"], cfg: Config, start_equity: float,
+                      shrink: float = 0.5, floor: float = 0.0, cap: float = 0.6) -> tuple[pd.Series, dict, list[dict]]:
+    """Allocate across sleeves (e.g. XAU-long, XAU-short, BTC-long, BTC-short) from trailing
+    out-of-sample quality only: at every window start, weight_i ∝ max(0, shrink × mean OOS Sharpe of the
+    sleeve's completed windows). No look-ahead — a sleeve earns weight only after it has proven itself
+    OOS; sleeves with nothing proven share equally until then."""
+    rets = pd.concat({k: v.equity.pct_change() for k, v in sleeves.items()}, axis=1).fillna(0.0).sort_index()
+    starts = sorted({pd.Timestamp(w["test_start"]) for v in sleeves.values() for w in v.windows})
+    weights = pd.DataFrame(0.0, index=rets.index, columns=rets.columns)
+    history = []
+    for i, t in enumerate(starts):
+        t_end = starts[i + 1] if i + 1 < len(starts) else rets.index[-1] + pd.Timedelta(seconds=1)
+        q = {}
+        for k, v in sleeves.items():
+            done = [w["test_sharpe"] for w in v.windows if pd.Timestamp(w["test_end"]) < t]
+            q[k] = max(0.0, shrink * float(np.mean(done))) if done else None
+        if all(x is None for x in q.values()):
+            w = {k: 1.0 / len(q) for k in q}
+        else:
+            raw = {k: (x if x is not None else 0.0) + floor for k, x in q.items()}
+            tot = sum(raw.values())
+            w = {k: (x / tot if tot > 0 else 1.0 / len(raw)) for k, x in raw.items()}
+            w = _cap_weights(w, cap)
+        mask = (rets.index >= t) & (rets.index < t_end)
+        for k in w:
+            weights.loc[mask, k] = w[k]
+        history.append({"from": str(t), **{k: round(x, 3) for k, x in w.items()}})
+    port_ret = (weights * rets).sum(axis=1)
+    port_ret = port_ret[(weights.sum(axis=1) > 0)]
+    equity = start_equity * (1.0 + port_ret).cumprod()
+    equity.name = "portfolio"
+    return equity, {k: round(float(weights[k].iloc[-1]), 3) for k in weights.columns}, history
+
+
+GATES = {"median_cv_sharpe": 0.5, "positive_folds": 4, "portfolio_sharpe": 1.0, "portfolio_psr": 0.95,
+         "portfolio_maxdd": -0.15, "prob_loss_1y": 0.20}
+
+
+def evaluate_gates(report: dict) -> dict:
+    """Quality targets for the next version (not guarantees): each entry is (value, threshold, pass)."""
+    out = {}
+    for sym, e in report.get("symbols", {}).items():
+        cv = (e.get("purged_cv") or {}).get("summary")
+        if cv:
+            out[f"{sym.split('/')[0]} median purged-CV Sharpe > {GATES['median_cv_sharpe']}"] = (
+                cv["median_oos_sharpe"], cv["median_oos_sharpe"] > GATES["median_cv_sharpe"])
+            out[f"{sym.split('/')[0]} positive folds >= {GATES['positive_folds']}/{cv['folds']}"] = (
+                cv["positive_folds"], cv["positive_folds"] >= GATES["positive_folds"])
+    pm = (report.get("portfolio") or {}).get("metrics") or {}
+    if pm:
+        out[f"portfolio Sharpe > {GATES['portfolio_sharpe']}"] = (pm.get("sharpe"), (pm.get("sharpe") or 0) > GATES["portfolio_sharpe"])
+        out[f"portfolio PSR > {GATES['portfolio_psr']}"] = (pm.get("psr_gt_0"), (pm.get("psr_gt_0") or 0) > GATES["portfolio_psr"])
+        out[f"portfolio MaxDD > {GATES['portfolio_maxdd']:.0%}"] = (pm.get("max_drawdown"), (pm.get("max_drawdown") or -1) > GATES["portfolio_maxdd"])
+    bs = report.get("bootstrap_1y") or {}
+    if bs:
+        out[f"bootstrap P(loss 1y) < {GATES['prob_loss_1y']:.0%}"] = (bs.get("prob_loss"), (bs.get("prob_loss") or 1) < GATES["prob_loss_1y"])
+    return out

@@ -25,7 +25,7 @@ permissions:
 jobs:
   backtest:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -63,6 +63,12 @@ jobs:
           pm = r["portfolio"]["metrics"]; kind = "Walk-Forward OOS" if r["portfolio"]["kind"] == "walk_forward" else "In-sample"
           bs = r.get("bootstrap_1y") or {}
           txt = f"Backtest Portfolio ({kind}, {pm.get('years')} J.)\nCAGR {pm['cagr']:+.1%}  Sharpe {pm['sharpe']}  MaxDD {pm['max_drawdown']:.1%}  PSR {pm.get('psr_gt_0')}\n"
+          g = r.get("gates") or {}
+          if g:
+              txt += f"Gates: {sum(1 for x in g.values() if x['pass'])}/{len(g)} bestanden\n"
+          fw = (r.get("portfolio_dynamic") or {}).get("final_weights")
+          if fw:
+              txt += "Allokation: " + ", ".join(f"{k} {v:.0%}" for k, v in fw.items()) + "\n"
           for sym, e in r["symbols"].items():
               m = (e.get("walk_forward") or {}).get("metrics") or e["in_sample"]
               txt += (f"{sym.split('/')[0]} ({r['weights'][sym]:.0%}): CAGR {m['cagr']:+.1%} Sharpe {m['sharpe']} MaxDD {m['max_drawdown']:.1%} "

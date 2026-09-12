@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from goldbot.backtest import default_grid, grid_label, purged_cv, run_backtest, walk_forward  # noqa: E402
+from goldbot.backtest import ROBUST_W, default_grid, dynamic_portfolio, evaluate_gates, grid_label, purged_cv, run_backtest, walk_forward  # noqa: E402
 from goldbot.config import Config  # noqa: E402
 from goldbot.data import load_csv  # noqa: E402
 from goldbot.metrics import block_bootstrap, drawdown, summarize  # noqa: E402
@@ -91,6 +91,8 @@ if __name__ == "__main__":
     ap.add_argument("--folds", type=int, default=6)
     ap.add_argument("--timeframe", default=None, help="override config timeframe (data/<slug>_<TF>.csv)")
     ap.add_argument("--grid", choices=["full", "small"], default="full")
+    ap.add_argument("--selector", choices=["robust", "sharpe"], default="robust",
+                    help="parameter selection inside training windows: robust (median segment Sharpe minus penalties) or plain Sharpe")
     ap.add_argument("--out", default=None)
     ap.add_argument("--spread", type=float, default=None, help="override spread for ALL symbols (venue sensitivity)")
     ap.add_argument("--fee", type=float, default=None, help="override taker fee for ALL symbols")
@@ -105,15 +107,16 @@ if __name__ == "__main__":
     grid = default_grid()
     if a.grid == "small":
         grid = [g for g in grid if g["target_vol"] == 0.12 and not g["regime"]["er_window"]]
-    print(f"timeframe {tfx}  bars/day {cfg.bars_per_day}  grid {len(grid)} combos")
+    print(f"timeframe {tfx}  bars/day {cfg.bars_per_day}  grid {len(grid)} combos  selector {a.selector} {ROBUST_W if a.selector == 'robust' else ''}")
     out = Path(a.out or cfg.paths.get("reports", "reports")); out.mkdir(parents=True, exist_ok=True)
     portfolio = cfg.portfolio()
     if a.data:
         portfolio = {cfg.symbol: next(iter(portfolio.values()))}
 
-    report: dict = {"symbols": {}, "weights": {s: sc.weight for s, sc in portfolio.items()}}
+    report: dict = {"symbols": {}, "weights": {s: sc.weight for s, sc in portfolio.items()}, "selector": a.selector}
     wf_curves: dict[str, pd.Series] = {}
     is_curves: dict[str, pd.Series] = {}
+    sleeves: dict = {}   # "XAU-long", "XAU-short", ... -> WalkForwardResult (independent strategies)
     for sym, sc in portfolio.items():
         path = a.data or f"data/{slug(sym)}_{tfx}.csv"
         meta_p = Path(f"data/{slug(sym)}_{tfx}_meta.json")
@@ -145,8 +148,8 @@ if __name__ == "__main__":
             print(f"!!! {sym}: only {len(df) / c.bars_per_year:.2f} years — too short for any walk-forward window, skipped")
         elif a.walk_forward:
             tr, te = wf_windows(c, len(df))
-            wf = walk_forward(df, c, grid=grid, train_bars=tr, test_bars=te)
-            print_metrics(f"{sym} walk-forward OUT-OF-SAMPLE", wf.metrics)
+            wf = walk_forward(df, c, grid=grid, train_bars=tr, test_bars=te, selector=a.selector)
+            print_metrics(f"{sym} walk-forward OUT-OF-SAMPLE (both directions)", wf.metrics)
             print("  windows:")
             for w in wf.windows:
                 print(f"   {w['test_start'][:10]}..{w['test_end'][:10]} {grid_label(w['params'])} | train SR {w['train_sharpe']} "
@@ -157,10 +160,11 @@ if __name__ == "__main__":
             if a.directions:
                 entry["directions"] = {}
                 for d in ("long", "short"):
-                    wfd = walk_forward(df, c.with_strategy(direction=d), grid=grid, train_bars=tr, test_bars=te)
+                    wfd = walk_forward(df, c.with_strategy(direction=d), grid=grid, train_bars=tr, test_bars=te, selector=a.selector)
                     md = wfd.metrics
-                    entry["directions"][d] = md
-                    print(f"  {sym} {d}-only walk-forward: CAGR {md['cagr']:+.1%} Sharpe {md['sharpe']} MaxDD {md['max_drawdown']:.1%} "
+                    entry["directions"][d] = {**md, "windows": wfd.windows}
+                    sleeves[f"{slug(sym).upper()}-{d}"] = wfd
+                    print(f"  {sym} {d}-only walk-forward: CAGR {md['cagr']:+.1%} Sharpe {md['sharpe']} DSR {md['dsr']} MaxDD {md['max_drawdown']:.1%} "
                           f"trades {md['trades']} cost {md['total_cost']}")
         if a.purged_cv:
             cv = purged_cv(df, c, grid=grid, k=a.folds)
@@ -194,10 +198,35 @@ if __name__ == "__main__":
         report["portfolio"] = {"metrics": (only.get("walk_forward") or {}).get("metrics") or only["in_sample"],
                                "kind": "walk_forward" if wf_curves else "in_sample"}
 
+    # ---- dynamic allocation across long/short sleeves from trailing OOS quality (no look-ahead)
+    if len(sleeves) >= 2:
+        deq, wfinal, whist = dynamic_portfolio(sleeves, cfg, cfg.starting_equity)
+        dm = summarize(deq, cfg.bars_per_year, cfg.bars_per_day,
+                       trades=sum(v.metrics["trades"] for v in sleeves.values()))
+        print_metrics("PORTFOLIO dynamic (long/short sleeves, weights from trailing OOS Sharpe)", dm)
+        print("  final weights:", wfinal)
+        for h in whist[-4:]:
+            print("  ", h)
+        report["portfolio_dynamic"] = {"metrics": dm, "final_weights": wfinal, "weight_history": whist,
+                                       "sleeves": {k: v.metrics for k, v in sleeves.items()}}
+        report["portfolio_static"] = report["portfolio"]
+        report["portfolio"] = {"metrics": dm, "kind": "walk_forward_dynamic"}
+        deq.to_csv(out / "equity_portfolio_dynamic.csv")
+        curves["portfolio"] = deq
+        boot_src = deq
+
     if a.bootstrap:
         bs = block_bootstrap(boot_src.pct_change().dropna().to_numpy(), horizon=cfg.bars_per_year)
         print_metrics("Block bootstrap, 1-year horizon (portfolio bar returns)", bs)
         report["bootstrap_1y"] = bs
+
+    gates = evaluate_gates(report)
+    if gates:
+        print("\n== QUALITY GATES (targets for the next version, not guarantees) ==")
+        for k, (v, ok) in gates.items():
+            print(f"  {'PASS' if ok else 'FAIL'}  {k:<45} {v}")
+        report["gates"] = {k: {"value": v, "pass": ok} for k, (v, ok) in gates.items()}
+        print(f"  -> {sum(ok for _, ok in gates.values())}/{len(gates)} passed")
 
     (out / "report.json").write_text(json.dumps(report, indent=1, default=str))
     plot(curves, out / "backtest.png")

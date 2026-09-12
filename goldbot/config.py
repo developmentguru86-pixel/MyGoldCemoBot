@@ -48,6 +48,7 @@ class StrategyCfg:
     z_min: float = 0.0                 # mean |z| (vol-normalised momentum) needed to open; 0 = off
     min_hold_bars: int = 0             # no sign flip / re-entry within this many bars of the last entry
     direction: str = "both"            # both | long | short (diagnostics: where does the edge live?)
+    exposure_scale: float = 1.0        # portfolio vol targeting: multiplies the final exposure (after Kelly), capped by max_leverage
     confidence: bool = False           # scale exposure by signal strength tiers instead of flat 1x
     confidence_tiers: list[list[float]] = field(default_factory=lambda: [[0.5, 0.25], [1.0, 0.5], [1.5, 1.0], [2.5, 1.5]])
     # [[z_threshold, multiplier], ...] ascending: mean |z| below the first threshold -> 0x; above the last -> last multiplier

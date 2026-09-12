@@ -36,6 +36,8 @@ strategy:                    # Live = die auf D1 am häufigsten gewählte Varian
   z_min: 0.0
   min_hold_bars: 3           # kein Flip innerhalb von 3 Tagen
   direction: long            # Shorts: in jedem Fenster, jedem Asset negativ; der Allokator hat sie nie finanziert
+  exposure_scale: 3.0        # Portfolio-Vol-Ziel ~12 % (Backtest-Vol 4,1 % x 3): CAGR ~14 %, MaxDD ~-9 %, 1J-DD p05 ~-16 %. Demo. Echtgeld erst nach CV-Gates.
+  confidence: false          # Confidence-Sizing: vom Selektor in 6/8 Fenstern verworfen
   regime:
     er_window: 0             # ER-Filter auf D1 vom Selektor nie gewählt
     er_min: 0.25

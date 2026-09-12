@@ -113,7 +113,7 @@ def compute_exposure(df: pd.DataFrame, cfg: Config) -> pd.DataFrame:
     else:
         kelly_mult = pd.Series(1.0, index=df.index)
 
-    exposure = (exposure_raw * kelly_mult).fillna(0.0)
+    exposure = (exposure_raw * kelly_mult * s.exposure_scale).clip(-s.max_leverage, s.max_leverage).fillna(0.0)
     return pd.DataFrame({
         "close": close, "ret": ret, "vol_ann": vol_ann, "signal": signal, "z_strength": z_strength,
         "regime_scale": regime_scale, "exposure_raw": exposure_raw, "kelly_mult": kelly_mult, "exposure": exposure,

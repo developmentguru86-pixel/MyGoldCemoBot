@@ -73,6 +73,25 @@ def action_flatten(cfg: Config, mode: str) -> int:
     return 0
 
 
+def action_chat_id(cfg: Config) -> int:
+    import os, requests
+    token = cfg.telegram.token or os.environ.get("TELEGRAM_TOKEN", "")
+    r = requests.get(f"https://api.telegram.org/bot{token}/getUpdates", timeout=20).json()
+    seen = {}
+    for u in r.get("result", []):
+        m = u.get("message") or u.get("edited_message") or {}
+        c = m.get("chat") or {}
+        if c.get("id"):
+            seen[c["id"]] = f"{c.get('first_name', '')} {c.get('username', '')}".strip()
+    out = Path("logs/telegram_chat.txt")
+    out.write_text("\n".join(f"{cid} {name}" for cid, name in seen.items()) or "NO_MESSAGES_YET")
+    for cid in seen:
+        requests.post(f"https://api.telegram.org/bot{token}/sendMessage",
+                      json={"chat_id": cid, "text": f"goldbot verbunden. Deine Chat-ID: {cid}"}, timeout=15)
+    logging.info("chat ids: %s", seen)
+    return 0
+
+
 def action_reset(cfg: Config, mode: str) -> int:
     state, _ = paths_for(cfg, mode)
     p = Path(state)
@@ -88,7 +107,7 @@ def action_reset(cfg: Config, mode: str) -> int:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="config.yaml")
-    ap.add_argument("--action", choices=["trade", "status", "flatten", "reset_halt"], default="trade")
+    ap.add_argument("--action", choices=["trade", "status", "flatten", "reset_halt", "chat_id"], default="trade")
     ap.add_argument("--mode", choices=["paper", "live"], default=None)
     ap.add_argument("--allow-real-account", action="store_true")
     a = ap.parse_args()
@@ -103,6 +122,8 @@ if __name__ == "__main__":
             notify.send(cfg, status_text(cfg, mode)); rc = 0
         elif a.action == "flatten":
             rc = action_flatten(cfg, mode)
+        elif a.action == "chat_id":
+            rc = action_chat_id(cfg)
         else:
             rc = action_reset(cfg, mode)
     except Exception as e:  # noqa: BLE001

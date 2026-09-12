@@ -43,6 +43,7 @@ class LiveTrader:
             d = json.loads(self.state_path.read_text())
             self.last_bar = d.get("last_bar")
             self.start_equity = d.get("start_equity")
+            self.last_actual_equity = d.get("last_actual_equity")
             if d.get("risk"):
                 self.rm = RiskManager.from_dict(self.cfg.risk, d["risk"])
 
@@ -51,6 +52,7 @@ class LiveTrader:
         self.state_path.write_text(json.dumps({
             "last_bar": self.last_bar,
             "start_equity": self.start_equity,
+            "last_actual_equity": self.last_actual_equity,
             "risk": self.rm.to_dict() if self.rm else None,
             "mode": self.mode,
         }, indent=1))
@@ -122,6 +124,15 @@ class LiveTrader:
         q = self.broker.get_quote(cfg.symbol)
         cur_lots = self.broker.get_position(cfg.symbol)
 
+        # demo environments reset periodically: equity jumps while flat -> re-baseline the virtual account
+        if (self.last_actual_equity and cur_lots == 0.0
+                and abs(acct.equity - self.last_actual_equity) > 0.5 * self.last_actual_equity):
+            log.warning("account reset detected (%.0f -> %.0f): re-baselining", self.last_actual_equity, acct.equity)
+            self.start_equity = acct.equity
+            halted, why = self.rm.state.halted, self.rm.state.halted_reason
+            self.rm = RiskManager(cfg.risk, cfg.equity_cap or acct.equity, bars.index[-1])
+            self.rm.state.halted, self.rm.state.halted_reason = halted, why
+        self.last_actual_equity = acct.equity
         equity = acct.equity
         if cfg.equity_cap > 0 and self.start_equity is not None:
             equity = cfg.equity_cap + (acct.equity - self.start_equity)   # virtual account: cap + realised P&L

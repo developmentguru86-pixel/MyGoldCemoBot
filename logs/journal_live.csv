@@ -1,3 +1,4 @@
 time,symbol,bar_time,price,spread,equity,signal,vol_ann,kelly_mult,target_exposure,current_lots,target_lots,action,reason,result
 2026-09-12T20:38:51+00:00,XAU/USDT:USDT,2026-09-12 12:00:00+00:00,4358.19,0.64,5000.0,-1.0,0.2001,1.0,-0.6,0.0,-0.344,skip,market_closed,"phemex {""code"":20005,""msg"":""TE_SEQ_TURN_OFF"",""data"":null}"
 2026-09-12T20:38:55+00:00,BTC/USDT:USDT,2026-09-12 12:00:00+00:00,77137.95,0.1,5000.0,-0.333,0.2837,1.0,-0.141,0.0,-0.005,error,,"ExchangeError: phemex {""code"":20004,""msg"":""TE_ERR_INCONSISTENT_POS_MODE"",""data"":null}"
+2026-09-12T20:41:15+00:00,BTC/USDT:USDT,2026-09-12 12:00:00+00:00,77133.95,0.1,5000.0,-0.333,0.2837,1.0,-0.141,0.0,-0.005,trade,,"{""ok"": true, ""executed"": [{""id"": ""7b8f625d-0794-4fe3-a8e2-174c7ce9c379"", ""side"": ""sell"", ""amount"": 0.005, ""reduce_only"": false, ""avg"": null, ""status"": ""open""}], ""net_lots"": -0.005}"

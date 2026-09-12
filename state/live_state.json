@@ -1,6 +1,7 @@
 {
  "last_bar": {
-  "XAU/USDT:USDT": "2026-09-12 12:00:00+00:00"
+  "XAU/USDT:USDT": "2026-09-12 12:00:00+00:00",
+  "BTC/USDT:USDT": "2026-09-12 12:00:00+00:00"
  },
  "start_equity": 10000.0,
  "last_actual_equity": 10000.0,

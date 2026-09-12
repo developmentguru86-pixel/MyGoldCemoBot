@@ -136,7 +136,7 @@ if __name__ == "__main__":
             df = df.drop(columns=[x for x in ("spread",) if x in df.columns])
         if a.fee is not None:
             c.costs.fee_pct = a.fee
-        c.starting_equity = cfg.starting_equity * sc.weight
+        c.starting_equity = cfg.starting_equity * (sc.weight if sc.weight > 0 else 1.0 / max(1, len(portfolio)))  # research sleeve capital; live weight may be 0
         pooled_dfs[sym] = df; pooled_cfgs[sym] = c.with_strategy(direction="long")
         print(f"\n######## {sym}  weight {sc.weight:.0%}  {len(df)} bars  {df.index[0]} .. {df.index[-1]}")
         print(f"costs: spread {c.costs.spread} fee {c.costs.fee_pct} slippage {c.costs.slippage} "

@@ -91,6 +91,7 @@ class Config:
     bars_per_day: int = 6
     trading_days_per_year: int = 260
     starting_equity: float = 5000.0
+    equity_cap: float = 0.0        # >0: size/risk as if the account were this big (demo accounts hold 100k)
     contract: ContractCfg = field(default_factory=ContractCfg)
     strategy: StrategyCfg = field(default_factory=StrategyCfg)
     costs: CostCfg = field(default_factory=CostCfg)

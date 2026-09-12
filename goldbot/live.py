@@ -89,6 +89,10 @@ class LiveTrader:
                                "Pass --allow-real-account only after the walk-forward gates in README are met.")
         if self.start_equity is None:
             self.start_equity = acct.equity
+        if self.rm is None or self.rm.state.hwm > 10 * max(self.cfg.equity_cap, 1):
+            eq0 = self.cfg.equity_cap if self.cfg.equity_cap > 0 else acct.equity
+            self.rm = RiskManager(self.cfg.risk, eq0, pd.Timestamp.now(tz="UTC"))
+            self._save_state()
         if self.rm is None:
             self.rm = RiskManager(self.cfg.risk, acct.equity, pd.Timestamp.now(tz="UTC"))
             self._save_state()
@@ -118,13 +122,16 @@ class LiveTrader:
         q = self.broker.get_quote(cfg.symbol)
         cur_lots = self.broker.get_position(cfg.symbol)
 
-        may_hold, reason = self.rm.step(acct.equity, bars.index[-1])
+        equity = acct.equity
+        if cfg.equity_cap > 0 and self.start_equity is not None:
+            equity = cfg.equity_cap + (acct.equity - self.start_equity)   # virtual account: cap + realised P&L
+        may_hold, reason = self.rm.step(equity, bars.index[-1])
         tgt_exp = float(feats["exposure"]) if may_hold else 0.0
-        tgt_lots = exposure_to_lots(tgt_exp, acct.equity, q.mid, ct, s.max_leverage)
-        cur_exp = lots_to_exposure(cur_lots, acct.equity, q.mid, ct)
+        tgt_lots = exposure_to_lots(tgt_exp, equity, q.mid, ct, s.max_leverage)
+        cur_exp = lots_to_exposure(cur_lots, equity, q.mid, ct)
 
         row = {"time": pd.Timestamp.now(tz="UTC").isoformat(timespec="seconds"), "bar_time": bar_time,
-               "price": round(q.mid, 2), "spread": round(q.spread, 2), "equity": round(acct.equity, 2),
+               "price": round(q.mid, 2), "spread": round(q.spread, 2), "equity": round(equity, 2),
                "signal": round(float(feats["signal"]), 3), "vol_ann": round(float(feats["vol_ann"]), 4),
                "kelly_mult": round(float(feats["kelly_mult"]), 3), "target_exposure": round(tgt_exp, 3),
                "current_lots": cur_lots, "target_lots": tgt_lots, "action": "hold", "reason": reason, "result": ""}

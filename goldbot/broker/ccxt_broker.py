@@ -115,19 +115,22 @@ class CcxtBroker(Broker):
         bal = self.ex.fetch_balance()
         equity = None
         for getter in (lambda b: b["info"]["data"][0]["totalEq"],                 # okx unified
-                       lambda b: b["info"]["result"]["list"][0]["totalEquity"]):  # bybit unified
+                       lambda b: b["info"]["result"]["list"][0]["totalEquity"],   # bybit unified
+                       lambda b: b["info"]["accounts"]["flex"]["portfolioValue"],  # kraken futures multi-collateral
+                       lambda b: b["info"]["accounts"]["flex"]["balanceValue"]):
             try:
                 equity = float(getter(bal))
                 break
             except Exception:  # noqa: BLE001
                 continue
-        usdt = bal.get("USDT", {}) or {}
-        wallet = float(usdt.get("total") or 0.0)
+        ccy = "USD" if self.cfg.symbol.endswith(":USD") else "USDT"
+        cur = bal.get(ccy, {}) or {}
+        wallet = float(cur.get("total") or 0.0)
         if equity is None:
             unreal = sum(float(p.get("unrealizedPnl") or 0.0) for p in self.ex.fetch_positions())
             equity = wallet + unreal
-        free = float(usdt.get("free") or 0.0)
-        return Account(equity, wallet, "USDT", free, 0 if self.cfg.exchange.demo else 2)
+        free = float(cur.get("free") or 0.0)
+        return Account(equity, wallet or equity, ccy, free, 0 if self.cfg.exchange.demo else 2)
 
     def get_symbol_info(self, symbol: str) -> SymbolInfo:
         m = self._m(symbol)
@@ -147,6 +150,11 @@ class CcxtBroker(Broker):
     def get_bars(self, symbol: str, timeframe: str, count: int) -> pd.DataFrame:
         tf = TF.get(timeframe.upper(), timeframe)
         rows = self.pub.fetch_ohlcv(symbol, tf, limit=min(count, 1000))
+        if len(rows) < count:  # venue caps the per-call limit -> paginate over a time range
+            ms = self.pub.parse_timeframe(tf) * 1000
+            now = self.pub.milliseconds()
+            df = self.get_bars_range(symbol, timeframe, now - int(count * ms * 1.3), now)
+            return df.iloc[-count:]
         recs = [{"time": pd.Timestamp(r[0], unit="ms", tz="UTC").isoformat(), "open": r[1], "high": r[2],
                  "low": r[3], "close": r[4], "tick_volume": r[5]} for r in rows]
         return from_records(recs)

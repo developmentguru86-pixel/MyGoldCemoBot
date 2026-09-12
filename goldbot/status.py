@@ -30,10 +30,12 @@ def status_text(cfg: Config, mode: str = "live", n: int = 5) -> str:
     if acct:
         start = st.get("start_equity") or acct.balance
         pnl = acct.equity - start
+        base = cfg.equity_cap if cfg.equity_cap > 0 else start
+        veq = base + pnl
         lines.append(f"[{mode.upper()} / {MODES.get(acct.trade_mode, acct.trade_mode)}] {cfg.symbol} {q.bid:.2f}/{q.ask:.2f} spread {q.spread:.2f}")
-        lines.append(f"Equity {acct.equity:,.2f} {acct.currency}")
-        lines.append(f"P&L seit Start {pnl:+,.2f} ({pnl / start * 100:+.2f}%)")
-        lines.append(f"Position {pos:+.2f} Lot = {pos * cfg.contract.size * q.mid / acct.equity:+.2f}x")
+        lines.append(f"Konto {veq:,.2f} {acct.currency} (Start {base:,.0f}; Demo-Konto real {acct.equity:,.0f})")
+        lines.append(f"P&L seit Start {pnl:+,.2f} ({pnl / base * 100:+.2f}%)")
+        lines.append(f"Position {pos:+.4f} = {pos * cfg.contract.size * q.mid / veq:+.2f}x")
         if risk:
             dd = (acct.equity / risk["hwm"] - 1) * 100 if risk.get("hwm") else 0.0
             lines.append(f"DD vom Hoch {dd:+.2f}%  Tagesstart {risk.get('day_start_equity', 0):,.2f}")

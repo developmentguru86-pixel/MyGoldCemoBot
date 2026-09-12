@@ -5,3 +5,4 @@ requests>=2.31
 matplotlib>=3.7
 pytest>=7.0
 ccxt
+scikit-learn>=1.3

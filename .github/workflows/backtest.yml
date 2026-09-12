@@ -20,6 +20,9 @@ on:
       cv:
         description: "purged CV + direction diagnostics (slow): yes | no"
         default: "yes"
+      meta:
+        description: "meta-labeling CV: yes | no"
+        default: "yes"
 concurrency:
   group: backtest
   cancel-in-progress: false
@@ -48,6 +51,7 @@ jobs:
           set -o pipefail
           EXTRA="--timeframe ${{ github.event.inputs.timeframe || 'H4' }} --grid ${{ github.event.inputs.grid || 'full' }}"
           [ "${{ github.event.inputs.cv || 'yes' }}" = "yes" ] && EXTRA="$EXTRA --purged-cv --directions"
+          [ "${{ github.event.inputs.meta || 'yes' }}" = "yes" ] && EXTRA="$EXTRA --meta"
           [ -n "${{ github.event.inputs.spread }}" ] && EXTRA="$EXTRA --spread ${{ github.event.inputs.spread }}"
           [ -n "${{ github.event.inputs.fee }}" ] && EXTRA="$EXTRA --fee ${{ github.event.inputs.fee }}"
           python scripts/run_backtest.py --walk-forward --bootstrap $EXTRA 2>&1 | tee reports/summary.txt
@@ -82,6 +86,10 @@ jobs:
               dd = e.get("directions") or {}
               if dd:
                   txt += "   " + "  ".join(f"{k}: SR {v['sharpe']} ({v['trades']} T)" for k, v in dd.items()) + "\n"
+              mt = (e.get("meta") or {}).get("long", {}).get("summary")
+              if mt:
+                  txt += (f"   Meta-Labeling (long): median CV-Sharpe {mt['primary_median_sharpe']} -> {mt['meta_median_sharpe']}, "
+                          f"pos. Folds {mt['primary_positive_folds']} -> {mt['meta_positive_folds']}, akzeptiert {mt['accepted_share']:.0%}\n")
           if bs:
               txt += f"\nBootstrap 1J: p05/p50/p95 {bs['return_p05']:+.1%}/{bs['return_p50']:+.1%}/{bs['return_p95']:+.1%}, P(Verlust) {bs['prob_loss']:.0%}"
           notify.send_photo(cfg, "reports/backtest.png", txt)

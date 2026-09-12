@@ -14,7 +14,8 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from goldbot.backtest import ROBUST_W, default_grid, dynamic_portfolio, evaluate_gates, grid_label, purged_cv, run_backtest, walk_forward  # noqa: E402
+from goldbot.backtest import DAILY_OVERRIDES, ROBUST_W, daily_grid, default_grid, dynamic_portfolio, evaluate_gates, grid_label, purged_cv, run_backtest, walk_forward  # noqa: E402
+from goldbot.meta import meta_cv  # noqa: E402
 from goldbot.config import Config  # noqa: E402
 from goldbot.data import load_csv  # noqa: E402
 from goldbot.metrics import block_bootstrap, drawdown, summarize  # noqa: E402
@@ -90,7 +91,8 @@ if __name__ == "__main__":
     ap.add_argument("--directions", action="store_true", help="walk-forward long-only and short-only diagnostics")
     ap.add_argument("--folds", type=int, default=6)
     ap.add_argument("--timeframe", default=None, help="override config timeframe (data/<slug>_<TF>.csv)")
-    ap.add_argument("--grid", choices=["full", "small"], default="full")
+    ap.add_argument("--grid", choices=["full", "small", "daily"], default="full")
+    ap.add_argument("--meta", action="store_true", help="meta-labeling purged CV on the long-only primary (and both)")
     ap.add_argument("--selector", choices=["robust", "sharpe"], default="robust",
                     help="parameter selection inside training windows: robust (median segment Sharpe minus penalties) or plain Sharpe")
     ap.add_argument("--out", default=None)
@@ -104,7 +106,11 @@ if __name__ == "__main__":
         cfg.timeframe = a.timeframe.upper()
         cfg.bars_per_day = BARS_PER_DAY[cfg.timeframe]
     tfx = cfg.timeframe.upper()
-    grid = default_grid()
+    if tfx == "D1":
+        cfg = cfg.with_strategy(**DAILY_OVERRIDES)
+        if a.grid == "full":
+            a.grid = "daily"
+    grid = daily_grid() if a.grid == "daily" else default_grid()
     if a.grid == "small":
         grid = [g for g in grid if g["target_vol"] == 0.12 and not g["regime"]["er_window"]]
     print(f"timeframe {tfx}  bars/day {cfg.bars_per_day}  grid {len(grid)} combos  selector {a.selector} {ROBUST_W if a.selector == 'robust' else ''}")
@@ -166,6 +172,20 @@ if __name__ == "__main__":
                     sleeves[f"{slug(sym).upper()}-{d}"] = wfd
                     print(f"  {sym} {d}-only walk-forward: CAGR {md['cagr']:+.1%} Sharpe {md['sharpe']} DSR {md['dsr']} MaxDD {md['max_drawdown']:.1%} "
                           f"trades {md['trades']} cost {md['total_cost']}")
+        if a.meta:
+            entry["meta"] = {}
+            for d in ("long", "both"):
+                mc = meta_cv(df, c.with_strategy(direction=d), k=a.folds)
+                entry["meta"][d] = {"summary": mc.summary, "folds": mc.folds}
+                sm = mc.summary
+                print(f"\n== {sym} META-LABELING purged {a.folds}-fold, primary={d} (events {sm['events']}, horizon {sm['horizon']} bars, "
+                      f"accepted {sm['accepted_share']:.0%}) ==")
+                print(f"  median OOS Sharpe primary {sm['primary_median_sharpe']} -> meta {sm['meta_median_sharpe']} | "
+                      f"positive folds {sm['primary_positive_folds']} -> {sm['meta_positive_folds']} | meta better in {sm['meta_better_folds']}/{a.folds}")
+                for f in mc.folds:
+                    print(f"   fold {f['fold']} {f['test_start'][:10]}..{f['test_end'][:10]} events {f['events']} acc {f['accepted']} "
+                          f"p̄ {f['mean_p']} base {f['base_rate']} | SR {f['primary_sharpe']} -> {f['meta_sharpe']} "
+                          f"ret {f['primary_return']:+.3f} -> {f['meta_return']:+.3f} trades {f['primary_trades']} -> {f['meta_trades']}")
         if a.purged_cv:
             cv = purged_cv(df, c, grid=grid, k=a.folds)
             print_metrics(f"{sym} purged {a.folds}-fold CV (embargo {cv.summary['embargo_bars']} bars)", cv.summary)

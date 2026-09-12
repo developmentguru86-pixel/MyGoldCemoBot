@@ -4,11 +4,14 @@ venue: exchange
 symbol: XAU/USDT:USDT        # Primärsymbol (Fallback, wenn `symbols` leer)
 symbols:                     # Portfolio: Gewicht = Anteil des 5.000er-Kontos je Symbol; Kill-Switches wirken auf das Gesamtkonto
   "XAU/USDT:USDT":
-    weight: 0.5
+    weight: 0.34
     history_sources: ["bitfinex:XAUT/USDT", "bitfinex:XAUT/USD"]
   "BTC/USDT:USDT":
-    weight: 0.5
+    weight: 0.33
     history_sources: ["bitfinex:BTC/USDT", "bitfinex:BTC/USD"]
+  "ETH/USDT:USDT":
+    weight: 0.33
+    history_sources: ["bitfinex:ETH/USDT", "bitfinex:ETH/USD"]
 timeframe: H4
 bars_per_day: 6
 trading_days_per_year: 365   # Krypto handelt 24/7

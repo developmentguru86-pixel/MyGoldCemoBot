@@ -127,6 +127,22 @@ def default_grid() -> list[dict]:
     return grid
 
 
+def daily_grid() -> list[dict]:
+    """Daily bars: 1-9 month lookbacks (where the TSMOM literature lives), shorter vol/kelly windows."""
+    grid = []
+    for lb in ([20, 60, 120], [40, 120, 250]):
+        for thr in (0.15, 0.35):
+            for entry in (0.0, 1.0):
+                for regime in ({"er_window": 0, "er_min": 0.0}, {"er_window": 20, "er_min": 0.25}):
+                    grid.append({"lookbacks": lb, "target_vol": 0.10, "rebalance_threshold": thr,
+                                 "entry_min_signal": entry, "regime": regime})
+    return grid
+
+
+DAILY_OVERRIDES = {"vol_span": 20, "min_hold_bars": 3, "kelly": {"window": 120},
+                   "regime": {"vol_pct_window": 120}}
+
+
 def grid_label(p: dict) -> str:
     r = p.get("regime") or {}
     return (f"lb={p['lookbacks']} tv={p['target_vol']} thr={p.get('rebalance_threshold')} "

@@ -48,7 +48,7 @@ def plot(curves: dict, out: Path) -> None:
     for name, eq in curves.items():
         ax[0].plot(eq.index, eq.values / eq.iloc[0] * 100, label=name)
     ax[0].set_ylabel("equity (start = 100)"); ax[0].legend(); ax[0].grid(alpha=0.3)
-    port = curves.get("portfolio") or next(iter(curves.values()))
+    port = curves["portfolio"] if "portfolio" in curves else next(iter(curves.values()))
     ax[1].fill_between(port.index, drawdown(port).values, 0, alpha=0.4)
     ax[1].set_ylabel("drawdown"); ax[1].grid(alpha=0.3)
     fig.tight_layout(); fig.savefig(out, dpi=110); plt.close(fig)

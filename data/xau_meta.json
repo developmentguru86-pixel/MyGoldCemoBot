@@ -1,0 +1,16 @@
+{
+ "symbol": "XAU/USDT:USDT",
+ "history_source": "bitfinex:XAUT/USDT",
+ "bars": 12918,
+ "years": 5.9,
+ "first": "2020-09-12 16:00:00+00:00",
+ "last": "2026-09-12 16:00:00+00:00",
+ "contract_size": 1.0,
+ "min_lot": 0.001,
+ "lot_step": 0.001,
+ "max_lot": 1000000000.0,
+ "spread": 0.48,
+ "price": 4358.11,
+ "fee_pct": 0.001,
+ "funding_annual": 0.05892195
+}

@@ -1,0 +1,10 @@
+XAU/USDT:USDT: 1000 bars (0.46 y) from phemex
+  bitfinex:XAUT/USDT: 12919 bars (5.90 y)
+  bitfinex:XAUT/USD: 12470 bars (5.69 y)
+  using bitfinex:XAUT/USDT as price history (12919 bars); costs modelled from XAU/USDT:USDT
+  -> data/xau_H4.csv (5.9 y), spread 0.48 fee 0.001 funding 0.05892195 contract 1.0/0.001/0.001
+BTC/USDT:USDT: 4452 bars (2.03 y) from phemex
+  bitfinex:BTC/USDT: failed RateLimitExceeded: bitfinex ["error", 11010, "ratelimit: error"]
+  bitfinex:BTC/USD: failed RateLimitExceeded: bitfinex ["error", 11010, "ratelimit: error"]
+  -> data/btc_H4.csv (2.03 y), spread 0.1 fee 0.001 funding 0.07195245 contract 1.0/0.001/0.001
+  !!! only 2.03 years for BTC/USDT:USDT — low statistical confidence

@@ -1,0 +1,372 @@
+{
+ "symbols": {
+  "XAU/USDT:USDT": {
+   "data": "data/xau_H4.csv",
+   "history_source": "bitfinex:XAUT/USDT",
+   "costs": {
+    "spread": 0.48,
+    "slippage": 0.19824,
+    "swap_long_annual": -0.05892195,
+    "swap_short_annual": 0.05892195,
+    "commission_per_lot": 0.0,
+    "fee_pct": 0.001,
+    "slippage_pct": 0.0001
+   },
+   "params": {
+    "lookbacks": [
+     30,
+     90,
+     180
+    ],
+    "target_vol": 0.12,
+    "vol_span": 60
+   },
+   "in_sample": {
+    "bars": 12917,
+    "years": 5.9,
+    "start_equity": 2500.0,
+    "end_equity": 1995.31,
+    "total_return": -0.2019,
+    "cagr": -0.0375,
+    "ann_vol": 0.0198,
+    "sharpe": -1.92,
+    "sortino": -0.944,
+    "max_drawdown": -0.2019,
+    "calmar": -0.186,
+    "psr_gt_0": 0.0,
+    "trades": 309,
+    "total_cost": 294.16,
+    "total_swap": -1.23,
+    "pnl_per_trading_day": -0.23,
+    "worst_bar": -0.0077,
+    "best_bar": 0.0071,
+    "time_in_market": 0.199,
+    "avg_abs_lots": 0.2288,
+    "halted_at": "2021-12-07 04:00:00+00:00"
+   },
+   "walk_forward": {
+    "metrics": {
+     "bars": 7658,
+     "years": 3.5,
+     "start_equity": 2500.0,
+     "end_equity": 2480.98,
+     "total_return": -0.0076,
+     "cagr": -0.0022,
+     "ann_vol": 0.072,
+     "sharpe": 0.006,
+     "sortino": 0.006,
+     "max_drawdown": -0.1534,
+     "calmar": -0.014,
+     "psr_gt_0": 0.504,
+     "trades": 686,
+     "total_cost": 579.15,
+     "total_swap": 93.23,
+     "pnl_per_trading_day": -0.01,
+     "worst_bar": -0.0207,
+     "best_bar": 0.0258
+    },
+    "windows": [
+     {
+      "test_start": "2022-09-26 00:00:00+00:00",
+      "test_end": "2023-04-03 00:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        60,
+        180,
+        360
+       ],
+       "target_vol": 0.08,
+       "rebalance_threshold": 0.15
+      },
+      "train_sharpe": -2.183,
+      "test_sharpe": -0.767,
+      "test_return": -0.0194,
+      "test_maxdd": -0.0468,
+      "test_trades": 68,
+      "halted_at": null
+     },
+     {
+      "test_start": "2023-04-03 04:00:00+00:00",
+      "test_end": "2023-10-11 20:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        60,
+        180,
+        360
+       ],
+       "target_vol": 0.12,
+       "rebalance_threshold": 0.15
+      },
+      "train_sharpe": -1.129,
+      "test_sharpe": -1.159,
+      "test_return": -0.0435,
+      "test_maxdd": -0.0941,
+      "test_trades": 149,
+      "halted_at": null
+     },
+     {
+      "test_start": "2023-10-12 00:00:00+00:00",
+      "test_end": "2024-04-11 08:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        60,
+        180,
+        360
+       ],
+       "target_vol": 0.12,
+       "rebalance_threshold": 0.15
+      },
+      "train_sharpe": -0.798,
+      "test_sharpe": 0.24,
+      "test_return": 0.0089,
+      "test_maxdd": -0.0876,
+      "test_trades": 130,
+      "halted_at": null
+     },
+     {
+      "test_start": "2024-04-11 12:00:00+00:00",
+      "test_end": "2024-10-11 00:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        60,
+        180,
+        360
+       ],
+       "target_vol": 0.12,
+       "rebalance_threshold": 0.15
+      },
+      "train_sharpe": -0.42,
+      "test_sharpe": -1.28,
+      "test_return": -0.0569,
+      "test_maxdd": -0.098,
+      "test_trades": 124,
+      "halted_at": null
+     },
+     {
+      "test_start": "2024-10-11 04:00:00+00:00",
+      "test_end": "2025-04-14 20:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        60,
+        180,
+        360
+       ],
+       "target_vol": 0.08,
+       "rebalance_threshold": 0.15
+      },
+      "train_sharpe": -0.488,
+      "test_sharpe": -0.1,
+      "test_return": -0.0033,
+      "test_maxdd": -0.071,
+      "test_trades": 81,
+      "halted_at": null
+     },
+     {
+      "test_start": "2025-04-15 00:00:00+00:00",
+      "test_end": "2025-10-18 08:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        60,
+        180,
+        360
+       ],
+       "target_vol": 0.08,
+       "rebalance_threshold": 0.15
+      },
+      "train_sharpe": -0.365,
+      "test_sharpe": 1.878,
+      "test_return": 0.0518,
+      "test_maxdd": -0.064,
+      "test_trades": 77,
+      "halted_at": null
+     },
+     {
+      "test_start": "2025-10-18 12:00:00+00:00",
+      "test_end": "2026-04-20 04:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        60,
+        180,
+        360
+       ],
+       "target_vol": 0.08,
+       "rebalance_threshold": 0.15
+      },
+      "train_sharpe": 0.257,
+      "test_sharpe": 1.499,
+      "test_return": 0.0607,
+      "test_maxdd": -0.0366,
+      "test_trades": 57,
+      "halted_at": null
+     }
+    ]
+   }
+  },
+  "BTC/USDT:USDT": {
+   "data": "data/btc_H4.csv",
+   "history_source": "BTC/USDT:USDT",
+   "costs": {
+    "spread": 0.1,
+    "slippage": 6.65355,
+    "swap_long_annual": -0.07195245,
+    "swap_short_annual": 0.07195245,
+    "commission_per_lot": 0.0,
+    "fee_pct": 0.001,
+    "slippage_pct": 0.0001
+   },
+   "params": {
+    "lookbacks": [
+     30,
+     90,
+     180
+    ],
+    "target_vol": 0.12,
+    "vol_span": 60
+   },
+   "in_sample": {
+    "bars": 4450,
+    "years": 2.03,
+    "start_equity": 2500.0,
+    "end_equity": 2886.85,
+    "total_return": 0.1547,
+    "cagr": 0.0734,
+    "ann_vol": 0.1159,
+    "sharpe": 0.667,
+    "sortino": 1.211,
+    "max_drawdown": -0.0796,
+    "calmar": 0.922,
+    "psr_gt_0": 0.869,
+    "trades": 474,
+    "total_cost": 246.7,
+    "total_swap": 8.77,
+    "pnl_per_trading_day": 0.52,
+    "worst_bar": -0.0229,
+    "best_bar": 0.1159,
+    "time_in_market": 0.968,
+    "avg_abs_lots": 0.008,
+    "halted_at": null
+   },
+   "walk_forward": {
+    "metrics": {
+     "bars": 1638,
+     "years": 0.75,
+     "start_equity": 2500.0,
+     "end_equity": 2503.93,
+     "total_return": 0.0016,
+     "cagr": 0.0021,
+     "ann_vol": 0.0266,
+     "sharpe": 0.092,
+     "sortino": 0.12,
+     "max_drawdown": -0.0232,
+     "calmar": 0.091,
+     "psr_gt_0": 0.532,
+     "trades": 106,
+     "total_cost": 19.69,
+     "total_swap": -1.86,
+     "pnl_per_trading_day": 0.01,
+     "worst_bar": -0.0039,
+     "best_bar": 0.0075
+    },
+    "windows": [
+     {
+      "test_start": "2025-01-14 00:00:00+00:00",
+      "test_end": "2025-04-15 00:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        90,
+        270,
+        540
+       ],
+       "target_vol": 0.08,
+       "rebalance_threshold": 0.15
+      },
+      "train_sharpe": 1.657,
+      "test_sharpe": -1.778,
+      "test_return": -0.0099,
+      "test_maxdd": -0.0162,
+      "test_trades": 57,
+      "halted_at": null
+     },
+     {
+      "test_start": "2025-04-15 04:00:00+00:00",
+      "test_end": "2025-12-28 20:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        90,
+        270,
+        540
+       ],
+       "target_vol": 0.08,
+       "rebalance_threshold": 0.15
+      },
+      "train_sharpe": 1.071,
+      "test_sharpe": -1.5,
+      "test_return": -0.0076,
+      "test_maxdd": -0.0145,
+      "test_trades": 25,
+      "halted_at": null
+     },
+     {
+      "test_start": "2025-12-29 00:00:00+00:00",
+      "test_end": "2026-03-30 00:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        90,
+        270,
+        540
+       ],
+       "target_vol": 0.08,
+       "rebalance_threshold": 0.15
+      },
+      "train_sharpe": 1.034,
+      "test_sharpe": 2.23,
+      "test_return": 0.0194,
+      "test_maxdd": -0.0096,
+      "test_trades": 24,
+      "halted_at": null
+     }
+    ]
+   }
+  }
+ },
+ "weights": {
+  "XAU/USDT:USDT": 0.5,
+  "BTC/USDT:USDT": 0.5
+ },
+ "portfolio": {
+  "metrics": {
+   "bars": 2743,
+   "years": 1.25,
+   "start_equity": 4678.97,
+   "end_equity": 4984.91,
+   "total_return": 0.0654,
+   "cagr": 0.0519,
+   "ann_vol": 0.0337,
+   "sharpe": 1.515,
+   "sortino": 1.697,
+   "max_drawdown": -0.031,
+   "calmar": 1.673,
+   "psr_gt_0": 0.951,
+   "trades": 792,
+   "total_cost": 0.0,
+   "total_swap": 0.0,
+   "pnl_per_trading_day": 0.67,
+   "worst_bar": -0.0094,
+   "best_bar": 0.0063
+  },
+  "kind": "walk_forward"
+ },
+ "bootstrap_1y": {
+  "horizon_bars": 2190,
+  "sims": 2000,
+  "block": 20,
+  "return_p05": -0.0145,
+  "return_p50": 0.0516,
+  "return_p95": 0.1195,
+  "maxdd_p05": -0.051,
+  "maxdd_p50": -0.0267,
+  "maxdd_p95": -0.0152,
+  "prob_loss": 0.099,
+  "prob_dd_gt_20pct": 0.0
+ }
+}

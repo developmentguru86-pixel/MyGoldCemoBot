@@ -1,0 +1,142 @@
+/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/scripts/run_backtest.py:140: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  aligned = pd.concat(curves, axis=1).ffill().dropna()
+
+######## XAU/USDT:USDT  weight 50%  12918 bars  2020-09-12 16:00:00+00:00 .. 2026-09-12 16:00:00+00:00
+costs: spread 0.48 fee 0.001 slippage 0.19824 funding L/S -0.0589/+0.0589  contract 1.0/0.001/0.001
+
+== XAU/USDT:USDT in-sample, fixed params {'lookbacks': [30, 90, 180], 'target_vol': 0.12, 'vol_span': 60} ==
+  bars                   12917
+  years                  5.9
+  start_equity           2500.0
+  end_equity             1995.31
+  total_return           -0.2019
+  cagr                   -0.0375
+  ann_vol                0.0198
+  sharpe                 -1.92
+  sortino                -0.944
+  max_drawdown           -0.2019
+  calmar                 -0.186
+  psr_gt_0               0.0
+  trades                 309
+  total_cost             294.16
+  total_swap             -1.23
+  pnl_per_trading_day    -0.23
+  worst_bar              -0.0077
+  best_bar               0.0071
+  time_in_market         0.199
+  avg_abs_lots           0.2288
+  halted_at              2021-12-07 04:00:00+00:00
+
+== XAU/USDT:USDT walk-forward OUT-OF-SAMPLE ==
+  bars                   7658
+  years                  3.5
+  start_equity           2500.0
+  end_equity             2480.98
+  total_return           -0.0076
+  cagr                   -0.0022
+  ann_vol                0.072
+  sharpe                 0.006
+  sortino                0.006
+  max_drawdown           -0.1534
+  calmar                 -0.014
+  psr_gt_0               0.504
+  trades                 686
+  total_cost             579.15
+  total_swap             93.23
+  pnl_per_trading_day    -0.01
+  worst_bar              -0.0207
+  best_bar               0.0258
+  windows:
+   2022-09-26..2023-04-03 lb=[60, 180, 360] tv=0.08 thr=0.15 | train SR -2.183 -> test SR -0.767 ret -0.019 mdd -0.047 trades 68
+   2023-04-03..2023-10-11 lb=[60, 180, 360] tv=0.12 thr=0.15 | train SR -1.129 -> test SR -1.159 ret -0.043 mdd -0.094 trades 149
+   2023-10-12..2024-04-11 lb=[60, 180, 360] tv=0.12 thr=0.15 | train SR -0.798 -> test SR 0.24 ret +0.009 mdd -0.088 trades 130
+   2024-04-11..2024-10-11 lb=[60, 180, 360] tv=0.12 thr=0.15 | train SR -0.42 -> test SR -1.28 ret -0.057 mdd -0.098 trades 124
+   2024-10-11..2025-04-14 lb=[60, 180, 360] tv=0.08 thr=0.15 | train SR -0.488 -> test SR -0.1 ret -0.003 mdd -0.071 trades 81
+   2025-04-15..2025-10-18 lb=[60, 180, 360] tv=0.08 thr=0.15 | train SR -0.365 -> test SR 1.878 ret +0.052 mdd -0.064 trades 77
+   2025-10-18..2026-04-20 lb=[60, 180, 360] tv=0.08 thr=0.15 | train SR 0.257 -> test SR 1.499 ret +0.061 mdd -0.037 trades 57
+
+######## BTC/USDT:USDT  weight 50%  4451 bars  2022-11-04 08:00:00+00:00 .. 2026-03-30 00:00:00+00:00
+costs: spread 0.1 fee 0.001 slippage 6.65355 funding L/S -0.0720/+0.0720  contract 1.0/0.001/0.001
+
+== BTC/USDT:USDT in-sample, fixed params {'lookbacks': [30, 90, 180], 'target_vol': 0.12, 'vol_span': 60} ==
+  bars                   4450
+  years                  2.03
+  start_equity           2500.0
+  end_equity             2886.85
+  total_return           0.1547
+  cagr                   0.0734
+  ann_vol                0.1159
+  sharpe                 0.667
+  sortino                1.211
+  max_drawdown           -0.0796
+  calmar                 0.922
+  psr_gt_0               0.869
+  trades                 474
+  total_cost             246.7
+  total_swap             8.77
+  pnl_per_trading_day    0.52
+  worst_bar              -0.0229
+  best_bar               0.1159
+  time_in_market         0.968
+  avg_abs_lots           0.008
+  halted_at              None
+!!! short history (2.0 y): walk-forward train=2810 / test=547 bars — low confidence
+
+== BTC/USDT:USDT walk-forward OUT-OF-SAMPLE ==
+  bars                   1638
+  years                  0.75
+  start_equity           2500.0
+  end_equity             2503.93
+  total_return           0.0016
+  cagr                   0.0021
+  ann_vol                0.0266
+  sharpe                 0.092
+  sortino                0.12
+  max_drawdown           -0.0232
+  calmar                 0.091
+  psr_gt_0               0.532
+  trades                 106
+  total_cost             19.69
+  total_swap             -1.86
+  pnl_per_trading_day    0.01
+  worst_bar              -0.0039
+  best_bar               0.0075
+  windows:
+   2025-01-14..2025-04-15 lb=[90, 270, 540] tv=0.08 thr=0.15 | train SR 1.657 -> test SR -1.778 ret -0.010 mdd -0.016 trades 57
+   2025-04-15..2025-12-28 lb=[90, 270, 540] tv=0.08 thr=0.15 | train SR 1.071 -> test SR -1.5 ret -0.008 mdd -0.015 trades 25
+   2025-12-29..2026-03-30 lb=[90, 270, 540] tv=0.08 thr=0.15 | train SR 1.034 -> test SR 2.23 ret +0.019 mdd -0.010 trades 24
+
+== PORTFOLIO walk-forward OOS (weighted sleeves) ==
+  bars                   2743
+  years                  1.25
+  start_equity           4678.97
+  end_equity             4984.91
+  total_return           0.0654
+  cagr                   0.0519
+  ann_vol                0.0337
+  sharpe                 1.515
+  sortino                1.697
+  max_drawdown           -0.031
+  calmar                 1.673
+  psr_gt_0               0.951
+  trades                 792
+  total_cost             0.0
+  total_swap             0.0
+  pnl_per_trading_day    0.67
+  worst_bar              -0.0094
+  best_bar               0.0063
+
+== Block bootstrap, 1-year horizon (portfolio bar returns) ==
+  horizon_bars           2190
+  sims                   2000
+  block                  20
+  return_p05             -0.0145
+  return_p50             0.0516
+  return_p95             0.1195
+  maxdd_p05              -0.051
+  maxdd_p50              -0.0267
+  maxdd_p95              -0.0152
+  prob_loss              0.099
+  prob_dd_gt_20pct       0.0
+
+written: reports/report.json, equity_*.csv, trades_insample_*.csv, backtest.png

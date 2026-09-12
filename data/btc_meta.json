@@ -1,0 +1,16 @@
+{
+ "symbol": "BTC/USDT:USDT",
+ "history_source": "BTC/USDT:USDT",
+ "bars": 4451,
+ "years": 2.03,
+ "first": "2022-11-04 08:00:00+00:00",
+ "last": "2026-03-30 00:00:00+00:00",
+ "contract_size": 1.0,
+ "min_lot": 0.001,
+ "lot_step": 0.001,
+ "max_lot": 1000000000.0,
+ "spread": 0.1,
+ "price": 77148.55,
+ "fee_pct": 0.001,
+ "funding_annual": 0.07195245
+}

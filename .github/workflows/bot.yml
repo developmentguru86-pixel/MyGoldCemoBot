@@ -1,7 +1,7 @@
 name: goldbot
 on:
   schedule:
-    - cron: "6 */4 * * *"      # 6 min after every H4 close (UTC); GitHub may delay a few minutes
+    - cron: "6 0 * * *"        # 6 min after the daily close (00:00 UTC); GitHub may delay a few minutes
   workflow_dispatch:
     inputs:
       action:

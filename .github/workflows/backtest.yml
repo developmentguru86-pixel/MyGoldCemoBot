@@ -51,7 +51,7 @@ jobs:
           set -o pipefail
           EXTRA="--timeframe ${{ github.event.inputs.timeframe || 'H4' }} --grid ${{ github.event.inputs.grid || 'full' }}"
           [ "${{ github.event.inputs.cv || 'yes' }}" = "yes" ] && EXTRA="$EXTRA --purged-cv --directions"
-          [ "${{ github.event.inputs.meta || 'yes' }}" = "yes" ] && EXTRA="$EXTRA --meta"
+          [ "${{ github.event.inputs.meta || 'yes' }}" = "yes" ] && EXTRA="$EXTRA --meta --meta-pooled"
           [ -n "${{ github.event.inputs.spread }}" ] && EXTRA="$EXTRA --spread ${{ github.event.inputs.spread }}"
           [ -n "${{ github.event.inputs.fee }}" ] && EXTRA="$EXTRA --fee ${{ github.event.inputs.fee }}"
           python scripts/run_backtest.py --walk-forward --bootstrap $EXTRA 2>&1 | tee reports/summary.txt
@@ -73,6 +73,9 @@ jobs:
           g = r.get("gates") or {}
           if g:
               txt += f"Gates: {sum(1 for x in g.values() if x['pass'])}/{len(g)} bestanden\n"
+          mp = r.get("meta_pooled")
+          if mp:
+              txt += f"Gepooltes Meta-Modell: median CV-Sharpe {mp['pooled_primary_median_sharpe']} -> {mp['pooled_meta_median_sharpe']} (besser in {mp['pooled_meta_better']} Folds)\n"
           fw = (r.get("portfolio_dynamic") or {}).get("final_weights")
           if fw:
               txt += "Allokation: " + ", ".join(f"{k} {v:.0%}" for k, v in fw.items()) + "\n"

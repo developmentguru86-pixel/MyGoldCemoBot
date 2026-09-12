@@ -188,3 +188,89 @@ def meta_cv(df: pd.DataFrame, cfg: Config, k: int = 6, embargo_bars: int | None 
                "meta_better_folds": int(sum(m > p for m, p in zip(ms, ps))),
                "accepted_share": round(float(sum(f["accepted"] for f in folds) / max(1, sum(f["events"] for f in folds))), 3)}
     return MetaCVResult(folds, summary)
+
+
+# ---------------------------------------------------------------- pooled across assets
+def _asset_events(df: pd.DataFrame, cfg: Config, barrier_k: float, h: int):
+    s = cfg.strategy
+    feats = compute_exposure(df, cfg)
+    expo = feats["exposure"]
+    close = df["close"].to_numpy(dtype=float)
+    vol_bar = df["close"].pct_change().ewm(span=s.vol_span, min_periods=s.vol_span).std().to_numpy(dtype=float)
+    events = primary_events(expo)
+    sides = np.sign(expo.to_numpy(dtype=float)[events])
+    labels, widths = triple_barrier(close, vol_bar, events, sides, k=barrier_k, h=h)
+    X = build_features(df, feats, cfg).to_numpy(dtype=float)[events]
+    price = close[events]
+    c = cfg.costs
+    cost_rt = 2 * ((c.spread / 2.0 + (price * c.slippage_pct if c.slippage_pct > 0 else c.slippage)) / price + c.fee_pct)
+    return expo, events, labels, widths, X, cost_rt, df.index[events]
+
+
+def meta_cv_pooled(dfs: dict[str, pd.DataFrame], cfgs: dict[str, Config], k: int = 6,
+                   barrier_k: float = 1.0, horizon: int | None = None, premium: float = 0.0005) -> dict:
+    """One secondary model for all assets (asset identity as one-hot feature). Folds are calendar
+    spans over the union of dates; the embargo is applied in time. Train on the other folds of ALL
+    assets, evaluate each asset on its own fold slice — primary vs meta, like for like."""
+    syms = list(dfs)
+    any_cfg = cfgs[syms[0]]
+    s = any_cfg.strategy
+    h = horizon or max(s.min_hold_bars * 5, 30 if any_cfg.bars_per_day > 1 else 10)
+    per = {sym: _asset_events(dfs[sym], cfgs[sym], barrier_k, h) for sym in syms}
+    # pooled design matrix
+    rows_X, rows_y, rows_w, rows_c, rows_t, rows_s = [], [], [], [], [], []
+    for i, sym in enumerate(syms):
+        expo, ev, y, w, X, cr, ts = per[sym]
+        onehot = np.zeros((len(ev), len(syms))); onehot[:, i] = 1.0
+        rows_X.append(np.hstack([X, onehot])); rows_y.append(y); rows_w.append(w); rows_c.append(cr)
+        rows_t.append(ts.to_numpy()); rows_s.append(np.full(len(ev), i))
+    X_all = np.vstack(rows_X); y_all = np.concatenate(rows_y); w_all = np.concatenate(rows_w)
+    c_all = np.concatenate(rows_c); t_all = np.concatenate(rows_t); s_all = np.concatenate(rows_s)
+    t0 = min(df.index[0] for df in dfs.values()); t1 = max(df.index[-1] for df in dfs.values())
+    edges = [t0 + (t1 - t0) * i / k for i in range(k + 1)]
+    tf_secs = 86400 // max(1, any_cfg.bars_per_day)
+    embargo_bars = max(s.lookbacks) + s.kelly.window + 3 * s.vol_span + h
+    emb = pd.Timedelta(seconds=tf_secs * embargo_bars)
+    results = {sym: [] for sym in syms}
+    for fi in range(k):
+        a, b = edges[fi], edges[fi + 1]
+        tr = ((t_all < a - emb) | (t_all >= b + emb)) & np.isfinite(w_all)
+        model = fit_model(X_all[tr], y_all[tr]) if tr.sum() >= 40 else None
+        for i, sym in enumerate(syms):
+            expo, ev, y, w, X, cr, ts = per[sym]
+            df = dfs[sym]
+            te = (s_all == i) & (t_all >= a) & (t_all < b)
+            accept = np.ones(len(ev), dtype=bool)
+            p_te = None
+            if model is not None and te.any():
+                p_te = model(X_all[te])
+                thr = np.array([ev_threshold(ww, cc, premium) for ww, cc in zip(w_all[te], c_all[te])])
+                loc = (ts >= a) & (ts < b)
+                accept[loc] = p_te >= thr
+            sl = df.index[(df.index >= a) & (df.index < b)]
+            if len(sl) < 30:
+                continue
+            ia, ib = df.index.get_loc(sl[0]), df.index.get_loc(sl[-1]) + 1
+            prim = simulate(df.iloc[ia:ib], expo.iloc[ia:ib], cfgs[sym]).metrics
+            meta = simulate(df.iloc[ia:ib], apply_meta(expo, ev, accept).iloc[ia:ib], cfgs[sym]).metrics
+            results[sym].append({"fold": fi, "test_start": str(a)[:10], "test_end": str(b)[:10],
+                                 "events": int(te.sum()), "accepted": int(accept[(ts >= a) & (ts < b)].sum()),
+                                 "train_events": int(tr.sum()), "mean_p": round(float(np.mean(p_te)), 3) if p_te is not None and len(p_te) else None,
+                                 "primary_sharpe": prim["sharpe"], "meta_sharpe": meta["sharpe"],
+                                 "primary_return": prim["total_return"], "meta_return": meta["total_return"],
+                                 "primary_trades": prim["trades"], "meta_trades": meta["trades"]})
+    out = {"folds": k, "horizon": h, "embargo_bars": embargo_bars, "pooled_events": int(len(y_all)), "per_symbol": {}}
+    all_p, all_m = [], []
+    for sym in syms:
+        fs = results[sym]
+        ps = [f["primary_sharpe"] for f in fs]; ms = [f["meta_sharpe"] for f in fs]
+        all_p += ps; all_m += ms
+        out["per_symbol"][sym] = {"folds": fs, "primary_median_sharpe": round(float(np.median(ps)), 3) if ps else None,
+                                  "meta_median_sharpe": round(float(np.median(ms)), 3) if ms else None,
+                                  "primary_positive_folds": int(sum(x > 0 for x in ps)), "meta_positive_folds": int(sum(x > 0 for x in ms)),
+                                  "meta_better_folds": int(sum(m > p for m, p in zip(ms, ps))), "n_folds": len(fs),
+                                  "accepted_share": round(float(sum(f["accepted"] for f in fs) / max(1, sum(f["events"] for f in fs))), 3)}
+    out["pooled_primary_median_sharpe"] = round(float(np.median(all_p)), 3) if all_p else None
+    out["pooled_meta_median_sharpe"] = round(float(np.median(all_m)), 3) if all_m else None
+    out["pooled_meta_better"] = f"{int(sum(m > p for m, p in zip(all_m, all_p)))}/{len(all_p)}"
+    return out

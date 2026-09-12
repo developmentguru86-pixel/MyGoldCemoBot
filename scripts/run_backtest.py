@@ -15,7 +15,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from goldbot.backtest import DAILY_OVERRIDES, ROBUST_W, daily_grid, default_grid, dynamic_portfolio, evaluate_gates, grid_label, purged_cv, run_backtest, walk_forward  # noqa: E402
-from goldbot.meta import meta_cv  # noqa: E402
+from goldbot.meta import meta_cv, meta_cv_pooled  # noqa: E402
 from goldbot.config import Config  # noqa: E402
 from goldbot.data import load_csv  # noqa: E402
 from goldbot.metrics import block_bootstrap, drawdown, summarize  # noqa: E402
@@ -93,6 +93,7 @@ if __name__ == "__main__":
     ap.add_argument("--timeframe", default=None, help="override config timeframe (data/<slug>_<TF>.csv)")
     ap.add_argument("--grid", choices=["full", "small", "daily"], default="full")
     ap.add_argument("--meta", action="store_true", help="meta-labeling purged CV on the long-only primary (and both)")
+    ap.add_argument("--meta-pooled", action="store_true", help="one meta-model across all portfolio symbols (asset one-hot)")
     ap.add_argument("--selector", choices=["robust", "sharpe"], default="robust",
                     help="parameter selection inside training windows: robust (median segment Sharpe minus penalties) or plain Sharpe")
     ap.add_argument("--out", default=None)
@@ -123,6 +124,7 @@ if __name__ == "__main__":
     wf_curves: dict[str, pd.Series] = {}
     is_curves: dict[str, pd.Series] = {}
     sleeves: dict = {}   # "XAU-long", "XAU-short", ... -> WalkForwardResult (independent strategies)
+    pooled_dfs: dict = {}; pooled_cfgs: dict = {}
     for sym, sc in portfolio.items():
         path = a.data or f"data/{slug(sym)}_{tfx}.csv"
         meta_p = Path(f"data/{slug(sym)}_{tfx}_meta.json")
@@ -135,6 +137,7 @@ if __name__ == "__main__":
         if a.fee is not None:
             c.costs.fee_pct = a.fee
         c.starting_equity = cfg.starting_equity * sc.weight
+        pooled_dfs[sym] = df; pooled_cfgs[sym] = c.with_strategy(direction="long")
         print(f"\n######## {sym}  weight {sc.weight:.0%}  {len(df)} bars  {df.index[0]} .. {df.index[-1]}")
         print(f"costs: spread {c.costs.spread} fee {c.costs.fee_pct} slippage {c.costs.slippage} "
               f"funding L/S {c.costs.swap_long_annual:+.4f}/{c.costs.swap_short_annual:+.4f}  "
@@ -217,6 +220,18 @@ if __name__ == "__main__":
         only = next(iter(report["symbols"].values()))
         report["portfolio"] = {"metrics": (only.get("walk_forward") or {}).get("metrics") or only["in_sample"],
                                "kind": "walk_forward" if wf_curves else "in_sample"}
+
+    if a.meta_pooled and len(pooled_dfs) >= 2:
+        mp = meta_cv_pooled(pooled_dfs, pooled_cfgs, k=a.folds)
+        report["meta_pooled"] = mp
+        print(f"\n== POOLED META-LABELING (long primary, {len(pooled_dfs)} assets, {mp['pooled_events']} events, horizon {mp['horizon']}) ==")
+        print(f"  pooled median Sharpe primary {mp['pooled_primary_median_sharpe']} -> meta {mp['pooled_meta_median_sharpe']} | meta better {mp['pooled_meta_better']}")
+        for sym, ps in mp["per_symbol"].items():
+            print(f"  {sym.split('/')[0]}: median {ps['primary_median_sharpe']} -> {ps['meta_median_sharpe']} | pos {ps['primary_positive_folds']} -> {ps['meta_positive_folds']} "
+                  f"| better {ps['meta_better_folds']}/{ps['n_folds']} | accepted {ps['accepted_share']}")
+            for f in ps["folds"]:
+                print(f"     fold {f['fold']} {f['test_start']}..{f['test_end']} ev {f['events']} acc {f['accepted']} p̄ {f['mean_p']} | "
+                      f"SR {f['primary_sharpe']} -> {f['meta_sharpe']} ret {f['primary_return']:+.3f} -> {f['meta_return']:+.3f} trades {f['primary_trades']} -> {f['meta_trades']}")
 
     # ---- dynamic allocation across long/short sleeves from trailing OOS quality (no look-ahead)
     if len(sleeves) >= 2:

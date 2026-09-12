@@ -30,13 +30,20 @@ def print_metrics(title: str, m: dict) -> None:
         print(f"  {k:<22} {v}")
 
 
-def wf_windows(cfg: Config, n: int) -> tuple[int, int]:
+def wf_windows(cfg: Config, n: int) -> tuple[int, int] | None:
     bpy = cfg.bars_per_year
     train_bars, test_bars = 2 * bpy, bpy // 2
     if n < train_bars + 2 * test_bars:
         test_bars = max(bpy // 4, 60)
         train_bars = max(bpy // 2, n - 3 * test_bars)
         print(f"!!! short history ({n / bpy:.1f} y): walk-forward train={train_bars} / test={test_bars} bars — low confidence")
+    if n < train_bars + test_bars:
+        test_bars = max(n // 5, 200)
+        train_bars = n - 2 * test_bars
+        print(f"!!! very short history: train={train_bars} / test={test_bars} bars (2 windows) — indicative only")
+    if train_bars < 2 * test_bars or n < train_bars + test_bars:
+        print("!!! not enough history for walk-forward — skipped")
+        return None
     return train_bars, test_bars
 
 

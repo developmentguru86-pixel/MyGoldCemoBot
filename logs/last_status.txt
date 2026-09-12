@@ -1,4 +1,4 @@
-⚠️ broker offline: JSONDecodeError: Expecting value: line 1 column 1 (char 0)
-   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ | File "/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/json/decoder.py", line 355, in raw_decode | raise JSONDecodeError("Expecting value", s, err.value) from None
+⚠️ broker offline: RuntimeError: kraken fetch_balance failed: krakenfutures fetchBalance has no account for flex
+   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ | File "/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/goldbot/broker/ccxt_broker.py", line 126, in _kraken_accounts_equity | raise RuntimeError(f"kraken fetch_balance failed: {str(last)[:120]}")
 Letzte Bar -
 Noch kein Journal – erste Entscheidung am nächsten H4-Bar-Schluss.

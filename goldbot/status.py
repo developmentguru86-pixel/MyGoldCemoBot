@@ -42,6 +42,9 @@ def status_text(cfg: Config, mode: str = "live", n: int = 5) -> str:
         if risk:
             dd = (acct.equity / risk["hwm"] - 1) * 100 if risk.get("hwm") else 0.0
             lines.append(f"DD vom Hoch {dd:+.2f}%  Tagesstart {risk.get('day_start_equity', 0):,.2f}")
+    dbg = getattr(br, "account_debug", "") or getattr(getattr(br, "data", None), "account_debug", "")
+    if dbg:
+        lines.append(dbg)
     if risk.get("halted"):
         lines.append(f"🛑 HALTED: {risk.get('halted_reason')}")
     lines.append(f"Letzte Bar {str(st.get('last_bar') or '-')[:16]}")

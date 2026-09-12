@@ -77,6 +77,7 @@ class CcxtBroker(Broker):
         self.pub = getattr(ccxt, ex_cfg.id)({"enableRateLimit": True, "options": {"defaultType": "swap"}})
         self._markets = None
         self._lev_set = False
+        self.account_debug = ""
 
     # ---- helpers
     def _m(self, symbol: str) -> dict:
@@ -112,23 +113,37 @@ class CcxtBroker(Broker):
                 "server_time": pd.Timestamp(t, unit="ms", tz="UTC").isoformat()}
 
     def _kraken_accounts_equity(self) -> tuple[float | None, str]:
-        """Kraken Futures: read /accounts directly; works for flex (multi-collateral) and single-collateral demo setups."""
-        raw = self.ex.privateGetAccounts()
-        if isinstance(raw, str):
-            import json
-            raw = json.loads(raw)
-        accts = raw.get("accounts") or {}
-        summary = {k: sorted(v.keys())[:8] for k, v in accts.items() if isinstance(v, dict)}
+        """Kraken Futures: fetch_balance(type=cash) returns the full /accounts payload in `info`;
+        scan every account for an equity-like field (multi-collateral 'flex' may be absent on demo)."""
+        bal = None
+        for t in ("cash", "flex"):
+            try:
+                bal = self.ex.fetch_balance({"type": t})
+                break
+            except Exception as e:  # noqa: BLE001
+                last = e
+        if bal is None:
+            raise RuntimeError(f"kraken fetch_balance failed: {str(last)[:120]}")
+        accts = (bal.get("info") or {}).get("accounts") or {}
+        summary = {k: (sorted(v.keys())[:10] if isinstance(v, dict) else type(v).__name__) for k, v in accts.items()}
+        self.account_debug = f"kraken accounts: {summary}"[:300]
+        best = None
         for name, a in accts.items():
             if not isinstance(a, dict):
                 continue
             for key in ("portfolioValue", "balanceValue", "marginEquity"):
-                if a.get(key) is not None:
-                    return float(a[key]), f"{name}.{key}"
+                v = a.get(key)
+                if v is not None:
+                    return float(v), f"{name}.{key}"
             aux = a.get("auxiliary") or {}
             for key in ("pv", "af", "usd"):
-                if aux.get(key) is not None:
+                if isinstance(aux, dict) and aux.get(key) is not None:
                     return float(aux[key]), f"{name}.auxiliary.{key}"
+            bals = a.get("balances") or {}
+            if isinstance(bals, dict) and bals.get("usd") is not None:
+                best = (float(bals["usd"]), f"{name}.balances.usd")
+        if best:
+            return best
         raise RuntimeError(f"no equity field in kraken accounts: {summary}")
 
     def get_account(self) -> Account:

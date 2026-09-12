@@ -21,6 +21,17 @@ def slug(symbol: str) -> str:
     return symbol.split("/")[0].lower()
 
 
+_EX: dict = {}
+
+
+def public_exchange(ex_id: str):
+    """One instance per venue so ccxt's rate limiter actually throttles across symbols."""
+    if ex_id not in _EX:
+        _EX[ex_id] = getattr(ccxt, ex_id)({"enableRateLimit": True, "timeout": 30000})
+        _EX[ex_id].load_markets()
+    return _EX[ex_id]
+
+
 def fetch_symbol(br: CcxtBroker, cfg: Config, sym: str, sources: list[str], years: float) -> tuple:
     now = int(time.time() * 1000)
     since = now - int(years * 365.25 * 86400 * 1000)
@@ -30,19 +41,28 @@ def fetch_symbol(br: CcxtBroker, cfg: Config, sym: str, sources: list[str], year
     print(f"{sym}: {len(df)} bars ({len(df) / cfg.bars_per_year:.2f} y) from {cfg.exchange.id}")
     best, best_name = df, sym
     tf = TF.get(cfg.timeframe.upper(), cfg.timeframe)
+    enough = 0.9 * years * cfg.bars_per_year
     for cand in sources:
+        if len(best) >= enough:
+            break  # already have (nearly) the requested depth
         ex_id, alt_sym = cand.split(":", 1)
-        try:
-            ex = getattr(ccxt, ex_id)({"enableRateLimit": True, "timeout": 30000})
-            ex.load_markets()
-            if alt_sym not in ex.markets:
-                print(f"  {cand}: not listed"); continue
-            alt = rows_to_df(fetch_ohlcv_range(ex, alt_sym, tf, since, now))
-            print(f"  {cand}: {len(alt)} bars ({len(alt) / cfg.bars_per_year:.2f} y)")
-            if len(alt) > len(best) * 1.2:
-                best, best_name = alt, cand
-        except Exception as e:  # noqa: BLE001
-            print(f"  {cand}: failed {type(e).__name__}: {str(e)[:90]}")
+        for attempt in (1, 2):
+            try:
+                ex = public_exchange(ex_id)
+                if alt_sym not in ex.markets:
+                    print(f"  {cand}: not listed"); break
+                alt = rows_to_df(fetch_ohlcv_range(ex, alt_sym, tf, since, now))
+                print(f"  {cand}: {len(alt)} bars ({len(alt) / cfg.bars_per_year:.2f} y)")
+                if len(alt) > len(best) * 1.2:
+                    best, best_name = alt, cand
+                break
+            except ccxt.RateLimitExceeded:
+                if attempt == 1:
+                    print(f"  {cand}: rate limited, waiting 70s"); time.sleep(70)
+                else:
+                    print(f"  {cand}: rate limited twice, skipped")
+            except Exception as e:  # noqa: BLE001
+                print(f"  {cand}: failed {type(e).__name__}: {str(e)[:90]}"); break
     if best_name != sym:
         print(f"  using {best_name} as price history ({len(best)} bars); costs modelled from {sym}")
         df = best

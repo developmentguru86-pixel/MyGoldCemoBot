@@ -137,7 +137,10 @@ if __name__ == "__main__":
     # ---- weighted portfolio: sum of sleeve equities on the common time axis (OOS if available)
     curves = wf_curves or is_curves
     if len(curves) > 1:
-        aligned = pd.concat(curves, axis=1).ffill().dropna()
+        # union time axis: a sleeve without data yet simply holds its starting cash (idle capital)
+        aligned = pd.concat(curves, axis=1).ffill()
+        for col in aligned.columns:
+            aligned[col] = aligned[col].fillna(curves[col].iloc[0])
         port = aligned.sum(axis=1)
         port.name = "portfolio"
         pm = summarize(port, cfg.bars_per_year, cfg.bars_per_day,

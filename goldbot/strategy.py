@@ -113,8 +113,8 @@ def compute_exposure(df: pd.DataFrame, cfg: Config) -> pd.DataFrame:
 def bars_needed(cfg: Config) -> int:
     """Warm-up length the live loop must fetch so the last exposure value is fully formed."""
     s = cfg.strategy
-    n = max(s.lookbacks) + 3 * s.vol_span + 20
-    if s.kelly.enabled:
-        n += s.kelly.window
-    n += max(s.regime.er_window, s.regime.vol_pct_window, s.min_hold_bars)
+    warm = 3 * s.vol_span + 20
+    n = max(s.lookbacks) + warm + (s.kelly.window if s.kelly.enabled else 0)
+    # regime windows overlap the same warm-up, they are not additive
+    n = max(n, warm + s.regime.vol_pct_window, s.regime.er_window + warm, s.min_hold_bars + warm)
     return n

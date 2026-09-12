@@ -131,6 +131,9 @@ class LiveTrader:
             if len(bars) < n:
                 raise RuntimeError(f"{sym}: broker returned {len(bars)} bars, need {n}")
             closed = bars.iloc[:-1]
+            age_h = (pd.Timestamp.now(tz="UTC") - closed.index[-1]).total_seconds() / 3600
+            if age_h > 60:  # market-closed weekends are ~52h; anything older means the feed is stale
+                raise RuntimeError(f"{sym}: last closed bar {closed.index[-1]} is {age_h:.0f}h old — stale data, not trading")
             bar_time = str(closed.index[-1])
             if bar_time == self.last_bar.get(sym):
                 continue

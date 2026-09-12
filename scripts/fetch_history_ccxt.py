@@ -73,9 +73,15 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="config.yaml")
     ap.add_argument("--years", type=float, default=6.0)
+    ap.add_argument("--timeframe", default=None, help="override config timeframe, e.g. M15 (files get a suffix)")
     ap.add_argument("--update-config", action="store_true", help="kept for compatibility; meta json is authoritative")
     a = ap.parse_args()
     cfg = Config.load(a.config)
+    BARS_PER_DAY = {"M1": 1440, "M5": 288, "M15": 96, "M30": 48, "H1": 24, "H4": 6, "D1": 1}
+    if a.timeframe:
+        cfg.timeframe = a.timeframe.upper()
+        cfg.bars_per_day = BARS_PER_DAY[cfg.timeframe]
+    tfx = cfg.timeframe.upper()
     br = CcxtBroker(cfg)
     Path("data").mkdir(exist_ok=True)
     for sym, sc in cfg.portfolio().items():
@@ -89,9 +95,9 @@ if __name__ == "__main__":
             "spread": round(q.spread, 6), "price": round(q.mid, 4),
             "fee_pct": br.taker_fee(sym), "funding_annual": br.funding_annual(sym),
         }
-        save_csv(df, f"data/{slug(sym)}_H4.csv")
-        Path(f"data/{slug(sym)}_meta.json").write_text(json.dumps(meta, indent=1))
-        print(f"  -> data/{slug(sym)}_H4.csv ({meta['years']} y), spread {meta['spread']} fee {meta['fee_pct']} "
+        save_csv(df, f"data/{slug(sym)}_{tfx}.csv")
+        Path(f"data/{slug(sym)}_{tfx}_meta.json").write_text(json.dumps(meta, indent=1))
+        print(f"  -> data/{slug(sym)}_{tfx}.csv ({meta['years']} y), spread {meta['spread']} fee {meta['fee_pct']} "
               f"funding {meta['funding_annual']} contract {info.contract_size}/{info.min_lot}/{info.lot_step}")
         if meta["years"] < 2.5:
             print(f"  !!! only {meta['years']} years for {sym} — low statistical confidence")

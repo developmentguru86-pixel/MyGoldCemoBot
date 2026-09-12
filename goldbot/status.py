@@ -8,6 +8,7 @@ import pandas as pd
 
 from .config import Config
 from .factory import make_broker, paths_for
+from .fx import fmt_money
 
 MODES = {0: "DEMO", 1: "CONTEST", 2: "REAL"}
 
@@ -34,15 +35,20 @@ def status_text(cfg: Config, mode: str = "live", n: int = 5) -> str:
         veq = base + pnl
         lines.append(f"[{mode.upper()} / {MODES.get(acct.trade_mode, acct.trade_mode)}] {cfg.exchange.id if cfg.venue == 'exchange' else 'MT5'}")
         lines.append(f"Konto {veq:,.2f} {acct.currency} (Start {base:,.0f}; Demo-Konto real {acct.equity:,.0f})")
-        lines.append(f"P&L seit Start {pnl:+,.2f} ({pnl / base * 100:+.2f}%)")
+        lines.append(f"P&L seit Start {fmt_money(pnl)} ({pnl / base * 100:+.2f}%)")
+        book = st.get("book") or {}
         for sym, sc in cfg.portfolio().items():
             try:
                 q = br.get_quote(sym)
                 pos = br.get_position(sym)
                 info = br.get_symbol_info(sym)
                 notional = pos * info.contract_size * q.mid
-                lines.append(f"{sym}: {q.mid:,.2f} (spread {q.spread:.2f})  Position {pos:+.4f} = {notional:+,.0f} "
-                             f"({notional / max(veq * sc.weight, 1):+.2f}x der {sc.weight:.0%}-Tranche)")
+                b = book.get(sym, {})
+                unreal = (pos * info.contract_size * (q.mid - b["avg"])) if pos and b.get("avg") else 0.0
+                lines.append(f"{sym.split('/')[0]}: {q.mid:,.2f} · Position {pos:+.4f} = {notional:+,.0f} "
+                             f"({notional / max(veq * sc.weight, 1):+.2f}x)"
+                             + (f" · offen {unreal:+,.2f}" if pos else "")
+                             + (f" · realisiert {float(b.get('realized', 0.0)) - float(b.get('fees', 0.0)):+,.2f}" if b else ""))
             except Exception as e:  # noqa: BLE001
                 lines.append(f"{sym}: ⚠️ {type(e).__name__}: {str(e)[:80]}")
         if risk:

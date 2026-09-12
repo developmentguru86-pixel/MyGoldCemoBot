@@ -4,6 +4,7 @@ from __future__ import annotations
 import os
 
 import logging
+import time
 
 import ccxt
 import pandas as pd
@@ -248,14 +249,35 @@ class CcxtBroker(Broker):
             if "TE_ERR_INCONSISTENT_POS_MODE" in msg or "20004" in msg:
                 log.warning("%s is in hedge mode; retrying order with hedged=True", symbol)
                 o = self.ex.create_order(symbol, "market", side, amt, params={**params, "hedged": True})
-                return {"id": o.get("id"), "side": side, "amount": amt, "reduce_only": reduce_only,
-                        "avg": o.get("average"), "status": o.get("status"), "hedged": True}
+                return {**self._fill_info(o, symbol, side, amt, reduce_only), "hedged": True}
             if any(k in msg for k in ("TE_SEQ_TURN_OFF", "20005", "market is closed", "Market closed", "trading is not open",
                                       "51000", "not in trading", "51009", "instrument is suspended", "TRADING_SUSPENDED")):
                 raise MarketClosed(msg[:160]) from e
             raise
-        return {"id": o.get("id"), "side": side, "amount": amt, "reduce_only": reduce_only,
-                "avg": o.get("average"), "status": o.get("status")}
+        return self._fill_info(o, symbol, side, amt, reduce_only)
+
+    def _fill_info(self, o: dict, symbol: str, side: str, amt: float, reduce_only: bool) -> dict:
+        avg, filled, status = o.get("average"), o.get("filled"), o.get("status")
+        for _ in range(4):
+            if avg and status in ("closed", "filled"):
+                break
+            time.sleep(0.7)
+            try:
+                o2 = self.ex.fetch_order(o.get("id"), symbol)
+                avg, filled, status = o2.get("average") or avg, o2.get("filled") or filled, o2.get("status") or status
+            except Exception as e:  # noqa: BLE001
+                log.warning("fetch_order failed: %s", str(e)[:80]); break
+        return {"id": o.get("id"), "side": side, "amount": amt, "filled": filled, "reduce_only": reduce_only,
+                "avg": avg, "status": status}
+
+    def get_entry_price(self, symbol: str) -> float | None:
+        try:
+            for p in self.ex.fetch_positions([symbol]):
+                if p.get("symbol") == symbol and float(p.get("contracts") or 0):
+                    return float(p.get("entryPrice") or 0) or None
+        except Exception as e:  # noqa: BLE001
+            log.warning("entry price unavailable: %s", str(e)[:80])
+        return None
 
     def set_target_position(self, symbol: str, lots: float, comment: str = "") -> dict:
         self._ensure_leverage(symbol)
@@ -273,7 +295,10 @@ class CcxtBroker(Broker):
             reduce = cur != 0.0 and abs(lots) < abs(cur)
             executed.append(self._order(symbol, "buy" if delta > 0 else "sell", abs(delta), reduce))
         net = self.get_position(symbol)
-        return {"ok": abs(net - lots) < step, "executed": executed, "net_lots": net}
+        legs = [e for e in executed if e.get("avg")]
+        fill_avg = (sum(float(e["avg"]) * float(e.get("filled") or e["amount"]) for e in legs)
+                    / sum(float(e.get("filled") or e["amount"]) for e in legs)) if legs else None
+        return {"ok": abs(net - lots) < step, "executed": executed, "net_lots": net, "fill_avg": fill_avg}
 
     def close_all(self, symbol: str) -> dict:
         return self.set_target_position(symbol, 0.0, "close_all")

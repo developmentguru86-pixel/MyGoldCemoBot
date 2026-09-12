@@ -73,3 +73,7 @@ class Broker(ABC):
 
     @abstractmethod
     def close_all(self, symbol: str) -> dict: ...
+
+    def get_entry_price(self, symbol: str) -> float | None:
+        """Average entry price of the open position, if the venue reports it."""
+        return None

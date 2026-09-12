@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from goldbot.backtest import grid_label, purged_cv, run_backtest, walk_forward  # noqa: E402
+from goldbot.backtest import default_grid, grid_label, purged_cv, run_backtest, walk_forward  # noqa: E402
 from goldbot.config import Config  # noqa: E402
 from goldbot.data import load_csv  # noqa: E402
 from goldbot.metrics import block_bootstrap, drawdown, summarize  # noqa: E402
@@ -82,12 +82,23 @@ if __name__ == "__main__":
     ap.add_argument("--purged-cv", action="store_true", help="purged K-fold CV with embargo (independent OOS segments)")
     ap.add_argument("--directions", action="store_true", help="walk-forward long-only and short-only diagnostics")
     ap.add_argument("--folds", type=int, default=6)
+    ap.add_argument("--timeframe", default=None, help="override config timeframe (data/<slug>_<TF>.csv)")
+    ap.add_argument("--grid", choices=["full", "small"], default="full")
     ap.add_argument("--out", default=None)
     ap.add_argument("--spread", type=float, default=None, help="override spread for ALL symbols (venue sensitivity)")
     ap.add_argument("--fee", type=float, default=None, help="override taker fee for ALL symbols")
     a = ap.parse_args()
 
     cfg = Config.load(a.config)
+    BARS_PER_DAY = {"M1": 1440, "M5": 288, "M15": 96, "M30": 48, "H1": 24, "H4": 6, "D1": 1}
+    if a.timeframe:
+        cfg.timeframe = a.timeframe.upper()
+        cfg.bars_per_day = BARS_PER_DAY[cfg.timeframe]
+    tfx = cfg.timeframe.upper()
+    grid = default_grid()
+    if a.grid == "small":
+        grid = [g for g in grid if g["target_vol"] == 0.12 and not g["regime"]["er_window"]]
+    print(f"timeframe {tfx}  bars/day {cfg.bars_per_day}  grid {len(grid)} combos")
     out = Path(a.out or cfg.paths.get("reports", "reports")); out.mkdir(parents=True, exist_ok=True)
     portfolio = cfg.portfolio()
     if a.data:
@@ -97,8 +108,8 @@ if __name__ == "__main__":
     wf_curves: dict[str, pd.Series] = {}
     is_curves: dict[str, pd.Series] = {}
     for sym, sc in portfolio.items():
-        path = a.data or f"data/{slug(sym)}_H4.csv"
-        meta_p = Path(f"data/{slug(sym)}_meta.json")
+        path = a.data or f"data/{slug(sym)}_{tfx}.csv"
+        meta_p = Path(f"data/{slug(sym)}_{tfx}_meta.json")
         meta = json.loads(meta_p.read_text()) if meta_p.exists() and not a.data else None
         df = load_csv(path)
         c = symbol_cfg(cfg, meta, df)
@@ -125,7 +136,7 @@ if __name__ == "__main__":
 
         if a.walk_forward:
             tr, te = wf_windows(c, len(df))
-            wf = walk_forward(df, c, train_bars=tr, test_bars=te)
+            wf = walk_forward(df, c, grid=grid, train_bars=tr, test_bars=te)
             print_metrics(f"{sym} walk-forward OUT-OF-SAMPLE", wf.metrics)
             print("  windows:")
             for w in wf.windows:
@@ -137,13 +148,13 @@ if __name__ == "__main__":
             if a.directions:
                 entry["directions"] = {}
                 for d in ("long", "short"):
-                    wfd = walk_forward(df, c.with_strategy(direction=d), train_bars=tr, test_bars=te)
+                    wfd = walk_forward(df, c.with_strategy(direction=d), grid=grid, train_bars=tr, test_bars=te)
                     md = wfd.metrics
                     entry["directions"][d] = md
                     print(f"  {sym} {d}-only walk-forward: CAGR {md['cagr']:+.1%} Sharpe {md['sharpe']} MaxDD {md['max_drawdown']:.1%} "
                           f"trades {md['trades']} cost {md['total_cost']}")
         if a.purged_cv:
-            cv = purged_cv(df, c, k=a.folds)
+            cv = purged_cv(df, c, grid=grid, k=a.folds)
             print_metrics(f"{sym} purged {a.folds}-fold CV (embargo {cv.summary['embargo_bars']} bars)", cv.summary)
             for f in cv.folds:
                 print(f"   fold {f['fold']} {f['test_start'][:10]}..{f['test_end'][:10]} {grid_label(f['params'])} | "

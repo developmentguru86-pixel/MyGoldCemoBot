@@ -11,6 +11,15 @@ on:
       fee:
         description: "override taker fee fraction, empty = from venue"
         default: ""
+      timeframe:
+        description: "H4 | H1 | M15 | D1"
+        default: "H4"
+      grid:
+        description: "full | small"
+        default: "full"
+      cv:
+        description: "purged CV + direction diagnostics (slow): yes | no"
+        default: "yes"
 permissions:
   contents: write
 jobs:
@@ -29,15 +38,16 @@ jobs:
         run: |
           mkdir -p reports
           set -o pipefail
-          python scripts/fetch_history_ccxt.py --years "${{ github.event.inputs.years || '6' }}" --update-config 2>&1 | tee reports/fetch.log
+          python scripts/fetch_history_ccxt.py --years "${{ github.event.inputs.years || '6' }}" --timeframe "${{ github.event.inputs.timeframe || 'H4' }}" 2>&1 | tee reports/fetch.log
       - name: backtest + walk-forward + bootstrap
         shell: bash
         run: |
           set -o pipefail
-          EXTRA=""
+          EXTRA="--timeframe ${{ github.event.inputs.timeframe || 'H4' }} --grid ${{ github.event.inputs.grid || 'full' }}"
+          [ "${{ github.event.inputs.cv || 'yes' }}" = "yes" ] && EXTRA="$EXTRA --purged-cv --directions"
           [ -n "${{ github.event.inputs.spread }}" ] && EXTRA="$EXTRA --spread ${{ github.event.inputs.spread }}"
           [ -n "${{ github.event.inputs.fee }}" ] && EXTRA="$EXTRA --fee ${{ github.event.inputs.fee }}"
-          python scripts/run_backtest.py --walk-forward --bootstrap --purged-cv --directions $EXTRA 2>&1 | tee reports/summary.txt
+          python scripts/run_backtest.py --walk-forward --bootstrap $EXTRA 2>&1 | tee reports/summary.txt
       - name: send to Telegram
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}

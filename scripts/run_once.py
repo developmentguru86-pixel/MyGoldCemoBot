@@ -18,6 +18,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from goldbot import notify  # noqa: E402
+from goldbot.fx import fmt_money  # noqa: E402
 from goldbot.config import Config  # noqa: E402
 from goldbot.factory import make_broker, paths_for  # noqa: E402
 from goldbot.live import LiveTrader  # noqa: E402
@@ -48,9 +49,22 @@ def action_trade(cfg: Config, mode: str, allow_real: bool) -> int:
         sym = str(r["symbol"]).split("/")[0]
         act = r.get("action")
         if act == "trade":
-            notify.send(cfg, f"📈 TRADE {sym} {str(r['bar_time'])[:16]}\nKurs {r['price']:,.2f}\n"
-                             f"{r['current_lots']:+.4f} → {r['target_lots']:+.4f} (Ziel {r['target_exposure']:+.2f}x)\n"
-                             f"Konto {r['equity']:,.2f}  Grund: {r['reason'] if r.get('reason') else 'signal'}")
+            l0, l1 = float(r["current_lots"]), float(r["target_lots"])
+            kind = "CLOSE" if l1 == 0.0 else ("FLIP" if l0 and (l0 > 0) != (l1 > 0) else ("REDUCE" if l0 and abs(l1) < abs(l0) else ("ADD" if l0 else "OPEN")))
+            side = "Long" if l1 > 0 else ("Short" if l1 < 0 else "flat")
+            msg = (f"📈 {kind} {sym} → {side} {abs(l1):.4f}\n{str(r['bar_time'])[:16]} · Fill {float(r['fill_price'] or r['price']):,.2f}"
+                   f" · Ziel {r['target_exposure']:+.2f}x")
+            rp = r.get("realized_pnl")
+            if rp not in ("", None) and kind in ("CLOSE", "FLIP", "REDUCE"):
+                net = float(rp) - float(r.get("fees") or 0.0)
+                msg += f"\n💰 Realisiert: {fmt_money(float(rp))}\n   nach Gebühren ≈ {fmt_money(net)}"
+            elif r.get("fees") not in ("", None):
+                msg += f"\nGebühren ≈ {float(r['fees']):.2f} USDT"
+            b = (trader.book or {}).get(r["symbol"], {})
+            if b:
+                msg += f"\n{sym} gesamt realisiert: {fmt_money(float(b.get('realized', 0.0)) - float(b.get('fees', 0.0)))}"
+            msg += f"\nKonto {r['equity']:,.2f} USDT"
+            notify.send(cfg, msg)
         elif act == "skip" and r.get("reason") != "market_closed":
             notify.send(cfg, f"⏸ {sym} übersprungen {str(r['bar_time'])[:16]}: {r.get('reason')}")
         elif act == "skip":

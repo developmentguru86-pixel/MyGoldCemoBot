@@ -86,7 +86,10 @@ class PaperBroker(Broker):
         self.st["fills"].append({"time": q.time, "delta": delta, "price": px, "lots_after": lots, "comment": comment})
         self.st["fills"] = self.st["fills"][-500:]
         self._save()
-        return {"ok": True, "fill_price": px, "net_lots": lots}
+        return {"ok": True, "fill_price": px, "fill_avg": px, "net_lots": lots}
 
     def close_all(self, symbol: str) -> dict:
         return self.set_target_position(symbol, 0.0, "close_all")
+
+    def get_entry_price(self, symbol: str) -> float | None:
+        return self.st["avg_price"] or None

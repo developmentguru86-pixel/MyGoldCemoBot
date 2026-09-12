@@ -25,7 +25,8 @@ from .strategy import bars_needed, compute_exposure
 log = logging.getLogger("goldbot")
 
 JOURNAL_COLS = ["time", "symbol", "bar_time", "price", "spread", "equity", "signal", "vol_ann", "kelly_mult",
-                "target_exposure", "current_lots", "target_lots", "action", "reason", "result"]
+                "target_exposure", "current_lots", "target_lots", "action", "reason", "fill_price", "realized_pnl",
+                "fees", "result"]
 
 
 def _slug(symbol: str) -> str:
@@ -58,6 +59,7 @@ class LiveTrader:
         self.last_actual_equity: float | None = None
         self.info: dict[str, SymbolInfo] = {}
         self.last_rows: list[dict] = []
+        self.book: dict[str, dict] = {}     # symbol -> {"lots", "avg", "realized", "fees"}
         self._load_state()
 
     # ---- persistence
@@ -71,6 +73,7 @@ class LiveTrader:
         self.last_actual_equity = d.get("last_actual_equity")
         if d.get("risk"):
             self.rm = RiskManager.from_dict(self.cfg.risk, d["risk"])
+        self.book = d.get("book") or {}
 
     def _save_state(self) -> None:
         self.state_path.parent.mkdir(parents=True, exist_ok=True)
@@ -81,7 +84,41 @@ class LiveTrader:
             "risk": self.rm.to_dict() if self.rm else None,
             "mode": self.mode,
             "symbols": list(self.symbols),
+            "book": self.book,
         }, indent=1))
+
+    # ---- position book (average price) and realised P&L
+    def _book_entry(self, sym: str, lots: float) -> dict:
+        b = self.book.get(sym)
+        if b is None or abs(b.get("lots", 0.0) - lots) > 1e-9:
+            # unknown or out of sync (manual trade, demo reset): adopt the venue's view
+            avg = self.broker.get_entry_price(sym) if lots else 0.0
+            b = {"lots": lots, "avg": float(avg or 0.0), "realized": (b or {}).get("realized", 0.0),
+                 "fees": (b or {}).get("fees", 0.0)}
+            self.book[sym] = b
+        return b
+
+    def _book_trade(self, sym: str, l0: float, l1: float, fill: float, contract_size: float) -> tuple[float, float]:
+        """Update the book after moving from l0 to l1 lots at `fill`. Returns (realised P&L, fees)."""
+        b = self.book.setdefault(sym, {"lots": l0, "avg": fill, "realized": 0.0, "fees": 0.0})
+        a0 = b.get("avg") or fill
+        realized = 0.0
+        if l0 != 0.0 and (l1 == 0.0 or (l1 > 0) != (l0 > 0)):          # close or flip: whole old position realised
+            realized += l0 * contract_size * (fill - a0)
+            l0_after, a_after = 0.0, fill
+        elif l0 != 0.0 and abs(l1) < abs(l0):                            # partial reduction
+            closed = l0 - l1
+            realized += closed * contract_size * (fill - a0)
+            l0_after, a_after = l1, a0
+        else:                                                            # open or add
+            l0_after, a_after = l0, a0
+        if abs(l1) > abs(l0_after) + 1e-12:                              # remainder opened at fill
+            added = abs(l1) - abs(l0_after)
+            a_after = (abs(l0_after) * a_after + added * fill) / abs(l1)
+        fees = abs(l1 - l0) * contract_size * fill * self.cfg.costs.fee_pct
+        b.update(lots=l1, avg=a_after if l1 != 0.0 else 0.0, realized=b.get("realized", 0.0) + realized,
+                 fees=b.get("fees", 0.0) + fees)
+        return realized, fees
 
     def _journal(self, row: dict) -> None:
         self.journal_path.parent.mkdir(parents=True, exist_ok=True)
@@ -185,11 +222,13 @@ class LiveTrader:
         tgt_lots = exposure_to_lots(tgt_exp, sleeve, q.mid, ct, s.max_leverage)
         cur_exp = lots_to_exposure(cur_lots, sleeve, q.mid, ct)
 
+        self._book_entry(sym, cur_lots)
         row = {"time": pd.Timestamp.now(tz="UTC").isoformat(timespec="seconds"), "symbol": sym, "bar_time": bar_time,
                "price": round(q.mid, 2), "spread": round(q.spread, 4), "equity": round(equity, 2),
                "signal": round(float(feats["signal"]), 3), "vol_ann": round(float(feats["vol_ann"]), 4),
                "kelly_mult": round(float(feats["kelly_mult"]), 3), "target_exposure": round(tgt_exp, 3),
-               "current_lots": cur_lots, "target_lots": tgt_lots, "action": "hold", "reason": reason, "result": ""}
+               "current_lots": cur_lots, "target_lots": tgt_lots, "action": "hold", "reason": reason,
+               "fill_price": "", "realized_pnl": "", "fees": "", "result": ""}
 
         if should_trade(tgt_lots, cur_lots, tgt_exp, cur_exp, s.rebalance_threshold):
             flatten = tgt_lots == 0.0 or not may_hold
@@ -200,7 +239,11 @@ class LiveTrader:
             else:
                 try:
                     res = self.broker.set_target_position(sym, tgt_lots, comment=f"goldbot {bar_time[:16]}")
-                    row.update(action="trade", result=json.dumps(res)[:200])
+                    new_lots = float(res.get("net_lots", tgt_lots))
+                    fill = float(res.get("fill_avg") or q.mid)
+                    realized, fees = self._book_trade(sym, cur_lots, new_lots, fill, ct.size)
+                    row.update(action="trade", result=json.dumps(res)[:200], fill_price=round(fill, 4),
+                               realized_pnl=round(realized, 4), fees=round(fees, 4), target_lots=new_lots)
                 except MarketClosed as e:
                     row.update(action="skip", reason="market_closed", result=str(e)[:120])
                 except Exception as e:  # noqa: BLE001

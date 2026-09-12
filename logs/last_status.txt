@@ -1,5 +1,5 @@
-[LIVE / DEMO] XAU/USDT:USDT 4359.45/4360.62 spread 1.17
-Konto 5,000.00 USDT (Start 5,000; Demo-Konto real 0)
+[LIVE / DEMO] XAU/USDT:USDT 4357.87/4358.35 spread 0.48
+Konto 5,000.00 USDT (Start 5,000; Demo-Konto real 10,000)
 P&L seit Start +0.00 (+0.00%)
 Position +0.0000 = +0.00x
 Letzte Bar -

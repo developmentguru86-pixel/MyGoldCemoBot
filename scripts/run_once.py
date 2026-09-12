@@ -139,7 +139,10 @@ if __name__ == "__main__":
         if a.action == "trade":
             rc = action_trade(cfg, mode, a.allow_real_account)
         elif a.action == "status":
-            notify.send(cfg, status_text(cfg, mode)); rc = 0
+            txt = status_text(cfg, mode)
+            Path("logs/last_status.txt").write_text(txt + "\n")
+            print(txt)
+            notify.send(cfg, txt); rc = 0
         elif a.action == "flatten":
             rc = action_flatten(cfg, mode)
         elif a.action == "chat_id":

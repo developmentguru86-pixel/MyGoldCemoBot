@@ -1,0 +1,11 @@
+2026-09-12T22:21:19.854071+00:00
+Traceback (most recent call last):
+  File "/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/scripts/run_once.py", line 158, in <module>
+    rc = action_trade(cfg, mode, a.allow_real_account)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/scripts/run_once.py", line 44, in action_trade
+    processed = trader.poll()
+                ^^^^^^^^^^^^^
+  File "/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/goldbot/live.py", line 183, in poll
+    raise RuntimeError(f"{sym}: broker returned {len(bars)} bars, need {n}")
+RuntimeError: XAU/USDT:USDT: broker returned 225 bars, need 320

@@ -1,5 +1,6 @@
-⚠️ broker offline: RuntimeError: kraken fetch_balance failed: krakenfutures fetchBalance has no account for flex | raw: <!DOCTYPE html>
-<html lang="en" d
-   <meta key="char-set" charset="utf-8" /> | <meta key="viewport" name="viewport" content="width=device-width, initial-scale=1" /> | 
+[LIVE / DEMO] XAU/USDT:USDT 4359.45/4360.62 spread 1.17
+Konto 5,000.00 USDT (Start 5,000; Demo-Konto real 0)
+P&L seit Start +0.00 (+0.00%)
+Position +0.0000 = +0.00x
 Letzte Bar -
 Noch kein Journal – erste Entscheidung am nächsten H4-Bar-Schluss.

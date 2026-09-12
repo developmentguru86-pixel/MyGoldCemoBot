@@ -70,7 +70,8 @@ class ExchangeCfg:
     api_key: str = ""          # or env EXCHANGE_API_KEY
     api_secret: str = ""       # or env EXCHANGE_API_SECRET
     api_passphrase: str = ""   # OKX/KuCoin/Bitget need one; env EXCHANGE_API_PASSPHRASE
-    history_symbol: str = ""   # optional longer-lived proxy for backtest history (e.g. PAXG/USDT spot)
+    history_symbol: str = ""   # optional longer-lived proxy on the same exchange (e.g. PAXG/USDT spot)
+    history_sources: list[str] = field(default_factory=list)  # "exchange:SYMBOL" public proxies; longest history wins
 
 
 @dataclass

@@ -17,6 +17,45 @@ from .base import Account, Broker, Quote, SymbolInfo
 TF = {"M1": "1m", "M5": "5m", "M15": "15m", "M30": "30m", "H1": "1h", "H4": "4h", "D1": "1d"}
 
 
+def fetch_ohlcv_range(ex, symbol: str, tf: str, since_ms: int, until_ms: int, limit: int = 1000) -> list:
+    """Forward pagination from since_ms; if the venue returns nothing (listing after since_ms),
+    page backwards from until_ms. Returns deduplicated, sorted raw OHLCV rows."""
+    out, cursor = [], since_ms
+    for _ in range(400):
+        if cursor >= until_ms:
+            break
+        rows = ex.fetch_ohlcv(symbol, tf, since=cursor, limit=limit)
+        if not rows:
+            break
+        out += rows
+        nxt = rows[-1][0] + 1
+        if nxt <= cursor:
+            break
+        cursor = nxt
+    if not out:
+        end = until_ms
+        for _ in range(200):
+            rows = ex.fetch_ohlcv(symbol, tf, limit=limit, params={"until": end})
+            if not rows:
+                break
+            out = rows + out
+            first = rows[0][0]
+            if first <= since_ms or len(rows) < 2:
+                break
+            end = first - 1
+    seen, dedup = set(), []
+    for r in out:
+        if r[0] not in seen and r[0] <= until_ms:
+            seen.add(r[0]); dedup.append(r)
+    return sorted(dedup)
+
+
+def rows_to_df(rows: list) -> pd.DataFrame:
+    recs = [{"time": pd.Timestamp(r[0], unit="ms", tz="UTC").isoformat(), "open": r[1], "high": r[2],
+             "low": r[3], "close": r[4], "tick_volume": r[5]} for r in rows]
+    return from_records(recs) if recs else pd.DataFrame()
+
+
 class CcxtBroker(Broker):
     def __init__(self, cfg: Config):
         self.cfg = cfg
@@ -114,35 +153,7 @@ class CcxtBroker(Broker):
 
     def get_bars_range(self, symbol: str, timeframe: str, since_ms: int, until_ms: int) -> pd.DataFrame:
         tf = TF.get(timeframe.upper(), timeframe)
-        out, cursor = [], since_ms
-        while cursor < until_ms:
-            rows = self.pub.fetch_ohlcv(symbol, tf, since=cursor, limit=1000)
-            if not rows:
-                break
-            out += rows
-            nxt = rows[-1][0] + 1
-            if nxt <= cursor:
-                break
-            cursor = nxt
-        if not out:  # `since` predates the listing on some venues -> page backwards from now
-            end = until_ms
-            for _ in range(60):
-                rows = self.pub.fetch_ohlcv(symbol, tf, limit=1000, params={"until": end})
-                if not rows:
-                    break
-                out = rows + out
-                first = rows[0][0]
-                if first <= since_ms or len(rows) < 2:
-                    break
-                end = first - 1
-            seen, dedup = set(), []
-            for r in out:
-                if r[0] not in seen:
-                    seen.add(r[0]); dedup.append(r)
-            out = sorted(dedup)
-        recs = [{"time": pd.Timestamp(r[0], unit="ms", tz="UTC").isoformat(), "open": r[1], "high": r[2],
-                 "low": r[3], "close": r[4], "tick_volume": r[5]} for r in out if r[0] <= until_ms]
-        return from_records(recs) if recs else pd.DataFrame()
+        return rows_to_df(fetch_ohlcv_range(self.pub, symbol, tf, since_ms, until_ms))
 
     def get_position(self, symbol: str) -> float:
         net = 0.0

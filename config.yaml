@@ -49,6 +49,12 @@ exchange:
   api_secret: ""             # EXCHANGE_API_SECRET
   api_passphrase: ""         # EXCHANGE_API_PASSPHRASE (OKX verlangt eine)
   history_symbol: PAXG/USDT  # längere Historie für den Backtest (gleicher Basiswert, Spot)
+  history_sources:           # weitere öffentliche Quellen, die längste Historie gewinnt
+    - "bitfinex:XAUT/USDT"
+    - "bitfinex:XAUT/USD"
+    - "coinbase:PAXG/USD"
+    - "mexc:PAXG/USDT"
+    - "kucoin:PAXG/USDT"
 
 telegram:
   token: ""                  # GitHub Secret TELEGRAM_TOKEN

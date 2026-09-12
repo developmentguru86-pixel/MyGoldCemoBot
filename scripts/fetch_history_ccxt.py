@@ -9,7 +9,9 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from goldbot.broker.ccxt_broker import CcxtBroker  # noqa: E402
+import ccxt  # noqa: E402
+
+from goldbot.broker.ccxt_broker import TF, CcxtBroker, fetch_ohlcv_range, rows_to_df  # noqa: E402
 from goldbot.config import Config  # noqa: E402
 from goldbot.data import save_csv  # noqa: E402
 
@@ -34,13 +36,28 @@ if __name__ == "__main__":
     df = br.get_bars_range(cfg.symbol, cfg.timeframe, since, now)
     if df.empty:
         raise SystemExit("no OHLCV returned — check symbol (ccxt unified, e.g. XAU/USDT:USDT)")
-    hs = cfg.exchange.history_symbol
-    if hs:
-        alt = br.get_bars_range(hs, cfg.timeframe, since, now)
-        if len(alt) > len(df) * 1.2:
-            print(f"using {hs} as history proxy: {len(alt)} bars vs {len(df)} for {cfg.symbol} "
-                  f"(same underlying, costs still modelled from {cfg.symbol})")
-            df = alt
+    print(f"{cfg.symbol}: {len(df)} bars ({len(df) / cfg.bars_per_year:.2f} y)")
+    # longer price history of the same underlying from any reachable public venue
+    candidates = ([f"{cfg.exchange.id}:{cfg.exchange.history_symbol}"] if cfg.exchange.history_symbol else []) \
+        + list(cfg.exchange.history_sources)
+    best, best_name = df, cfg.symbol
+    tf = TF.get(cfg.timeframe.upper(), cfg.timeframe)
+    for cand in candidates:
+        ex_id, sym = cand.split(":", 1)
+        try:
+            ex = getattr(ccxt, ex_id)({"enableRateLimit": True, "timeout": 30000})
+            ex.load_markets()
+            if sym not in ex.markets:
+                print(f"  {cand}: not listed"); continue
+            alt = rows_to_df(fetch_ohlcv_range(ex, sym, tf, since, now))
+            print(f"  {cand}: {len(alt)} bars ({len(alt) / cfg.bars_per_year:.2f} y)")
+            if len(alt) > len(best) * 1.2:
+                best, best_name = alt, cand
+        except Exception as e:  # noqa: BLE001
+            print(f"  {cand}: failed {type(e).__name__}: {str(e)[:90]}")
+    if best_name != cfg.symbol:
+        print(f"using {best_name} as price history ({len(best)} bars); costs still modelled from {cfg.symbol}")
+        df = best.iloc[:-1] if len(best) and best.index[-1] > df.index[-1] else best
     df = df.iloc[:-1]  # drop forming bar
     out = a.out or cfg.paths.get("data", "data/history.csv")
     Path(out).parent.mkdir(parents=True, exist_ok=True)

@@ -153,6 +153,8 @@ if __name__ == "__main__":
             rc = action_reset(cfg, mode)
     except Exception as e:  # noqa: BLE001
         logging.exception("run failed")
+        import traceback
+        Path("logs/last_error.txt").write_text(f"{pd.Timestamp.now(tz='UTC').isoformat()}\n{traceback.format_exc()[-3000:]}")
         if "unfunded" in str(e):
             notify.send(cfg, "⏳ Konto hat 0 Guthaben – Bot wartet. Auf testnet.phemex.com unter Assets Test-USDT anfordern.")
             rc = 0

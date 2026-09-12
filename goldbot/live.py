@@ -32,6 +32,20 @@ def _slug(symbol: str) -> str:
     return symbol.split("/")[0].lower()
 
 
+TF_SECONDS = {"M1": 60, "M5": 300, "M15": 900, "M30": 1800, "H1": 3600, "H4": 14400, "D1": 86400, "W1": 604800}
+
+
+def closed_bars(bars: pd.DataFrame, timeframe: str, now: pd.Timestamp | None = None) -> pd.DataFrame:
+    """Drop the last row only if it is still forming. Venues differ: some return the live candle
+    as the last row (MT5, OKX, Bybit), some return closed candles only (Phemex kline/last)."""
+    now = now or pd.Timestamp.now(tz="UTC")
+    secs = TF_SECONDS.get(timeframe.upper(), 14400)
+    last_open = bars.index[-1]
+    if now >= last_open + pd.Timedelta(seconds=secs):
+        return bars              # last row already closed
+    return bars.iloc[:-1]
+
+
 class LiveTrader:
     def __init__(self, cfg: Config, broker: Broker, state_path: str, journal_path: str,
                  dry_run: bool = False, mode: str = "live", allow_real: bool = False):
@@ -130,7 +144,7 @@ class LiveTrader:
             bars = self.broker.get_bars(sym, self.cfg.timeframe, n + 1)
             if len(bars) < n:
                 raise RuntimeError(f"{sym}: broker returned {len(bars)} bars, need {n}")
-            closed = bars.iloc[:-1]
+            closed = closed_bars(bars, self.cfg.timeframe)
             age_h = (pd.Timestamp.now(tz="UTC") - closed.index[-1]).total_seconds() / 3600
             if age_h > 60:  # market-closed weekends are ~52h; anything older means the feed is stale
                 raise RuntimeError(f"{sym}: last closed bar {closed.index[-1]} is {age_h:.0f}h old — stale data, not trading")

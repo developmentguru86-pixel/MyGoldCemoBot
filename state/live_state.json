@@ -1,0 +1,21 @@
+{
+ "last_bar": {
+  "XAU/USDT:USDT": "2026-09-12 12:00:00+00:00"
+ },
+ "start_equity": 10000.0,
+ "last_actual_equity": 10000.0,
+ "risk": {
+  "hwm": 5000,
+  "day": "2026-09-12",
+  "day_start_equity": 5000,
+  "halted": false,
+  "halted_reason": "",
+  "day_halted": false,
+  "bridge_failures": 0
+ },
+ "mode": "live",
+ "symbols": [
+  "XAU/USDT:USDT",
+  "BTC/USDT:USDT"
+ ]
+}

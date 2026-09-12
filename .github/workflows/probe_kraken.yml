@@ -13,17 +13,18 @@ jobs:
         run: |
           mkdir -p reports
           {
-          for u in "https://demo-futures.kraken.com/derivatives/api/v3/instruments" \
-                   "https://demo-futures.kraken.com/derivatives/api/v3/accounts" \
-                   "https://demo-futures.kraken.com/api/v3/instruments" \
-                   "https://futures.kraken.com/derivatives/api/v3/instruments" \
-                   "https://demo-futures.kraken.com/derivatives/api/v3/tickers"; do
+          for u in "https://www.okx.com/api/v5/account/balance" \
+                   "https://www.okx.com/api/v5/public/instruments?instType=SWAP&instId=XAU-USDT-SWAP" \
+                   "https://testnet-api.phemex.com/accounts/accountPositions?currency=USDT" \
+                   "https://testnet-api.phemex.com/public/products" \
+                   "https://api.bitget.com/api/v2/mix/account/accounts?productType=SUSDT-FUTURES" \
+                   "https://open-api.bingx.com/openApi/swap/v2/user/balance" \
+                   "https://open-api-vst.bingx.com/openApi/swap/v2/user/balance" \
+                   "https://futures.kraken.com/derivatives/api/v3/accounts" \
+                   "https://api.hyperliquid-testnet.xyz/info"; do
             echo "== $u"
-            curl -s -o /tmp/body -w "http %{http_code} type %{content_type} redirect->%{redirect_url}\n" -A "Mozilla/5.0" "$u"
-            head -c 300 /tmp/body | tr '\n' ' '; echo
-            echo "-- with Accept: application/json"
-            curl -s -o /tmp/body -w "http %{http_code} type %{content_type}\n" -H "Accept: application/json" "$u"
-            head -c 200 /tmp/body | tr '\n' ' '; echo
+            curl -s -o /tmp/body -w "http %{http_code} type %{content_type} redirect->%{redirect_url}\n" -H "x-simulated-trading: 1" -H "Accept: application/json" "$u"
+            head -c 220 /tmp/body | tr '\n' ' '; echo
           done
           } 2>&1 | tee reports/probe_kraken.log
       - if: always()

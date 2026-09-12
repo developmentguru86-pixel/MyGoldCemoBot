@@ -108,7 +108,10 @@ class CcxtBroker(Broker):
 
     # ---- Broker interface
     def health(self) -> dict:
-        t = self.ex.fetch_time()
+        try:
+            t = self.pub.fetch_time()
+        except Exception:  # noqa: BLE001 — not every venue has a time endpoint; a ticker proves reachability
+            t = self.pub.fetch_ticker(self.cfg.symbol).get("timestamp") or self.pub.milliseconds()
         return {"ok": True, "exchange": self.ex.id, "demo": self.cfg.exchange.demo,
                 "server_time": pd.Timestamp(t, unit="ms", tz="UTC").isoformat()}
 

@@ -6,7 +6,7 @@ auf H4-Bars. Gleicher Code für Sizing, Kosten, Rebalance-Regel und Kill-Switche
 **Kein Renditeversprechen.** Das System optimiert Sharpe nach Kosten, nicht €/Tag. Ob es einen Edge hat,
 zeigt der Walk-Forward-Report auf echten Daten – nicht dieser Text.
 
-## Weg B: ohne eigenen Rechner (GitHub Actions + OKX Demo-Trading) — alles vom Handy
+## Weg B: ohne eigenen Rechner (GitHub Actions + Phemex Testnet) — alles vom Handy
 
 Der Bot läuft alle 4 Stunden als Cron-Job in GitHub Actions, handelt Gold als XAU/USDT-Perpetual im
 OKX-Demo-Trading und meldet jeden Trade per Telegram. Kein Server, kein PC, kostenlos.
@@ -14,9 +14,9 @@ OKX-Demo-Trading und meldet jeden Trade per Telegram. Kein Server, kein PC, kost
 
 **Einmalig einrichten (≈ 15 Minuten, alles im Handy-Browser):**
 
-1. **OKX** (okx.com, App oder Browser): Konto anlegen → im Trade-Menü „Demo-Trading" wählen →
-   dort Profil → „Demo-Trading-API" → Key erstellen, Berechtigung *Trade* (kein Withdraw),
-   Passphrase selbst setzen → Key, Secret und Passphrase kopieren.
+1. **Phemex Testnet** (testnet.phemex.com, Browser): registrieren mit E-Mail – kein KYC, getrenntes
+   Testsystem → Account → *API Management* → Key erstellen, Berechtigung *Trade* → API Key ID und
+   API Secret kopieren (Secret wird nur einmal gezeigt).
 2. **Telegram**: @BotFather → `/newbot` → Token kopieren. Dann @userinfobot anschreiben → deine
    Chat-ID kopieren. Deinen neuen Bot einmal anschreiben (sonst darf er dir nicht schreiben).
 3. **GitHub** (github.com): neues **privates** Repo `goldbot` → *Add file → Upload files* → alle
@@ -25,8 +25,8 @@ OKX-Demo-Trading und meldet jeden Trade per Telegram. Kein Server, kein PC, kost
    den Ordnerinhalt hochladen).
    Alternative: Fine-grained Token (nur dieses Repo, „Contents: write", 1 Tag gültig) an Claude
    geben, Claude pusht das Repo von dort aus.
-4. Repo → *Settings → Secrets and variables → Actions → New repository secret*, fünf Stück:
-   `EXCHANGE_API_KEY`, `EXCHANGE_API_SECRET`, `EXCHANGE_API_PASSPHRASE`, `TELEGRAM_TOKEN`, `TELEGRAM_CHAT_ID`.
+4. Repo → *Settings → Secrets and variables → Actions → New repository secret*, vier Stück:
+   `EXCHANGE_API_KEY`, `EXCHANGE_API_SECRET`, `TELEGRAM_TOKEN`, `TELEGRAM_CHAT_ID` (`EXCHANGE_API_PASSPHRASE` nur für OKX).
 5. Repo → *Actions* → ggf. „Enable workflows" → Workflow **backtest** → *Run workflow*.
    Nach 2–5 Minuten kommt der Report mit Chart auf Telegram, und `config.yaml` ist auf die
    echten Exchange-Werte (Lot-Step, Gebühr, Spread, Funding) synchronisiert.

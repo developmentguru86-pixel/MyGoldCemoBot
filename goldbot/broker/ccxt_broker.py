@@ -152,6 +152,16 @@ class CcxtBroker(Broker):
             eq, src = self._kraken_accounts_equity()
             log.info("kraken equity from %s", src)
             return Account(eq, eq, "USD", eq, 0 if self.cfg.exchange.demo else 2)
+        if self.ex.id == "phemex":
+            bal = self.ex.fetch_balance({"type": "swap", "code": "USDT"})
+            usdt = bal.get("USDT", {}) or {}
+            wallet = float(usdt.get("total") or 0.0)
+            unreal = 0.0
+            try:
+                unreal = sum(float(p.get("unrealizedPnl") or 0.0) for p in self.ex.fetch_positions([self.cfg.symbol]))
+            except Exception as e:  # noqa: BLE001
+                log.warning("phemex fetch_positions for unrealised P&L failed: %s", str(e)[:100])
+            return Account(wallet + unreal, wallet, "USDT", float(usdt.get("free") or 0.0), 0 if self.cfg.exchange.demo else 2)
         bal = self.ex.fetch_balance()
         equity = None
         for getter in (lambda b: b["info"]["data"][0]["totalEq"],                 # okx unified

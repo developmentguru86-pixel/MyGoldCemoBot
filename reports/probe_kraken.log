@@ -1,0 +1,30 @@
+== https://demo-futures.kraken.com/derivatives/api/v3/instruments
+http 301 type text/html; charset=UTF-8 redirect->https://www.kraken.com/gb/features/futures
+<html> <head><title>301 Moved Permanently</title></head> <body> <center><h1>301 Moved Permanently</h1></center> <hr><center>cloudflare</center> </body> </html> 
+-- with Accept: application/json
+http 301 type text/html; charset=UTF-8
+<html> <head><title>301 Moved Permanently</title></head> <body> <center><h1>301 Moved Permanently</h1></center> <hr><center>cloudflare</center> </body> </html> 
+== https://demo-futures.kraken.com/derivatives/api/v3/accounts
+http 301 type text/html; charset=UTF-8 redirect->https://www.kraken.com/gb/features/futures
+<html> <head><title>301 Moved Permanently</title></head> <body> <center><h1>301 Moved Permanently</h1></center> <hr><center>cloudflare</center> </body> </html> 
+-- with Accept: application/json
+http 301 type text/html; charset=UTF-8
+<html> <head><title>301 Moved Permanently</title></head> <body> <center><h1>301 Moved Permanently</h1></center> <hr><center>cloudflare</center> </body> </html> 
+== https://demo-futures.kraken.com/api/v3/instruments
+http 301 type text/html; charset=UTF-8 redirect->https://www.kraken.com/gb/features/futures
+<html> <head><title>301 Moved Permanently</title></head> <body> <center><h1>301 Moved Permanently</h1></center> <hr><center>cloudflare</center> </body> </html> 
+-- with Accept: application/json
+http 301 type text/html; charset=UTF-8
+<html> <head><title>301 Moved Permanently</title></head> <body> <center><h1>301 Moved Permanently</h1></center> <hr><center>cloudflare</center> </body> </html> 
+== https://futures.kraken.com/derivatives/api/v3/instruments
+http 200 type application/json redirect->
+{"result":"success","instruments":[{"symbol":"PI_XBTUSD","type":"futures_inverse","underlying":"rr_xbtusd","tickSize":0.5,"contractSize":1,"tradeable":true,"impactMidSize":1000.00,"maxPositionSize":75000000.00000000000,"openingDate":"2018-08-31T00:00:00Z","marginLevels":[{"contracts":0,"initialMargi
+-- with Accept: application/json
+http 200 type application/json
+{"result":"success","instruments":[{"symbol":"PI_XBTUSD","type":"futures_inverse","underlying":"rr_xbtusd","tickSize":0.5,"contractSize":1,"tradeable":true,"impactMidSize":1000.00,"maxPositionSize":75
+== https://demo-futures.kraken.com/derivatives/api/v3/tickers
+http 301 type text/html; charset=UTF-8 redirect->https://www.kraken.com/gb/features/futures
+<html> <head><title>301 Moved Permanently</title></head> <body> <center><h1>301 Moved Permanently</h1></center> <hr><center>cloudflare</center> </body> </html> 
+-- with Accept: application/json
+http 301 type text/html; charset=UTF-8
+<html> <head><title>301 Moved Permanently</title></head> <body> <center><h1>301 Moved Permanently</h1></center> <hr><center>cloudflare</center> </body> </html> 

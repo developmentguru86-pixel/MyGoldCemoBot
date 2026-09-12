@@ -1,0 +1,14 @@
+BLOCKED bybit          RateLimitExceeded: bybit GET https://api.bybit.com/v5/market/instruments-info?category=spot 403 Forbidden {     error:The Amazon CloudFront distribution is con
+OK      okx            markets= 4732 demo     gold_swap=['XAU/USDT:USDT'] gold_spot=['PAXG/TRY', 'XAUT/TRY', 'PAXG/USD', 'PAXG/USDT']
+OK      bitget         markets= 2617 demo     gold_swap=['PAXG/USDT:USDT', 'XAUT/USDT:USDT', 'XAU/USDT:USDT'] gold_spot=['PAXG/USDT', 'XAUT/USDT']
+BLOCKED gateio         AttributeError: module 'ccxt' has no attribute 'gateio'
+OK      kucoinfutures  markets=  687 demo     gold_swap=['PAXG/USDT:USDT', 'XAUT/USDT:USDT'] gold_spot=[]
+OK      krakenfutures  markets=  295 demo     gold_swap=['PAXG/USD:USD', 'XAUT/USD:USD', 'XAU/USD:USD'] gold_spot=[]
+OK      bingx          markets= 3503 demo     gold_swap=['PAXG/USDT:USDT', 'XAUT/USDT:USDT', 'NCFXAUD2USD/USDT:USDT', 'NCCOGOLD2USD/USDT:USDT', 'NCFXAUD2JPY/USDT:USDT', 'NCCOXAUAUD2USD/USDT:USDT'] gold_spot=['XAUT/USDT', 'PAXG/USDT', 'CATGOLD/USDT']
+OK      mexc           markets= 3199 demo     gold_swap=['XAU/USDT:USDT', 'XAUT/USDT:USDT', 'PAXG/USDT:USDT', 'XAU/USDC:USDC', 'PAXG/USDC:USDC', 'XAUT/USDC:USDC'] gold_spot=['GOLD(XAUT)/USDC', 'GOLD(XAUT)/EUR', 'GOLD(XAUT)/USD1', 'GOLD(PAXG)/USDC']
+OK      phemex         markets= 2062 demo     gold_swap=['GOLD/USD:USD', 'PAXG/USD:USD', 'PAXG/USDT:USDT', 'GOLD/USDT:USDT', 'XAU/USDT:USDT'] gold_spot=['PAXG/USDT', 'XAUT/USDT']
+OK      hyperliquid    markets=  812 demo     gold_swap=['PAXG/USDC:USDC', 'XYZ-GOLD/USDC:USDC', 'FLX-GOLD/USDH:USDH', 'VNTL-GOLDJM/USDH:USDH', 'HYNA-GOLD/USDE:USDE', 'KM-GOLD/USDH:USDH'] gold_spot=['XAUT/USDC', 'XAUT/USDT', 'XAUM/USDC']
+OK      coinbase       markets= 1162 demo     gold_swap=['GOLD/USDC:USDC', 'PAXG/USDC:USDC'] gold_spot=['PAXG/USDC', 'PAXG/USD']
+OK      kraken         markets= 1449 demo     gold_swap=[] gold_spot=['PAXG/ETH', 'PAXG/EUR', 'PAXG/USD', 'PAXG/BTC']
+BLOCKED binanceusdm    ExchangeNotAvailable: binanceusdm GET https://fapi.binance.com/fapi/v1/exchangeInfo 451  {   "code": 0,   "msg": "Service unavailable from a restricted location a
+BLOCKED alpaca         AuthenticationError: alpaca requires "apiKey" credential

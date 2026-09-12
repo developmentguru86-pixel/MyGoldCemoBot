@@ -39,4 +39,4 @@ jobs:
           git config user.name goldbot
           git config user.email goldbot@users.noreply.github.com
           git add state logs
-          git diff --cached --quiet || (git commit -m "state $(date -u +%FT%TZ)" && git push)
+          git diff --cached --quiet || (git commit -m "state $(date -u +%FT%TZ)" && (git pull --rebase -X theirs origin main || true) && git push)

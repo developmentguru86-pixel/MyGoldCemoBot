@@ -98,4 +98,4 @@ jobs:
           git config user.email goldbot@users.noreply.github.com
           git add config.yaml
           for f in reports/report.json reports/summary.txt reports/backtest.png reports/fetch.log data/*_meta.json; do [ -f "$f" ] && git add -f "$f"; done; true
-          git diff --cached --quiet || (git commit -m "backtest report + config synced from exchange" && git push)
+          git diff --cached --quiet || (git commit -m "backtest report + config synced from exchange" && (git pull --rebase -X theirs origin main || true) && git push)

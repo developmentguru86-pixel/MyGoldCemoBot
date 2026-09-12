@@ -67,8 +67,10 @@ class ExchangeCfg:
     id: str = "bybit"          # ccxt exchange id
     demo: bool = True          # Bybit demo trading (api-demo.bybit.com); False = real money
     leverage: int = 3
-    api_key: str = ""          # or env BYBIT_API_KEY / EXCHANGE_API_KEY
-    api_secret: str = ""       # or env BYBIT_API_SECRET / EXCHANGE_API_SECRET
+    api_key: str = ""          # or env EXCHANGE_API_KEY
+    api_secret: str = ""       # or env EXCHANGE_API_SECRET
+    api_passphrase: str = ""   # OKX/KuCoin/Bitget need one; env EXCHANGE_API_PASSPHRASE
+    history_symbol: str = ""   # optional longer-lived proxy for backtest history (e.g. PAXG/USDT spot)
 
 
 @dataclass

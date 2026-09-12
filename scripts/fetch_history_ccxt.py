@@ -33,7 +33,14 @@ if __name__ == "__main__":
     since = now - int(a.years * 365.25 * 86400 * 1000)
     df = br.get_bars_range(cfg.symbol, cfg.timeframe, since, now)
     if df.empty:
-        raise SystemExit("no OHLCV returned — check symbol (ccxt unified, e.g. PAXG/USDT:USDT)")
+        raise SystemExit("no OHLCV returned — check symbol (ccxt unified, e.g. XAU/USDT:USDT)")
+    hs = cfg.exchange.history_symbol
+    if hs:
+        alt = br.get_bars_range(hs, cfg.timeframe, since, now)
+        if len(alt) > len(df) * 1.2:
+            print(f"using {hs} as history proxy: {len(alt)} bars vs {len(df)} for {cfg.symbol} "
+                  f"(same underlying, costs still modelled from {cfg.symbol})")
+            df = alt
     df = df.iloc[:-1]  # drop forming bar
     out = a.out or cfg.paths.get("data", "data/history.csv")
     Path(out).parent.mkdir(parents=True, exist_ok=True)

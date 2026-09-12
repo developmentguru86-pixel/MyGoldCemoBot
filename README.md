@@ -6,16 +6,17 @@ auf H4-Bars. Gleicher Code für Sizing, Kosten, Rebalance-Regel und Kill-Switche
 **Kein Renditeversprechen.** Das System optimiert Sharpe nach Kosten, nicht €/Tag. Ob es einen Edge hat,
 zeigt der Walk-Forward-Report auf echten Daten – nicht dieser Text.
 
-## Weg B: ohne eigenen Rechner (GitHub Actions + Bybit Demo) — alles vom Handy
+## Weg B: ohne eigenen Rechner (GitHub Actions + OKX Demo-Trading) — alles vom Handy
 
-Der Bot läuft alle 4 Stunden als Cron-Job in GitHub Actions, handelt Gold als PAXG-Perpetual auf
-einem Bybit-Demo-Konto und meldet jeden Trade per Telegram. Kein Server, kein PC, kostenlos.
+Der Bot läuft alle 4 Stunden als Cron-Job in GitHub Actions, handelt Gold als XAU/USDT-Perpetual im
+OKX-Demo-Trading und meldet jeden Trade per Telegram. Kein Server, kein PC, kostenlos.
+(Bybit und Binance blocken GitHub-Runner per Geo-Sperre – gemessen, siehe `reports/probe.log`.)
 
 **Einmalig einrichten (≈ 15 Minuten, alles im Handy-Browser):**
 
-1. **Bybit** (bybit.com, App oder Browser): Konto anlegen → oben „Demo Trading" wählen →
-   API-Verwaltung → neuen Key erstellen, Rechte *Contracts: Orders + Positions* (kein Withdraw) →
-   Key und Secret kopieren.
+1. **OKX** (okx.com, App oder Browser): Konto anlegen → im Trade-Menü „Demo-Trading" wählen →
+   dort Profil → „Demo-Trading-API" → Key erstellen, Berechtigung *Trade* (kein Withdraw),
+   Passphrase selbst setzen → Key, Secret und Passphrase kopieren.
 2. **Telegram**: @BotFather → `/newbot` → Token kopieren. Dann @userinfobot anschreiben → deine
    Chat-ID kopieren. Deinen neuen Bot einmal anschreiben (sonst darf er dir nicht schreiben).
 3. **GitHub** (github.com): neues **privates** Repo `goldbot` → *Add file → Upload files* → alle
@@ -24,8 +25,8 @@ einem Bybit-Demo-Konto und meldet jeden Trade per Telegram. Kein Server, kein PC
    den Ordnerinhalt hochladen).
    Alternative: Fine-grained Token (nur dieses Repo, „Contents: write", 1 Tag gültig) an Claude
    geben, Claude pusht das Repo von dort aus.
-4. Repo → *Settings → Secrets and variables → Actions → New repository secret*, vier Stück:
-   `BYBIT_API_KEY`, `BYBIT_API_SECRET`, `TELEGRAM_TOKEN`, `TELEGRAM_CHAT_ID`.
+4. Repo → *Settings → Secrets and variables → Actions → New repository secret*, fünf Stück:
+   `EXCHANGE_API_KEY`, `EXCHANGE_API_SECRET`, `EXCHANGE_API_PASSPHRASE`, `TELEGRAM_TOKEN`, `TELEGRAM_CHAT_ID`.
 5. Repo → *Actions* → ggf. „Enable workflows" → Workflow **backtest** → *Run workflow*.
    Nach 2–5 Minuten kommt der Report mit Chart auf Telegram, und `config.yaml` ist auf die
    echten Exchange-Werte (Lot-Step, Gebühr, Spread, Funding) synchronisiert.
@@ -46,10 +47,10 @@ System tut, Plus wie Minus.
 Flag. GitHub deaktiviert Cron-Workflows nach 60 Tagen ohne Repo-Aktivität; da der Bot seinen State
 committet, bleibt das Repo aktiv. Wenn zwei Läufe kollidieren würden, wartet der zweite.
 
-**Grenzen dieses Wegs:** GitHub-Cron kann um Minuten verzögern (bei H4 irrelevant). PAXG-Perp-Historie
-auf Bybit ist kurz (Walk-Forward mit kürzeren Fenstern, geringere Aussagekraft – der Backtest sagt es
-dir). PAXG-Perps sind weniger liquide als XAUUSD bei Swissquote; deshalb der Spread-Guard. Die
-Bybit-Verbindung wurde nicht von Claude aus getestet (keine Netzverbindung) – der erste Lauf zeigt es.
+**Grenzen dieses Wegs:** GitHub-Cron kann um Minuten verzögern (bei H4 irrelevant). Das XAU-Perp ist
+jung; der Backtest nutzt PAXG/USDT-Spot als längere Preis-Historie desselben Basiswerts (Kosten
+weiterhin vom Perp modelliert). Ob OKX private Demo-Endpunkte von US-Runnern annimmt, zeigt der erste
+`status`-Lauf; Ausweichbörsen mit Gold-Perps und Demo laut Probe: Kraken Futures, MEXC, BingX, Phemex.
 
 ---
 

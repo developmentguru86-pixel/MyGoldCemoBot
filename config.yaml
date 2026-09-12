@@ -1,7 +1,7 @@
-# goldbot — serverlos: GitHub Actions (Cron alle 4h) + Bybit Demo. Gold als PAXG-Perpetual.
+# goldbot — serverlos: GitHub Actions (Cron alle 4h) + OKX Demo-Trading. Gold als XAU/USDT-Perpetual.
 # Werte unter contract/costs werden vom Backtest-Workflow automatisch vom Exchange gesetzt.
 venue: exchange
-symbol: PAXG/USDT:USDT       # ccxt-Notation; Alternative: XAUT/USDT:USDT oder BTC/USDT:USDT
+symbol: XAU/USDT:USDT        # OKX Gold-Index-Perp (ccxt-Notation)
 timeframe: H4
 bars_per_day: 6
 trading_days_per_year: 365   # Krypto handelt 24/7
@@ -32,7 +32,7 @@ costs:
   swap_long_annual: -0.05    # Funding annualisiert, wird vom Exchange gesetzt (long zahlt bei positivem Funding)
   swap_short_annual: 0.05
   commission_per_lot: 0.0
-  fee_pct: 0.00055           # Bybit Taker 0.055 %, wird vom Exchange gesetzt
+  fee_pct: 0.0005            # OKX Taker 0.05 %, wird vom Exchange gesetzt
 
 risk:
   daily_loss_limit: 0.03
@@ -42,11 +42,13 @@ risk:
   poll_seconds: 30
 
 exchange:
-  id: bybit
-  demo: true                 # false = Echtgeld; dann braucht run_once --allow-real-account
+  id: okx
+  demo: true                 # OKX Demo-Trading (x-simulated-trading); false = Echtgeld, braucht --allow-real-account
   leverage: 3
-  api_key: ""                # leer lassen, kommt aus GitHub Secrets (BYBIT_API_KEY)
-  api_secret: ""             # BYBIT_API_SECRET
+  api_key: ""                # leer lassen – GitHub Secret EXCHANGE_API_KEY
+  api_secret: ""             # EXCHANGE_API_SECRET
+  api_passphrase: ""         # EXCHANGE_API_PASSPHRASE (OKX verlangt eine)
+  history_symbol: PAXG/USDT  # längere Historie für den Backtest (gleicher Basiswert, Spot)
 
 telegram:
   token: ""                  # GitHub Secret TELEGRAM_TOKEN
@@ -62,7 +64,7 @@ bridge:                      # nur für venue: mt5
   magic: 20260912
 
 paths:
-  data: data/PAXG_H4.csv
+  data: data/XAU_H4.csv
   reports: reports
   state_live: state/live_state.json
   state_paper: state/paper_state.json

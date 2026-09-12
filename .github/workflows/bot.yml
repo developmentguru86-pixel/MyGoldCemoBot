@@ -27,8 +27,9 @@ jobs:
       - run: pip install -r requirements.txt
       - name: run
         env:
-          BYBIT_API_KEY: ${{ secrets.BYBIT_API_KEY }}
-          BYBIT_API_SECRET: ${{ secrets.BYBIT_API_SECRET }}
+          EXCHANGE_API_KEY: ${{ secrets.EXCHANGE_API_KEY }}
+          EXCHANGE_API_SECRET: ${{ secrets.EXCHANGE_API_SECRET }}
+          EXCHANGE_API_PASSPHRASE: ${{ secrets.EXCHANGE_API_PASSPHRASE }}
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python scripts/run_once.py --action "${{ github.event.inputs.action || 'trade' }}"

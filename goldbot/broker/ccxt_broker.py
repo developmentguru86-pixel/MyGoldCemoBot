@@ -3,8 +3,12 @@ from __future__ import annotations
 
 import os
 
+import logging
+
 import ccxt
 import pandas as pd
+
+log = logging.getLogger("ccxt_broker")
 
 from ..config import Config
 from ..data import from_records
@@ -17,17 +21,19 @@ class CcxtBroker(Broker):
     def __init__(self, cfg: Config):
         self.cfg = cfg
         ex_cfg = cfg.exchange
-        key = ex_cfg.api_key or os.environ.get("BYBIT_API_KEY") or os.environ.get("EXCHANGE_API_KEY", "")
-        secret = ex_cfg.api_secret or os.environ.get("BYBIT_API_SECRET") or os.environ.get("EXCHANGE_API_SECRET", "")
+        key = ex_cfg.api_key or os.environ.get("EXCHANGE_API_KEY") or os.environ.get("BYBIT_API_KEY", "")
+        secret = ex_cfg.api_secret or os.environ.get("EXCHANGE_API_SECRET") or os.environ.get("BYBIT_API_SECRET", "")
+        pw = ex_cfg.api_passphrase or os.environ.get("EXCHANGE_API_PASSPHRASE", "")
         self.ex = getattr(ccxt, ex_cfg.id)({
-            "apiKey": key, "secret": secret, "enableRateLimit": True,
+            "apiKey": key, "secret": secret, "password": pw, "enableRateLimit": True,
             "options": {"defaultType": "swap", "adjustForTimeDifference": True},
         })
         if ex_cfg.demo:
-            if hasattr(self.ex, "enable_demo_trading"):
-                self.ex.enable_demo_trading(True)
+            if ex_cfg.id == "bybit":
+                self.ex.enable_demo_trading(True)       # api-demo.bybit.com
             else:
-                self.ex.set_sandbox_mode(True)
+                self.ex.set_sandbox_mode(True)          # okx: x-simulated-trading header; others: testnet urls
+        self.is_okx = ex_cfg.id == "okx"
         # market data always from the public production endpoints (same prices, no auth needed)
         self.pub = getattr(ccxt, ex_cfg.id)({"enableRateLimit": True, "options": {"defaultType": "swap"}})
         self._markets = None
@@ -46,8 +52,15 @@ class CcxtBroker(Broker):
     def _ensure_leverage(self, symbol: str) -> None:
         if self._lev_set or not self.cfg.exchange.leverage:
             return
+        if self.is_okx:
+            try:
+                self.ex.set_position_mode(False, symbol)  # net (one-way) mode
+            except Exception as e:  # noqa: BLE001 — fails harmlessly if already net mode or positions open
+                if "59000" not in str(e) and "already" not in str(e).lower():
+                    log.warning("set_position_mode: %s", str(e)[:120])
         try:
-            self.ex.set_leverage(self.cfg.exchange.leverage, symbol)
+            params = {"marginMode": "cross"} if self.is_okx else {}
+            self.ex.set_leverage(self.cfg.exchange.leverage, symbol, params=params)
         except Exception as e:  # noqa: BLE001 — "leverage not modified" is normal
             if "not modified" not in str(e).lower() and "110043" not in str(e):
                 raise
@@ -62,10 +75,13 @@ class CcxtBroker(Broker):
     def get_account(self) -> Account:
         bal = self.ex.fetch_balance()
         equity = None
-        try:  # Bybit unified account exposes total equity incl. unrealised P&L
-            equity = float(bal["info"]["result"]["list"][0]["totalEquity"])
-        except Exception:  # noqa: BLE001
-            pass
+        for getter in (lambda b: b["info"]["data"][0]["totalEq"],                 # okx unified
+                       lambda b: b["info"]["result"]["list"][0]["totalEquity"]):  # bybit unified
+            try:
+                equity = float(getter(bal))
+                break
+            except Exception:  # noqa: BLE001
+                continue
         usdt = bal.get("USDT", {}) or {}
         wallet = float(usdt.get("total") or 0.0)
         if equity is None:
@@ -143,6 +159,8 @@ class CcxtBroker(Broker):
         if amt <= 0:
             return {"skipped": "amount rounds to 0"}
         params = {"reduceOnly": True} if reduce_only else {}
+        if self.is_okx:
+            params["tdMode"] = "cross"
         o = self.ex.create_order(symbol, "market", side, amt, params=params)
         return {"id": o.get("id"), "side": side, "amount": amt, "reduce_only": reduce_only,
                 "avg": o.get("average"), "status": o.get("status")}

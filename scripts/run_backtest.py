@@ -243,17 +243,33 @@ if __name__ == "__main__":
         for h in whist[-4:]:
             print("  ", h)
         report["portfolio_dynamic"] = {"metrics": dm, "final_weights": wfinal, "weight_history": whist,
-                                       "sleeves": {k: v.metrics for k, v in sleeves.items()}}
+                                       "sleeves": {k: v.metrics for k, v in sleeves.items()},
+                                       "bootstrap_1y": block_bootstrap(deq.pct_change().dropna().to_numpy(), horizon=cfg.bars_per_year)}
         report["portfolio_static"] = report["portfolio"]
-        report["portfolio"] = {"metrics": dm, "kind": "walk_forward_dynamic"}
         deq.to_csv(out / "equity_portfolio_dynamic.csv")
-        curves["portfolio"] = deq
-        boot_src = deq
+        curves["portfolio_dynamic"] = deq
+        # reference stays the static, config-weighted portfolio: trailing-OOS allocation is a diagnostic,
+        # not a proven improvement (it is measured against the static one below)
+        print(f"  static (config weights) Sharpe {report['portfolio']['metrics']['sharpe']} vs dynamic {dm['sharpe']}")
 
     if a.bootstrap:
         bs = block_bootstrap(boot_src.pct_change().dropna().to_numpy(), horizon=cfg.bars_per_year)
-        print_metrics("Block bootstrap, 1-year horizon (portfolio bar returns)", bs)
+        print_metrics("Block bootstrap, 1-year horizon (static portfolio bar returns)", bs)
         report["bootstrap_1y"] = bs
+        # projection: same returns scaled to a portfolio vol target (Sharpe and P(loss) are scale-invariant)
+        pm0 = report["portfolio"]["metrics"]
+        if pm0.get("ann_vol"):
+            for tv in (0.10, 0.15, 0.20):
+                k = tv / pm0["ann_vol"]
+                rs = boot_src.pct_change().dropna() * k
+                eq = cfg.starting_equity * (1 + rs).cumprod()
+                m = summarize(eq, cfg.bars_per_year, cfg.bars_per_day)
+                b = block_bootstrap(rs.to_numpy(), horizon=cfg.bars_per_year, sims=1000)
+                report.setdefault("vol_target_projection", {})[str(tv)] = {"scale": round(k, 2), "cagr": m["cagr"], "max_drawdown": m["max_drawdown"],
+                                                                          "maxdd_p05_1y": b.get("maxdd_p05"), "prob_loss": b.get("prob_loss"),
+                                                                          "eur_per_day_on_5k": round(m["cagr"] * cfg.starting_equity / 365, 2)}
+                print(f"  vol target {tv:.0%} (scale {k:.2f}x): CAGR {m['cagr']:+.1%}  MaxDD {m['max_drawdown']:.1%}  "
+                      f"1y-DD p05 {b.get('maxdd_p05')}  P(loss) {b.get('prob_loss')}  ≈ {m['cagr'] * cfg.starting_equity / 365:.2f}/Tag auf {cfg.starting_equity:.0f}")
 
     gates = evaluate_gates(report)
     if gates:

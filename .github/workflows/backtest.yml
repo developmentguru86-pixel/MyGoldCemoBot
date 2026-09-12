@@ -76,9 +76,12 @@ jobs:
           mp = r.get("meta_pooled")
           if mp:
               txt += f"Gepooltes Meta-Modell: median CV-Sharpe {mp['pooled_primary_median_sharpe']} -> {mp['pooled_meta_median_sharpe']} (besser in {mp['pooled_meta_better']} Folds)\n"
-          fw = (r.get("portfolio_dynamic") or {}).get("final_weights")
-          if fw:
-              txt += "Allokation: " + ", ".join(f"{k} {v:.0%}" for k, v in fw.items()) + "\n"
+          pdn = (r.get("portfolio_dynamic") or {}).get("metrics")
+          if pdn:
+              txt += f"(dynamische Allokation zum Vergleich: Sharpe {pdn['sharpe']})\n"
+          vp = r.get("vol_target_projection") or {}
+          for tv, v in vp.items():
+              txt += f"Vol-Ziel {float(tv):.0%}: CAGR {v['cagr']:+.1%}, MaxDD {v['max_drawdown']:.1%}, P(Verlust) {v['prob_loss']:.0%}, ≈ {v['eur_per_day_on_5k']} USDT/Tag auf 5k\n"
           for sym, e in r["symbols"].items():
               m = (e.get("walk_forward") or {}).get("metrics") or e["in_sample"]
               txt += (f"{sym.split('/')[0]} ({r['weights'][sym]:.0%}): CAGR {m['cagr']:+.1%} Sharpe {m['sharpe']} MaxDD {m['max_drawdown']:.1%} "

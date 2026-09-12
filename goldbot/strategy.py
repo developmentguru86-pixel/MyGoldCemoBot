@@ -80,7 +80,17 @@ def compute_exposure(df: pd.DataFrame, cfg: Config) -> pd.DataFrame:
         pct = vol_ann.rolling(r.vol_pct_window, min_periods=r.vol_pct_window // 2).rank(pct=True)
         regime_scale = regime_scale.where(~(pct > r.vol_pct_max), regime_scale * r.high_vol_scale)
 
-    exposure_raw = (base * regime_scale * s.target_vol / vol_ann).clip(-s.max_leverage, s.max_leverage)
+    # --- confidence tiers: size by the strength of the vol-normalised momentum, not just its sign
+    conf_scale = pd.Series(1.0, index=df.index)
+    if s.confidence and s.confidence_tiers:
+        tiers = sorted(s.confidence_tiers)
+        mult = np.zeros(len(df))
+        zs_np = z_strength.to_numpy(dtype=float)
+        for thr, m in tiers:
+            mult = np.where(zs_np >= thr, m, mult)
+        conf_scale = pd.Series(mult, index=df.index)
+
+    exposure_raw = (base * regime_scale * conf_scale * s.target_vol / vol_ann).clip(-s.max_leverage, s.max_leverage)
     if s.direction == "long":
         exposure_raw = exposure_raw.clip(lower=0.0)
     elif s.direction == "short":

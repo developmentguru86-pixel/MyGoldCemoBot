@@ -134,8 +134,9 @@ def daily_grid() -> list[dict]:
         for thr in (0.15, 0.35):
             for entry in (0.0, 1.0):
                 for regime in ({"er_window": 0, "er_min": 0.0}, {"er_window": 20, "er_min": 0.25}):
-                    grid.append({"lookbacks": lb, "target_vol": 0.10, "rebalance_threshold": thr,
-                                 "entry_min_signal": entry, "regime": regime})
+                    for conf in (False, True):
+                        grid.append({"lookbacks": lb, "target_vol": 0.10, "rebalance_threshold": thr,
+                                     "entry_min_signal": entry, "regime": regime, "confidence": conf})
     return grid
 
 
@@ -146,7 +147,7 @@ DAILY_OVERRIDES = {"vol_span": 20, "min_hold_bars": 3, "kelly": {"window": 120},
 def grid_label(p: dict) -> str:
     r = p.get("regime") or {}
     return (f"lb={p['lookbacks']} tv={p['target_vol']} thr={p.get('rebalance_threshold')} "
-            f"entry={p.get('entry_min_signal', 0)} er={'on' if r.get('er_window') else 'off'}")
+            f"entry={p.get('entry_min_signal', 0)} er={'on' if r.get('er_window') else 'off'} conf={'on' if p.get('confidence') else 'off'}")
 
 
 ROBUST_W = {"worst": 0.5, "stab": 0.3, "mdd": 2.0, "turnover": 0.1}

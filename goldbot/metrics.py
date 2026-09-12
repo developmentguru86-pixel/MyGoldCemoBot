@@ -74,6 +74,8 @@ def summarize(equity: pd.Series, bars_per_year: int, bars_per_day: int,
     n = len(r)
     years = n / bars_per_year if bars_per_year else float("nan")
     e0, e1 = float(equity.iloc[0]), float(equity.iloc[-1])
+    if e0 <= 0:
+        raise ValueError("summarize: starting equity must be > 0")
     total_ret = e1 / e0 - 1.0
     cagr = (e1 / e0) ** (1.0 / years) - 1.0 if years > 0 and e1 > 0 else -1.0
     std = r.std()

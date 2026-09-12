@@ -77,7 +77,27 @@ def build_features(df: pd.DataFrame, feats: pd.DataFrame, cfg: Config) -> pd.Dat
     out["range_pos"] = ((close - rng_lo) / (rng_hi - rng_lo).replace(0, np.nan)).fillna(0.5)
     out["kelly"] = feats["kelly_mult"]
     out["vol_chg"] = (vol_bar / vol_bar.shift(20) - 1.0).clip(-2, 2)
+    out["hurst"] = rolling_hurst(np.log(close.to_numpy(dtype=float)), window=100)
     return out.replace([np.inf, -np.inf], np.nan)
+
+
+def rolling_hurst(logp: np.ndarray, window: int = 100) -> np.ndarray:
+    """Rolling variance-ratio Hurst estimate: H ~ 0.5 random walk, > 0.5 trending, < 0.5 mean-reverting.
+    Uses lags 1, 2, 4, 8, 16 of the log-price increments."""
+    n = len(logp)
+    out = np.full(n, np.nan)
+    lags = np.array([1, 2, 4, 8, 16])
+    for t in range(window, n):
+        seg = logp[t - window:t + 1]
+        taus = []
+        for lag in lags:
+            d = seg[lag:] - seg[:-lag]
+            taus.append(np.std(d) if len(d) > 2 else np.nan)
+        taus = np.array(taus)
+        if np.all(np.isfinite(taus)) and np.all(taus > 0):
+            slope = np.polyfit(np.log(lags), np.log(taus), 1)[0]
+            out[t] = min(max(slope, 0.0), 1.0)
+    return out
 
 
 # ---------------------------------------------------------------- model

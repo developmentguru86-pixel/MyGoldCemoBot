@@ -114,10 +114,13 @@ def run_backtest(df: pd.DataFrame, cfg: Config) -> BacktestResult:
 
 
 def default_grid() -> list[dict]:
+    """Walk-forward selects among these in-sample; slower lookbacks and a wider rebalance band
+    exist to cut turnover — on thin venues costs are the dominant term."""
     grid = []
-    for lb in ([15, 45, 90], [30, 90, 180], [60, 180, 360]):
-        for tv in (0.08, 0.12, 0.16):
-            grid.append({"lookbacks": lb, "target_vol": tv})
+    for lb in ([30, 90, 180], [60, 180, 360], [90, 270, 540]):
+        for tv in (0.08, 0.12):
+            for thr in (0.15, 0.35):
+                grid.append({"lookbacks": lb, "target_vol": tv, "rebalance_threshold": thr})
     return grid
 
 

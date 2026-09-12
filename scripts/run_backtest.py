@@ -76,7 +76,7 @@ if __name__ == "__main__":
         print_metrics("Walk-forward OUT-OF-SAMPLE (stitched)", wf.metrics)
         print("\n  windows:")
         for w in wf.windows:
-            print(f"   {w['test_start'][:10]}..{w['test_end'][:10]} lb={w['params']['lookbacks']} tv={w['params']['target_vol']}"
+            print(f"   {w['test_start'][:10]}..{w['test_end'][:10]} lb={w['params']['lookbacks']} tv={w['params']['target_vol']} thr={w['params'].get('rebalance_threshold')}"
                   f" | train SR {w['train_sharpe']} -> test SR {w['test_sharpe']} ret {w['test_return']:+.3f} "
                   f"mdd {w['test_maxdd']:.3f} trades {w['test_trades']}")
         report["walk_forward"] = {"metrics": wf.metrics, "windows": wf.windows}

@@ -1,0 +1,2 @@
+time,bar_time,price,spread,equity,signal,vol_ann,kelly_mult,target_exposure,current_lots,target_lots,action,reason,result
+2026-09-12T20:24:23+00:00,2026-09-12 12:00:00+00:00,4358.11,0.48,5000.0,-1.0,0.2001,1.0,-0.6,0.0,-0.688,skip,market_closed,"phemex {""code"":20005,""msg"":""TE_SEQ_TURN_OFF"",""data"":null}"

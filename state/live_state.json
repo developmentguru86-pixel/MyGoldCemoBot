@@ -1,7 +1,7 @@
 {
- "last_bar": null,
+ "last_bar": "2026-09-12 12:00:00+00:00",
  "start_equity": 10000.0,
- "last_actual_equity": null,
+ "last_actual_equity": 10000.0,
  "risk": {
   "hwm": 5000,
   "day": "2026-09-12",

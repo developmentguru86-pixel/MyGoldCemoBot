@@ -4,67 +4,67 @@
    "data": "data/xau_D1.csv",
    "history_source": "bitfinex:XAUT/USDT",
    "costs": {
-    "spread": 0.35,
-    "slippage": 0.19824,
-    "swap_long_annual": -0.041051550000000006,
-    "swap_short_annual": 0.041051550000000006,
+    "spread": 0.55,
+    "slippage": 0.19808,
+    "swap_long_annual": -0.022535100000000002,
+    "swap_short_annual": 0.022535100000000002,
     "commission_per_lot": 0.0,
     "fee_pct": 0.001,
     "slippage_pct": 0.0001
    },
    "params": {
     "lookbacks": [
+     20,
      60,
-     180,
-     360
+     120
     ],
     "target_vol": 0.1,
     "vol_span": 20
    },
    "in_sample": {
-    "bars": 12917,
-    "years": 5.9,
-    "start_equity": 1700.0,
-    "end_equity": 1659.78,
-    "total_return": -0.0237,
-    "cagr": -0.0041,
-    "ann_vol": 0.0298,
-    "sharpe": -0.121,
-    "sortino": -0.064,
-    "max_drawdown": -0.0785,
-    "calmar": -0.052,
-    "psr_gt_0": 0.384,
-    "trades": 570,
-    "total_cost": 289.95,
-    "total_swap": 10.98,
-    "pnl_per_trading_day": -0.02,
-    "worst_bar": -0.014,
-    "best_bar": 0.0184,
-    "time_in_market": 0.172,
-    "avg_abs_lots": 0.2166,
+    "bars": 2189,
+    "years": 6.0,
+    "start_equity": 3000.0,
+    "end_equity": 4208.53,
+    "total_return": 0.4028,
+    "cagr": 0.0581,
+    "ann_vol": 0.0631,
+    "sharpe": 0.926,
+    "sortino": 0.879,
+    "max_drawdown": -0.0649,
+    "calmar": 0.894,
+    "psr_gt_0": 0.989,
+    "trades": 201,
+    "total_cost": 267.14,
+    "total_swap": 94.51,
+    "pnl_per_trading_day": 0.55,
+    "worst_bar": -0.0286,
+    "best_bar": 0.027,
+    "time_in_market": 0.526,
+    "avg_abs_lots": 0.5236,
     "halted_at": null
    },
    "walk_forward": {
     "metrics": {
-     "bars": 7658,
-     "years": 3.5,
-     "start_equity": 1700.0,
-     "end_equity": 1817.41,
-     "total_return": 0.0691,
-     "cagr": 0.0193,
-     "ann_vol": 0.037,
-     "sharpe": 0.535,
-     "sortino": 0.45,
-     "max_drawdown": -0.0595,
-     "calmar": 0.324,
-     "psr_gt_0": 0.841,
-     "trades": 350,
-     "total_cost": 158.95,
-     "total_swap": 19.9,
-     "pnl_per_trading_day": 0.09,
-     "worst_bar": -0.0132,
-     "best_bar": 0.0152,
-     "dsr": 0.002,
+     "bars": 1448,
+     "years": 3.97,
+     "start_equity": 3000.0,
+     "end_equity": 4270.75,
+     "total_return": 0.4236,
+     "cagr": 0.0931,
+     "ann_vol": 0.0727,
+     "sharpe": 1.261,
+     "sortino": 1.406,
+     "max_drawdown": -0.0563,
+     "calmar": 1.654,
+     "psr_gt_0": 0.994,
+     "trades": 167,
+     "total_cost": 236.72,
+     "total_swap": 86.71,
+     "pnl_per_trading_day": 0.88,
+     "worst_bar": -0.0286,
+     "best_bar": 0.027,
+     "dsr": 0.001,
      "selector": "robust",
      "n_trials": 16
     },
@@ -78,31 +78,7 @@
         60,
         120
        ],
-       "target_vol": 0.08,
-       "rebalance_threshold": 0.15,
-       "entry_min_signal": 1.0,
-       "regime": {
-        "er_window": 60,
-        "er_min": 0.25
-       }
-      },
-      "train_sharpe": -2.858,
-      "test_sharpe": 0.563,
-      "test_return": 0.0075,
-      "test_maxdd": -0.0144,
-      "test_trades": 57,
-      "halted_at": null
-     },
-     {
-      "test_start": "2023-04-03 04:00:00+00:00",
-      "test_end": "2023-10-11 20:00:00+00:00",
-      "params": {
-       "lookbacks": [
-        30,
-        90,
-        180
-       ],
-       "target_vol": 0.08,
+       "target_vol": 0.1,
        "rebalance_threshold": 0.15,
        "entry_min_signal": 1.0,
        "regime": {
@@ -110,107 +86,11 @@
         "er_min": 0.0
        }
       },
-      "train_sharpe": -1.46,
-      "test_sharpe": -1.003,
-      "test_return": -0.0092,
-      "test_maxdd": -0.0239,
-      "test_trades": 45,
-      "halted_at": null
-     },
-     {
-      "test_start": "2023-10-12 00:00:00+00:00",
-      "test_end": "2024-04-11 08:00:00+00:00",
-      "params": {
-       "lookbacks": [
-        90,
-        270,
-        540
-       ],
-       "target_vol": 0.12,
-       "rebalance_threshold": 0.15,
-       "entry_min_signal": 1.0,
-       "regime": {
-        "er_window": 60,
-        "er_min": 0.25
-       }
-      },
-      "train_sharpe": -1.595,
-      "test_sharpe": -0.28,
-      "test_return": -0.0059,
-      "test_maxdd": -0.0239,
-      "test_trades": 59,
-      "halted_at": null
-     },
-     {
-      "test_start": "2024-04-11 12:00:00+00:00",
-      "test_end": "2024-10-11 00:00:00+00:00",
-      "params": {
-       "lookbacks": [
-        90,
-        270,
-        540
-       ],
-       "target_vol": 0.08,
-       "rebalance_threshold": 0.15,
-       "entry_min_signal": 1.0,
-       "regime": {
-        "er_window": 60,
-        "er_min": 0.25
-       }
-      },
-      "train_sharpe": -0.664,
-      "test_sharpe": -1.528,
-      "test_return": -0.0158,
-      "test_maxdd": -0.0263,
-      "test_trades": 54,
-      "halted_at": null
-     },
-     {
-      "test_start": "2024-10-11 04:00:00+00:00",
-      "test_end": "2025-04-14 20:00:00+00:00",
-      "params": {
-       "lookbacks": [
-        90,
-        270,
-        540
-       ],
-       "target_vol": 0.08,
-       "rebalance_threshold": 0.15,
-       "entry_min_signal": 1.0,
-       "regime": {
-        "er_window": 60,
-        "er_min": 0.25
-       }
-      },
-      "train_sharpe": -1.136,
-      "test_sharpe": -2.126,
-      "test_return": -0.01,
-      "test_maxdd": -0.0129,
-      "test_trades": 52,
-      "halted_at": null
-     },
-     {
-      "test_start": "2025-04-15 00:00:00+00:00",
-      "test_end": "2025-10-18 08:00:00+00:00",
-      "params": {
-       "lookbacks": [
-        90,
-        270,
-        540
-       ],
-       "target_vol": 0.08,
-       "rebalance_threshold": 0.15,
-       "entry_min_signal": 0.0,
-       "regime": {
-        "er_window": 0,
-        "er_min": 0.0
-       }
-      },
-      "train_sharpe": -1.227,
-      "test_sharpe": 2.432,
-      "test_return": 0.0514,
-      "test_maxdd": -0.0392,
-      "test_trades": 47,
+      "train_sharpe": -1.392,
+      "test_sharpe": -0.322,
+      "test_return": -0.009,
+      "test_maxdd": -0.0386,
+      "test_trades": 15,
       "halted_at": null
      },
      {
@@ -224,41 +104,185 @@
        ],
        "target_vol": 0.1,
        "rebalance_threshold": 0.15,
+       "entry_min_signal": 1.0,
+       "regime": {
+        "er_window": 0,
+        "er_min": 0.0
+       }
+      },
+      "train_sharpe": -1.001,
+      "test_sharpe": 0.261,
+      "test_return": 0.0054,
+      "test_maxdd": -0.0268,
+      "test_trades": 12,
+      "halted_at": null
+     },
+     {
+      "test_start": "2023-09-12 00:00:00+00:00",
+      "test_end": "2024-03-11 00:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        20,
+        60,
+        120
+       ],
+       "target_vol": 0.1,
+       "rebalance_threshold": 0.15,
+       "entry_min_signal": 1.0,
+       "regime": {
+        "er_window": 0,
+        "er_min": 0.0
+       }
+      },
+      "train_sharpe": -1.383,
+      "test_sharpe": 0.742,
+      "test_return": 0.0169,
+      "test_maxdd": -0.0349,
+      "test_trades": 22,
+      "halted_at": null
+     },
+     {
+      "test_start": "2024-03-12 00:00:00+00:00",
+      "test_end": "2024-09-09 00:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        20,
+        60,
+        120
+       ],
+       "target_vol": 0.1,
+       "rebalance_threshold": 0.15,
+       "entry_min_signal": 1.0,
+       "regime": {
+        "er_window": 0,
+        "er_min": 0.0
+       }
+      },
+      "train_sharpe": -1.125,
+      "test_sharpe": 1.167,
+      "test_return": 0.0472,
+      "test_maxdd": -0.0329,
+      "test_trades": 26,
+      "halted_at": null
+     },
+     {
+      "test_start": "2024-09-10 00:00:00+00:00",
+      "test_end": "2025-03-10 00:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        20,
+        60,
+        120
+       ],
+       "target_vol": 0.1,
+       "rebalance_threshold": 0.15,
+       "entry_min_signal": 1.0,
+       "regime": {
+        "er_window": 0,
+        "er_min": 0.0
+       }
+      },
+      "train_sharpe": 0.053,
+      "test_sharpe": 1.147,
+      "test_return": 0.0505,
+      "test_maxdd": -0.0495,
+      "test_trades": 27,
+      "halted_at": null
+     },
+     {
+      "test_start": "2025-03-11 00:00:00+00:00",
+      "test_end": "2025-09-08 00:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        20,
+        60,
+        120
+       ],
+       "target_vol": 0.1,
+       "rebalance_threshold": 0.15,
+       "entry_min_signal": 1.0,
+       "regime": {
+        "er_window": 0,
+        "er_min": 0.0
+       }
+      },
+      "train_sharpe": 0.673,
+      "test_sharpe": 1.133,
+      "test_return": 0.0405,
+      "test_maxdd": -0.0469,
+      "test_trades": 30,
+      "halted_at": null
+     },
+     {
+      "test_start": "2025-09-09 00:00:00+00:00",
+      "test_end": "2026-03-09 00:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        20,
+        60,
+        120
+       ],
+       "target_vol": 0.1,
+       "rebalance_threshold": 0.15,
+       "entry_min_signal": 1.0,
+       "regime": {
+        "er_window": 0,
+        "er_min": 0.0
+       }
+      },
+      "train_sharpe": 0.95,
+      "test_sharpe": 4.522,
+      "test_return": 0.2831,
+      "test_maxdd": -0.0301,
+      "test_trades": 24,
+      "halted_at": null
+     },
+     {
+      "test_start": "2026-03-10 00:00:00+00:00",
+      "test_end": "2026-09-07 00:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        40,
+        120,
+        250
+       ],
+       "target_vol": 0.1,
+       "rebalance_threshold": 0.15,
        "entry_min_signal": 0.0,
        "regime": {
         "er_window": 0,
         "er_min": 0.0
        }
       },
-      "train_sharpe": -0.293,
-      "test_sharpe": 1.509,
-      "test_return": 0.0517,
-      "test_maxdd": -0.0303,
-      "test_trades": 36,
+      "train_sharpe": 0.932,
+      "test_sharpe": -2.049,
+      "test_return": -0.0432,
+      "test_maxdd": -0.0433,
+      "test_trades": 11,
       "halted_at": null
      }
     ]
    },
    "directions": {
     "long": {
-     "bars": 7658,
-     "years": 3.5,
-     "start_equity": 1700.0,
-     "end_equity": 1852.1,
-     "total_return": 0.0895,
-     "cagr": 0.0248,
-     "ann_vol": 0.0435,
-     "sharpe": 0.585,
-     "sortino": 0.503,
-     "max_drawdown": -0.0616,
-     "calmar": 0.403,
-     "psr_gt_0": 0.862,
-     "trades": 253,
-     "total_cost": 128.94,
-     "total_swap": 35.04,
-     "pnl_per_trading_day": 0.12,
-     "worst_bar": -0.0132,
-     "best_bar": 0.0172,
+     "bars": 1448,
+     "years": 3.97,
+     "start_equity": 3000.0,
+     "end_equity": 4270.75,
+     "total_return": 0.4236,
+     "cagr": 0.0931,
+     "ann_vol": 0.0727,
+     "sharpe": 1.261,
+     "sortino": 1.406,
+     "max_drawdown": -0.0563,
+     "calmar": 1.654,
+     "psr_gt_0": 0.994,
+     "trades": 167,
+     "total_cost": 236.72,
+     "total_swap": 86.71,
+     "pnl_per_trading_day": 0.88,
+     "worst_bar": -0.0286,
+     "best_bar": 0.027,
      "dsr": 0.001,
      "selector": "robust",
      "n_trials": 16,
@@ -280,11 +304,11 @@
          "er_min": 0.0
         }
        },
-       "train_sharpe": -2.63,
-       "test_sharpe": -0.373,
-       "test_return": -0.0066,
-       "test_maxdd": -0.0239,
-       "test_trades": 21,
+       "train_sharpe": -1.392,
+       "test_sharpe": -0.322,
+       "test_return": -0.009,
+       "test_maxdd": -0.0386,
+       "test_trades": 15,
        "halted_at": null
       },
       {
@@ -304,11 +328,11 @@
          "er_min": 0.0
         }
        },
-       "train_sharpe": -1.7,
-       "test_sharpe": -1.882,
-       "test_return": -0.015,
-       "test_maxdd": -0.0189,
-       "test_trades": 10,
+       "train_sharpe": -1.001,
+       "test_sharpe": 0.261,
+       "test_return": 0.0054,
+       "test_maxdd": -0.0268,
+       "test_trades": 12,
        "halted_at": null
       },
       {
@@ -328,11 +352,11 @@
          "er_min": 0.0
         }
        },
-       "train_sharpe": -2.159,
-       "test_sharpe": 1.023,
-       "test_return": 0.0219,
-       "test_maxdd": -0.0297,
-       "test_trades": 35,
+       "train_sharpe": -1.383,
+       "test_sharpe": 0.742,
+       "test_return": 0.0169,
+       "test_maxdd": -0.0349,
+       "test_trades": 22,
        "halted_at": null
       },
       {
@@ -344,31 +368,7 @@
          60,
          120
         ],
-        "target_vol": 0.08,
-        "rebalance_threshold": 0.15,
-        "entry_min_signal": 1.0,
-        "regime": {
-         "er_window": 60,
-         "er_min": 0.25
-        }
-       },
-       "train_sharpe": -1.972,
-       "test_sharpe": -1.529,
-       "test_return": -0.0158,
-       "test_maxdd": -0.0263,
-       "test_trades": 54,
-       "halted_at": null
-      },
-      {
-       "test_start": "2024-10-11 04:00:00+00:00",
-       "test_end": "2025-04-14 20:00:00+00:00",
-       "params": {
-        "lookbacks": [
-         90,
-         270,
-         540
-        ],
-        "target_vol": 0.08,
+        "target_vol": 0.1,
         "rebalance_threshold": 0.15,
         "entry_min_signal": 1.0,
         "regime": {
@@ -376,11 +376,11 @@
          "er_min": 0.0
         }
        },
-       "train_sharpe": -1.998,
-       "test_sharpe": 0.034,
-       "test_return": 0.0002,
-       "test_maxdd": -0.0543,
-       "test_trades": 51,
+       "train_sharpe": -1.125,
+       "test_sharpe": 1.167,
+       "test_return": 0.0472,
+       "test_maxdd": -0.0329,
+       "test_trades": 26,
        "halted_at": null
       },
       {
@@ -400,11 +400,11 @@
          "er_min": 0.0
         }
        },
-       "train_sharpe": -1.81,
-       "test_sharpe": 2.432,
-       "test_return": 0.0551,
-       "test_maxdd": -0.0387,
-       "test_trades": 46,
+       "train_sharpe": 0.053,
+       "test_sharpe": 1.147,
+       "test_return": 0.0505,
+       "test_maxdd": -0.0495,
+       "test_trades": 27,
        "halted_at": null
       },
       {
@@ -418,41 +418,89 @@
         ],
         "target_vol": 0.1,
         "rebalance_threshold": 0.15,
+        "entry_min_signal": 1.0,
+        "regime": {
+         "er_window": 0,
+         "er_min": 0.0
+        }
+       },
+       "train_sharpe": 0.673,
+       "test_sharpe": 1.133,
+       "test_return": 0.0405,
+       "test_maxdd": -0.0469,
+       "test_trades": 30,
+       "halted_at": null
+      },
+      {
+       "test_start": "2025-09-09 00:00:00+00:00",
+       "test_end": "2026-03-09 00:00:00+00:00",
+       "params": {
+        "lookbacks": [
+         20,
+         60,
+         120
+        ],
+        "target_vol": 0.1,
+        "rebalance_threshold": 0.15,
+        "entry_min_signal": 1.0,
+        "regime": {
+         "er_window": 0,
+         "er_min": 0.0
+        }
+       },
+       "train_sharpe": 0.95,
+       "test_sharpe": 4.522,
+       "test_return": 0.2831,
+       "test_maxdd": -0.0301,
+       "test_trades": 24,
+       "halted_at": null
+      },
+      {
+       "test_start": "2026-03-10 00:00:00+00:00",
+       "test_end": "2026-09-07 00:00:00+00:00",
+       "params": {
+        "lookbacks": [
+         40,
+         120,
+         250
+        ],
+        "target_vol": 0.1,
+        "rebalance_threshold": 0.15,
         "entry_min_signal": 0.0,
         "regime": {
          "er_window": 0,
          "er_min": 0.0
         }
        },
-       "train_sharpe": -0.293,
-       "test_sharpe": 1.436,
-       "test_return": 0.0491,
-       "test_maxdd": -0.0307,
-       "test_trades": 36,
+       "train_sharpe": 0.932,
+       "test_sharpe": -2.049,
+       "test_return": -0.0432,
+       "test_maxdd": -0.0433,
+       "test_trades": 11,
        "halted_at": null
       }
      ]
     },
     "short": {
-     "bars": 7658,
-     "years": 3.5,
-     "start_equity": 1700.0,
-     "end_equity": 1670.05,
-     "total_return": -0.0176,
-     "cagr": -0.0051,
-     "ann_vol": 0.008,
-     "sharpe": -0.631,
-     "sortino": -0.162,
-     "max_drawdown": -0.0267,
-     "calmar": -0.19,
-     "psr_gt_0": 0.107,
-     "trades": 102,
-     "total_cost": 29.61,
-     "total_swap": -2.35,
-     "pnl_per_trading_day": -0.02,
-     "worst_bar": -0.007,
-     "best_bar": 0.0032,
-     "dsr": 0.0,
+     "bars": 1448,
+     "years": 3.97,
+     "start_equity": 3000.0,
+     "end_equity": 2908.0,
+     "total_return": -0.0307,
+     "cagr": -0.0078,
+     "ann_vol": 0.0289,
+     "sharpe": -0.257,
+     "sortino": -0.119,
+     "max_drawdown": -0.05,
+     "calmar": -0.157,
+     "psr_gt_0": 0.302,
+     "trades": 63,
+     "total_cost": 47.04,
+     "total_swap": -12.42,
+     "pnl_per_trading_day": -0.06,
+     "worst_bar": -0.0219,
+     "best_bar": 0.0163,
+     "dsr": 0.001,
      "selector": "robust",
      "n_trials": 16,
      "windows": [
@@ -465,91 +513,19 @@
          120,
          250
         ],
-        "target_vol": 0.08,
+        "target_vol": 0.1,
         "rebalance_threshold": 0.15,
         "entry_min_signal": 0.0,
         "regime": {
-         "er_window": 60,
-         "er_min": 0.25
+         "er_window": 0,
+         "er_min": 0.0
         }
        },
-       "train_sharpe": -2.35,
-       "test_sharpe": -1.08,
-       "test_return": -0.0015,
-       "test_maxdd": -0.0018,
-       "test_trades": 16,
-       "halted_at": null
-      },
-      {
-       "test_start": "2023-04-03 04:00:00+00:00",
-       "test_end": "2023-10-11 20:00:00+00:00",
-       "params": {
-        "lookbacks": [
-         90,
-         270,
-         540
-        ],
-        "target_vol": 0.08,
-        "rebalance_threshold": 0.15,
-        "entry_min_signal": 0.0,
-        "regime": {
-         "er_window": 60,
-         "er_min": 0.25
-        }
-       },
-       "train_sharpe": -1.586,
-       "test_sharpe": -0.379,
-       "test_return": -0.0034,
-       "test_maxdd": -0.0102,
-       "test_trades": 54,
-       "halted_at": null
-      },
-      {
-       "test_start": "2023-10-12 00:00:00+00:00",
-       "test_end": "2024-04-11 08:00:00+00:00",
-       "params": {
-        "lookbacks": [
-         90,
-         270,
-         540
-        ],
-        "target_vol": 0.08,
-        "rebalance_threshold": 0.15,
-        "entry_min_signal": 0.0,
-        "regime": {
-         "er_window": 60,
-         "er_min": 0.25
-        }
-       },
-       "train_sharpe": -1.56,
-       "test_sharpe": -3.466,
-       "test_return": -0.0063,
-       "test_maxdd": -0.0063,
-       "test_trades": 9,
-       "halted_at": null
-      },
-      {
-       "test_start": "2024-04-11 12:00:00+00:00",
-       "test_end": "2024-10-11 00:00:00+00:00",
-       "params": {
-        "lookbacks": [
-         60,
-         180,
-         360
-        ],
-        "target_vol": 0.12,
-        "rebalance_threshold": 0.15,
-        "entry_min_signal": 1.0,
-        "regime": {
-         "er_window": 60,
-         "er_min": 0.25
-        }
-       },
-       "train_sharpe": -1.83,
-       "test_sharpe": 0.0,
-       "test_return": 0.0,
-       "test_maxdd": 0.0,
-       "test_trades": 0,
+       "train_sharpe": -1.982,
+       "test_sharpe": -0.768,
+       "test_return": -0.021,
+       "test_maxdd": -0.0387,
+       "test_trades": 26,
        "halted_at": null
       },
       {
@@ -561,7 +537,31 @@
          120,
          250
         ],
-        "target_vol": 0.12,
+        "target_vol": 0.1,
+        "rebalance_threshold": 0.15,
+        "entry_min_signal": 0.0,
+        "regime": {
+         "er_window": 20,
+         "er_min": 0.25
+        }
+       },
+       "train_sharpe": -1.523,
+       "test_sharpe": -0.894,
+       "test_return": -0.0013,
+       "test_maxdd": -0.0026,
+       "test_trades": 8,
+       "halted_at": null
+      },
+      {
+       "test_start": "2023-09-12 00:00:00+00:00",
+       "test_end": "2024-03-11 00:00:00+00:00",
+       "params": {
+        "lookbacks": [
+         40,
+         120,
+         250
+        ],
+        "target_vol": 0.1,
         "rebalance_threshold": 0.15,
         "entry_min_signal": 1.0,
         "regime": {
@@ -569,11 +569,11 @@
          "er_min": 0.25
         }
        },
-       "train_sharpe": -1.716,
-       "test_sharpe": -3.094,
-       "test_return": -0.0082,
-       "test_maxdd": -0.0089,
-       "test_trades": 15,
+       "train_sharpe": -1.222,
+       "test_sharpe": -0.121,
+       "test_return": -0.002,
+       "test_maxdd": -0.027,
+       "test_trades": 5,
        "halted_at": null
       },
       {
@@ -593,7 +593,7 @@
          "er_min": 0.25
         }
        },
-       "train_sharpe": -0.468,
+       "train_sharpe": -0.55,
        "test_sharpe": 0.0,
        "test_return": 0.0,
        "test_maxdd": 0.0,
@@ -605,23 +605,23 @@
        "test_end": "2025-03-10 00:00:00+00:00",
        "params": {
         "lookbacks": [
-         20,
-         60,
-         120
+         40,
+         120,
+         250
         ],
         "target_vol": 0.1,
         "rebalance_threshold": 0.15,
         "entry_min_signal": 1.0,
         "regime": {
-         "er_window": 0,
-         "er_min": 0.0
+         "er_window": 20,
+         "er_min": 0.25
         }
        },
-       "train_sharpe": -1.621,
-       "test_sharpe": -3.28,
-       "test_return": -0.0009,
-       "test_maxdd": -0.0009,
-       "test_trades": 6,
+       "train_sharpe": -0.744,
+       "test_sharpe": 0.0,
+       "test_return": 0.0,
+       "test_maxdd": 0.0,
+       "test_trades": 0,
        "halted_at": null
       },
       {
@@ -641,11 +641,11 @@
          "er_min": 0.25
         }
        },
-       "train_sharpe": -3.152,
-       "test_sharpe": 0.512,
-       "test_return": 0.0025,
-       "test_maxdd": -0.006,
-       "test_trades": 2,
+       "train_sharpe": -0.812,
+       "test_sharpe": 0.0,
+       "test_return": 0.0,
+       "test_maxdd": 0.0,
+       "test_trades": 0,
        "halted_at": null
       },
       {
@@ -665,7 +665,7 @@
          "er_min": 0.0
         }
        },
-       "train_sharpe": -1.732,
+       "train_sharpe": -1.83,
        "test_sharpe": 0.0,
        "test_return": 0.0,
        "test_maxdd": 0.0,
@@ -689,11 +689,11 @@
          "er_min": 0.0
         }
        },
-       "train_sharpe": -1.746,
-       "test_sharpe": -0.062,
-       "test_return": -0.0024,
-       "test_maxdd": -0.027,
-       "test_trades": 25,
+       "train_sharpe": -1.886,
+       "test_sharpe": -0.22,
+       "test_return": -0.0066,
+       "test_maxdd": -0.0307,
+       "test_trades": 24,
        "halted_at": null
       }
      ]
@@ -703,14 +703,14 @@
     "long": {
      "summary": {
       "folds": 6,
-      "embargo_bars": 570,
+      "embargo_bars": 330,
       "horizon": 30,
       "barrier_k": 1.0,
-      "events": 42,
-      "primary_median_sharpe": -0.748,
-      "meta_median_sharpe": -0.748,
-      "primary_positive_folds": 2,
-      "meta_positive_folds": 2,
+      "events": 29,
+      "primary_median_sharpe": 0.441,
+      "meta_median_sharpe": 0.441,
+      "primary_positive_folds": 3,
+      "meta_positive_folds": 3,
       "meta_better_folds": 0,
       "accepted_share": 1.0
      },
@@ -719,486 +719,234 @@
        "fold": 0,
        "test_start": "2020-09-13 00:00:00+00:00",
        "test_end": "2021-09-12 00:00:00+00:00",
-       "events": 2,
-       "accepted": 2,
-       "train_events": 31,
-       "base_rate": 0.677,
+       "events": 7,
+       "accepted": 7,
+       "train_events": 16,
+       "base_rate": 0.875,
        "mean_p": null,
-       "primary_sharpe": -0.984,
-       "meta_sharpe": -0.984,
-       "primary_return": -0.0207,
-       "meta_return": -0.0207,
-       "primary_trades": 6,
-       "meta_trades": 6,
-       "primary_maxdd": -0.0237,
-       "meta_maxdd": -0.0237
+       "primary_sharpe": -0.64,
+       "meta_sharpe": -0.64,
+       "primary_return": -0.0331,
+       "meta_return": -0.0331,
+       "primary_trades": 21,
+       "meta_trades": 21,
+       "primary_maxdd": -0.0331,
+       "meta_maxdd": -0.0331
       },
       {
        "fold": 1,
        "test_start": "2021-09-13 00:00:00+00:00",
        "test_end": "2022-09-12 00:00:00+00:00",
-       "events": 3,
-       "accepted": 3,
-       "train_events": 22,
-       "base_rate": 0.727,
-       "mean_p": null,
-       "primary_sharpe": -1.373,
-       "meta_sharpe": -1.373,
-       "primary_return": -0.0136,
-       "meta_return": -0.0136,
-       "primary_trades": 8,
-       "meta_trades": 8,
-       "primary_maxdd": -0.0136,
-       "meta_maxdd": -0.0136
-      },
-      {
-       "fold": 2,
-       "test_start": "2022-09-13 00:00:00+00:00",
-       "test_end": "2023-09-12 00:00:00+00:00",
-       "events": 11,
-       "accepted": 11,
-       "train_events": 12,
-       "base_rate": 0.833,
-       "mean_p": null,
-       "primary_sharpe": -1.543,
-       "meta_sharpe": -1.543,
-       "primary_return": -0.027,
-       "meta_return": -0.027,
-       "primary_trades": 27,
-       "meta_trades": 27,
-       "primary_maxdd": -0.0333,
-       "meta_maxdd": -0.0333
-      },
-      {
-       "fold": 3,
-       "test_start": "2023-09-13 00:00:00+00:00",
-       "test_end": "2024-09-11 00:00:00+00:00",
-       "events": 7,
-       "accepted": 7,
-       "train_events": 2,
-       "base_rate": 0.0,
-       "mean_p": null,
-       "primary_sharpe": 0.761,
-       "meta_sharpe": 0.761,
-       "primary_return": 0.0398,
-       "meta_return": 0.0398,
-       "primary_trades": 22,
-       "meta_trades": 22,
-       "primary_maxdd": -0.0459,
-       "meta_maxdd": -0.0459
-      },
-      {
-       "fold": 4,
-       "test_start": "2024-09-12 00:00:00+00:00",
-       "test_end": "2025-09-11 00:00:00+00:00",
-       "events": 13,
-       "accepted": 13,
-       "train_events": 11,
-       "base_rate": 0.364,
-       "mean_p": null,
-       "primary_sharpe": -0.513,
-       "meta_sharpe": -0.513,
-       "primary_return": -0.0279,
-       "meta_return": -0.0279,
-       "primary_trades": 38,
-       "meta_trades": 38,
-       "primary_maxdd": -0.0604,
-       "meta_maxdd": -0.0604
-      },
-      {
-       "fold": 5,
-       "test_start": "2025-09-12 00:00:00+00:00",
-       "test_end": "2026-09-11 00:00:00+00:00",
-       "events": 6,
-       "accepted": 6,
-       "train_events": 17,
-       "base_rate": 0.353,
-       "mean_p": null,
-       "primary_sharpe": 2.237,
-       "meta_sharpe": 2.237,
-       "primary_return": 0.1691,
-       "meta_return": 0.1691,
-       "primary_trades": 20,
-       "meta_trades": 20,
-       "primary_maxdd": -0.0522,
-       "meta_maxdd": -0.0522
-      }
-     ]
-    },
-    "both": {
-     "summary": {
-      "folds": 6,
-      "embargo_bars": 570,
-      "horizon": 30,
-      "barrier_k": 1.0,
-      "events": 48,
-      "primary_median_sharpe": -0.74,
-      "meta_median_sharpe": -0.74,
-      "primary_positive_folds": 2,
-      "meta_positive_folds": 2,
-      "meta_better_folds": 0,
-      "accepted_share": 1.0
-     },
-     "folds": [
-      {
-       "fold": 0,
-       "test_start": "2020-09-13 00:00:00+00:00",
-       "test_end": "2021-09-12 00:00:00+00:00",
        "events": 5,
        "accepted": 5,
-       "train_events": 31,
-       "base_rate": 0.677,
+       "train_events": 13,
+       "base_rate": 0.846,
        "mean_p": null,
-       "primary_sharpe": -0.968,
-       "meta_sharpe": -0.968,
-       "primary_return": -0.0298,
-       "meta_return": -0.0298,
-       "primary_trades": 15,
-       "meta_trades": 15,
-       "primary_maxdd": -0.0494,
-       "meta_maxdd": -0.0494
-      },
-      {
-       "fold": 1,
-       "test_start": "2021-09-13 00:00:00+00:00",
-       "test_end": "2022-09-12 00:00:00+00:00",
-       "events": 6,
-       "accepted": 6,
-       "train_events": 22,
-       "base_rate": 0.727,
-       "mean_p": null,
-       "primary_sharpe": -1.711,
-       "meta_sharpe": -1.711,
-       "primary_return": -0.0178,
-       "meta_return": -0.0178,
-       "primary_trades": 14,
-       "meta_trades": 14,
-       "primary_maxdd": -0.0178,
-       "meta_maxdd": -0.0178
+       "primary_sharpe": -0.6,
+       "meta_sharpe": -0.6,
+       "primary_return": -0.0189,
+       "meta_return": -0.0189,
+       "primary_trades": 22,
+       "meta_trades": 22,
+       "primary_maxdd": -0.0424,
+       "meta_maxdd": -0.0424
       },
       {
        "fold": 2,
        "test_start": "2022-09-13 00:00:00+00:00",
        "test_end": "2023-09-12 00:00:00+00:00",
-       "events": 11,
-       "accepted": 11,
-       "train_events": 12,
-       "base_rate": 0.833,
+       "events": 4,
+       "accepted": 4,
+       "train_events": 13,
+       "base_rate": 0.462,
        "mean_p": null,
-       "primary_sharpe": -1.543,
-       "meta_sharpe": -1.543,
-       "primary_return": -0.027,
-       "meta_return": -0.027,
-       "primary_trades": 27,
-       "meta_trades": 27,
-       "primary_maxdd": -0.0333,
-       "meta_maxdd": -0.0333
+       "primary_sharpe": -0.05,
+       "meta_sharpe": -0.05,
+       "primary_return": -0.0037,
+       "meta_return": -0.0037,
+       "primary_trades": 26,
+       "meta_trades": 26,
+       "primary_maxdd": -0.0393,
+       "meta_maxdd": -0.0393
       },
       {
        "fold": 3,
        "test_start": "2023-09-13 00:00:00+00:00",
        "test_end": "2024-09-11 00:00:00+00:00",
-       "events": 7,
-       "accepted": 7,
-       "train_events": 5,
-       "base_rate": 0.2,
+       "events": 6,
+       "accepted": 6,
+       "train_events": 13,
+       "base_rate": 0.462,
        "mean_p": null,
-       "primary_sharpe": 0.761,
-       "meta_sharpe": 0.761,
-       "primary_return": 0.0398,
-       "meta_return": 0.0398,
-       "primary_trades": 22,
-       "meta_trades": 22,
-       "primary_maxdd": -0.0459,
-       "meta_maxdd": -0.0459
+       "primary_sharpe": 0.961,
+       "meta_sharpe": 0.961,
+       "primary_return": 0.0656,
+       "meta_return": 0.0656,
+       "primary_trades": 51,
+       "meta_trades": 51,
+       "primary_maxdd": -0.0349,
+       "meta_maxdd": -0.0349
       },
       {
        "fold": 4,
        "test_start": "2024-09-12 00:00:00+00:00",
        "test_end": "2025-09-11 00:00:00+00:00",
-       "events": 13,
-       "accepted": 13,
-       "train_events": 17,
-       "base_rate": 0.294,
+       "events": 6,
+       "accepted": 6,
+       "train_events": 16,
+       "base_rate": 0.5,
        "mean_p": null,
-       "primary_sharpe": -0.513,
-       "meta_sharpe": -0.513,
-       "primary_return": -0.0279,
-       "meta_return": -0.0279,
-       "primary_trades": 38,
-       "meta_trades": 38,
-       "primary_maxdd": -0.0604,
-       "meta_maxdd": -0.0604
+       "primary_sharpe": 0.932,
+       "meta_sharpe": 0.932,
+       "primary_return": 0.074,
+       "meta_return": 0.074,
+       "primary_trades": 57,
+       "meta_trades": 57,
+       "primary_maxdd": -0.0495,
+       "meta_maxdd": -0.0495
       },
       {
        "fold": 5,
        "test_start": "2025-09-12 00:00:00+00:00",
        "test_end": "2026-09-11 00:00:00+00:00",
-       "events": 6,
-       "accepted": 6,
-       "train_events": 23,
-       "base_rate": 0.304,
+       "events": 1,
+       "accepted": 1,
+       "train_events": 22,
+       "base_rate": 0.636,
        "mean_p": null,
-       "primary_sharpe": 2.237,
-       "meta_sharpe": 2.237,
-       "primary_return": 0.1691,
-       "meta_return": 0.1691,
-       "primary_trades": 20,
-       "meta_trades": 20,
-       "primary_maxdd": -0.0522,
-       "meta_maxdd": -0.0522
-      }
-     ]
-    }
-   },
-   "meta": {
-    "long": {
-     "summary": {
-      "folds": 6,
-      "embargo_bars": 870,
-      "horizon": 30,
-      "barrier_k": 1.0,
-      "events": 162,
-      "primary_median_sharpe": -0.101,
-      "meta_median_sharpe": 0.098,
-      "primary_positive_folds": 2,
-      "meta_positive_folds": 3,
-      "meta_better_folds": 4,
-      "accepted_share": 0.494
-     },
-     "folds": [
-      {
-       "fold": 0,
-       "test_start": "2020-09-12 16:00:00+00:00",
-       "test_end": "2021-09-12 16:00:00+00:00",
-       "events": 4,
-       "accepted": 0,
-       "train_events": 151,
-       "base_rate": 0.609,
-       "mean_p": 0.502,
-       "primary_sharpe": -2.338,
-       "meta_sharpe": 0.0,
-       "primary_return": -0.0073,
-       "meta_return": 0.0,
-       "primary_trades": 9,
-       "meta_trades": 0,
-       "primary_maxdd": -0.0073,
-       "meta_maxdd": 0.0
-      },
-      {
-       "fold": 1,
-       "test_start": "2021-09-12 20:00:00+00:00",
-       "test_end": "2022-09-13 08:00:00+00:00",
-       "events": 21,
-       "accepted": 13,
-       "train_events": 129,
-       "base_rate": 0.581,
-       "mean_p": 0.56,
-       "primary_sharpe": -1.72,
-       "meta_sharpe": -1.357,
-       "primary_return": -0.0136,
-       "meta_return": -0.01,
-       "primary_trades": 44,
-       "meta_trades": 28,
-       "primary_maxdd": -0.0139,
-       "meta_maxdd": -0.0103
-      },
-      {
-       "fold": 2,
-       "test_start": "2022-09-13 12:00:00+00:00",
-       "test_end": "2023-09-23 08:00:00+00:00",
-       "events": 17,
-       "accepted": 10,
-       "train_events": 130,
-       "base_rate": 0.592,
-       "mean_p": 0.595,
-       "primary_sharpe": -0.19,
-       "meta_sharpe": 0.397,
-       "primary_return": -0.0044,
-       "meta_return": 0.0074,
-       "primary_trades": 46,
-       "meta_trades": 29,
-       "primary_maxdd": -0.0179,
-       "meta_maxdd": -0.0111
-      },
-      {
-       "fold": 3,
-       "test_start": "2023-09-23 12:00:00+00:00",
-       "test_end": "2024-09-16 08:00:00+00:00",
-       "events": 40,
-       "accepted": 21,
-       "train_events": 94,
-       "base_rate": 0.606,
-       "mean_p": 0.606,
-       "primary_sharpe": 0.409,
-       "meta_sharpe": 0.89,
-       "primary_return": 0.0162,
-       "meta_return": 0.0309,
-       "primary_trades": 105,
-       "meta_trades": 64,
-       "primary_maxdd": -0.0233,
-       "meta_maxdd": -0.0141
-      },
-      {
-       "fold": 4,
-       "test_start": "2024-09-16 12:00:00+00:00",
-       "test_end": "2025-09-17 04:00:00+00:00",
-       "events": 45,
-       "accepted": 18,
-       "train_events": 76,
-       "base_rate": 0.632,
-       "mean_p": 0.565,
-       "primary_sharpe": -0.012,
-       "meta_sharpe": -1.205,
-       "primary_return": -0.0007,
-       "meta_return": -0.0182,
-       "primary_trades": 99,
-       "meta_trades": 40,
-       "primary_maxdd": -0.0365,
-       "meta_maxdd": -0.0288
-      },
-      {
-       "fold": 5,
-       "test_start": "2025-09-17 08:00:00+00:00",
-       "test_end": "2026-09-12 16:00:00+00:00",
-       "events": 35,
-       "accepted": 18,
-       "train_events": 118,
-       "base_rate": 0.593,
-       "mean_p": 0.578,
-       "primary_sharpe": 0.968,
-       "meta_sharpe": 0.196,
-       "primary_return": 0.0391,
-       "meta_return": 0.005,
-       "primary_trades": 97,
-       "meta_trades": 57,
-       "primary_maxdd": -0.0297,
-       "meta_maxdd": -0.0381
+       "primary_sharpe": 2.906,
+       "meta_sharpe": 2.906,
+       "primary_return": 0.2607,
+       "meta_return": 0.2607,
+       "primary_trades": 27,
+       "meta_trades": 27,
+       "primary_maxdd": -0.0331,
+       "meta_maxdd": -0.0331
       }
      ]
     },
     "both": {
      "summary": {
       "folds": 6,
-      "embargo_bars": 870,
+      "embargo_bars": 330,
       "horizon": 30,
       "barrier_k": 1.0,
-      "events": 237,
-      "primary_median_sharpe": -0.388,
-      "meta_median_sharpe": 0.131,
-      "primary_positive_folds": 2,
-      "meta_positive_folds": 4,
-      "meta_better_folds": 5,
-      "accepted_share": 0.485
+      "events": 49,
+      "primary_median_sharpe": 0.168,
+      "meta_median_sharpe": 0.168,
+      "primary_positive_folds": 3,
+      "meta_positive_folds": 3,
+      "meta_better_folds": 0,
+      "accepted_share": 1.0
      },
      "folds": [
       {
        "fold": 0,
-       "test_start": "2020-09-12 16:00:00+00:00",
-       "test_end": "2021-09-12 16:00:00+00:00",
-       "events": 17,
-       "accepted": 13,
-       "train_events": 206,
-       "base_rate": 0.612,
-       "mean_p": 0.607,
-       "primary_sharpe": -2.136,
-       "meta_sharpe": -2.187,
-       "primary_return": -0.016,
-       "meta_return": -0.0125,
-       "primary_trades": 34,
-       "meta_trades": 26,
-       "primary_maxdd": -0.016,
-       "meta_maxdd": -0.0125
+       "test_start": "2020-09-13 00:00:00+00:00",
+       "test_end": "2021-09-12 00:00:00+00:00",
+       "events": 18,
+       "accepted": 18,
+       "train_events": 21,
+       "base_rate": 0.81,
+       "mean_p": null,
+       "primary_sharpe": -1.622,
+       "meta_sharpe": -1.622,
+       "primary_return": -0.0928,
+       "meta_return": -0.0928,
+       "primary_trades": 56,
+       "meta_trades": 56,
+       "primary_maxdd": -0.1031,
+       "meta_maxdd": -0.1031
       },
       {
        "fold": 1,
-       "test_start": "2021-09-12 20:00:00+00:00",
-       "test_end": "2022-09-13 08:00:00+00:00",
-       "events": 39,
-       "accepted": 10,
-       "train_events": 175,
-       "base_rate": 0.571,
-       "mean_p": 0.549,
-       "primary_sharpe": -0.786,
-       "meta_sharpe": -0.576,
-       "primary_return": -0.0161,
-       "meta_return": -0.0029,
-       "primary_trades": 84,
-       "meta_trades": 20,
-       "primary_maxdd": -0.0217,
-       "meta_maxdd": -0.0047
+       "test_start": "2021-09-13 00:00:00+00:00",
+       "test_end": "2022-09-12 00:00:00+00:00",
+       "events": 9,
+       "accepted": 9,
+       "train_events": 18,
+       "base_rate": 0.833,
+       "mean_p": null,
+       "primary_sharpe": -0.648,
+       "meta_sharpe": -0.648,
+       "primary_return": -0.0197,
+       "meta_return": -0.0197,
+       "primary_trades": 34,
+       "meta_trades": 34,
+       "primary_maxdd": -0.0276,
+       "meta_maxdd": -0.0276
       },
       {
        "fold": 2,
-       "test_start": "2022-09-13 12:00:00+00:00",
-       "test_end": "2023-09-23 08:00:00+00:00",
-       "events": 34,
-       "accepted": 15,
-       "train_events": 172,
-       "base_rate": 0.581,
-       "mean_p": 0.574,
-       "primary_sharpe": -0.692,
-       "meta_sharpe": 0.203,
-       "primary_return": -0.0165,
-       "meta_return": 0.0038,
-       "primary_trades": 91,
-       "meta_trades": 39,
-       "primary_maxdd": -0.0294,
-       "meta_maxdd": -0.0148
+       "test_start": "2022-09-13 00:00:00+00:00",
+       "test_end": "2023-09-12 00:00:00+00:00",
+       "events": 6,
+       "accepted": 6,
+       "train_events": 28,
+       "base_rate": 0.464,
+       "mean_p": null,
+       "primary_sharpe": -0.489,
+       "meta_sharpe": -0.489,
+       "primary_return": -0.0304,
+       "meta_return": -0.0304,
+       "primary_trades": 55,
+       "meta_trades": 55,
+       "primary_maxdd": -0.0627,
+       "meta_maxdd": -0.0627
       },
       {
        "fold": 3,
-       "test_start": "2023-09-23 12:00:00+00:00",
-       "test_end": "2024-09-16 08:00:00+00:00",
-       "events": 46,
-       "accepted": 17,
-       "train_events": 150,
-       "base_rate": 0.587,
-       "mean_p": 0.582,
-       "primary_sharpe": 0.097,
-       "meta_sharpe": 0.592,
-       "primary_return": 0.003,
-       "meta_return": 0.0177,
-       "primary_trades": 122,
-       "meta_trades": 53,
-       "primary_maxdd": -0.0287,
-       "meta_maxdd": -0.0234
+       "test_start": "2023-09-13 00:00:00+00:00",
+       "test_end": "2024-09-11 00:00:00+00:00",
+       "events": 6,
+       "accepted": 6,
+       "train_events": 31,
+       "base_rate": 0.452,
+       "mean_p": null,
+       "primary_sharpe": 0.825,
+       "meta_sharpe": 0.825,
+       "primary_return": 0.0586,
+       "meta_return": 0.0586,
+       "primary_trades": 57,
+       "meta_trades": 57,
+       "primary_maxdd": -0.0416,
+       "meta_maxdd": -0.0416
       },
       {
        "fold": 4,
-       "test_start": "2024-09-16 12:00:00+00:00",
-       "test_end": "2025-09-17 04:00:00+00:00",
-       "events": 49,
-       "accepted": 30,
-       "train_events": 147,
-       "base_rate": 0.612,
-       "mean_p": 0.609,
-       "primary_sharpe": -0.085,
-       "meta_sharpe": 0.059,
-       "primary_return": -0.0028,
-       "meta_return": 0.0011,
-       "primary_trades": 108,
-       "meta_trades": 65,
-       "primary_maxdd": -0.0364,
-       "meta_maxdd": -0.0268
+       "test_start": "2024-09-12 00:00:00+00:00",
+       "test_end": "2025-09-11 00:00:00+00:00",
+       "events": 7,
+       "accepted": 7,
+       "train_events": 33,
+       "base_rate": 0.455,
+       "mean_p": null,
+       "primary_sharpe": 0.854,
+       "meta_sharpe": 0.854,
+       "primary_return": 0.0671,
+       "meta_return": 0.0671,
+       "primary_trades": 61,
+       "meta_trades": 61,
+       "primary_maxdd": -0.0495,
+       "meta_maxdd": -0.0495
       },
       {
        "fold": 5,
-       "test_start": "2025-09-17 08:00:00+00:00",
-       "test_end": "2026-09-12 16:00:00+00:00",
-       "events": 52,
-       "accepted": 30,
-       "train_events": 174,
-       "base_rate": 0.575,
-       "mean_p": 0.577,
-       "primary_sharpe": 0.596,
-       "meta_sharpe": 0.713,
-       "primary_return": 0.0247,
-       "meta_return": 0.0271,
-       "primary_trades": 132,
-       "meta_trades": 83,
-       "primary_maxdd": -0.0389,
-       "meta_maxdd": -0.0331
+       "test_start": "2025-09-12 00:00:00+00:00",
+       "test_end": "2026-09-11 00:00:00+00:00",
+       "events": 3,
+       "accepted": 3,
+       "train_events": 39,
+       "base_rate": 0.538,
+       "mean_p": null,
+       "primary_sharpe": 2.385,
+       "meta_sharpe": 2.385,
+       "primary_return": 0.2349,
+       "meta_return": 0.2349,
+       "primary_trades": 45,
+       "meta_trades": 45,
+       "primary_maxdd": -0.0528,
+       "meta_maxdd": -0.0528
       }
      ]
     }
@@ -1206,12 +954,12 @@
    "purged_cv": {
     "summary": {
      "folds": 6,
-     "embargo_bars": 1040,
-     "mean_oos_sharpe": -0.721,
-     "median_oos_sharpe": -0.626,
-     "positive_folds": 1,
-     "worst_fold_sharpe": -2.514,
-     "total_oos_trades": 538
+     "embargo_bars": 450,
+     "mean_oos_sharpe": 0.177,
+     "median_oos_sharpe": 0.039,
+     "positive_folds": 3,
+     "worst_fold_sharpe": -2.011,
+     "total_oos_trades": 250
     },
     "folds": [
      {
@@ -1226,18 +974,18 @@
        ],
        "target_vol": 0.1,
        "rebalance_threshold": 0.15,
-       "entry_min_signal": 1.0,
+       "entry_min_signal": 0.0,
        "regime": {
         "er_window": 0,
         "er_min": 0.0
        }
       },
-      "train_sharpe": 0.127,
-      "test_sharpe": -2.514,
-      "test_return": -0.0142,
-      "test_maxdd": -0.0142,
-      "test_trades": 43,
-      "test_cost": 14.43
+      "train_sharpe": 1.209,
+      "test_sharpe": -0.84,
+      "test_return": -0.0433,
+      "test_maxdd": -0.0433,
+      "test_trades": 42,
+      "test_cost": 38.45
      },
      {
       "fold": 1,
@@ -1245,99 +993,24 @@
       "test_end": "2022-09-12 00:00:00+00:00",
       "params": {
        "lookbacks": [
-        40,
-        120,
-        250
-       ],
-       "target_vol": 0.08,
-       "rebalance_threshold": 0.15,
-       "entry_min_signal": 1.0,
-       "regime": {
-        "er_window": 0,
-        "er_min": 0.0
-       }
-      },
-      "train_sharpe": -3.153,
-      "test_sharpe": -1.12,
-      "test_return": -0.0339,
-      "test_maxdd": -0.0366,
-      "test_trades": 67,
-      "test_cost": 38.44
-     },
-     {
-      "fold": 2,
-      "test_start": "2022-09-13 12:00:00+00:00",
-      "test_end": "2023-09-23 08:00:00+00:00",
-      "params": {
-       "lookbacks": [
-        30,
-        90,
-        180
-       ],
-       "target_vol": 0.08,
-       "rebalance_threshold": 0.15,
-       "entry_min_signal": 1.0,
-       "regime": {
-        "er_window": 0,
-        "er_min": 0.0
-       }
-      },
-      "train_sharpe": -2.535,
-      "test_sharpe": -1.397,
-      "test_return": -0.0271,
-      "test_maxdd": -0.0377,
-      "test_trades": 93,
-      "test_cost": 41.2
-     },
-     {
-      "fold": 3,
-      "test_start": "2023-09-23 12:00:00+00:00",
-      "test_end": "2024-09-16 08:00:00+00:00",
-      "params": {
-       "lookbacks": [
-        90,
-        270,
-        540
-       ],
-       "target_vol": 0.12,
-       "rebalance_threshold": 0.15,
-       "entry_min_signal": 1.0,
-       "regime": {
-        "er_window": 60,
-        "er_min": 0.25
-       }
-      },
-      "train_sharpe": -0.608,
-      "test_sharpe": -0.117,
-      "test_return": -0.0051,
-      "test_maxdd": -0.0397,
-      "test_trades": 99,
-      "test_cost": 83.55
-     },
-     {
-      "fold": 4,
-      "test_start": "2024-09-16 12:00:00+00:00",
-      "test_end": "2025-09-17 04:00:00+00:00",
-      "params": {
-       "lookbacks": [
+        20,
         60,
-        180,
-        360
+        120
        ],
-       "target_vol": 0.12,
+       "target_vol": 0.1,
        "rebalance_threshold": 0.15,
-       "entry_min_signal": 0.0,
+       "entry_min_signal": 1.0,
        "regime": {
         "er_window": 0,
         "er_min": 0.0
        }
       },
-      "train_sharpe": 1.416,
-      "test_sharpe": -2.045,
-      "test_return": -0.0408,
-      "test_maxdd": -0.048,
-      "test_trades": 43,
-      "test_cost": 14.46
+      "train_sharpe": 1.546,
+      "test_sharpe": -0.6,
+      "test_return": -0.0189,
+      "test_maxdd": -0.0424,
+      "test_trades": 22,
+      "test_cost": 26.12
      },
      {
       "fold": 2,
@@ -1353,16 +1026,16 @@
        "rebalance_threshold": 0.15,
        "entry_min_signal": 0.0,
        "regime": {
-        "er_window": 0,
-        "er_min": 0.0
+        "er_window": 20,
+        "er_min": 0.25
        }
       },
-      "train_sharpe": 0.187,
-      "test_sharpe": -1.342,
-      "test_return": -0.0597,
-      "test_maxdd": -0.074,
-      "test_trades": 50,
-      "test_cost": 27.72
+      "train_sharpe": 1.318,
+      "test_sharpe": -2.011,
+      "test_return": -0.0558,
+      "test_maxdd": -0.0559,
+      "test_trades": 52,
+      "test_cost": 40.93
      },
      {
       "fold": 3,
@@ -1382,12 +1055,37 @@
         "er_min": 0.25
        }
       },
-      "train_sharpe": -2.119,
-      "test_sharpe": -0.132,
-      "test_return": -0.005,
-      "test_maxdd": -0.0455,
-      "test_trades": 114,
-      "test_cost": 55.64
+      "train_sharpe": -1.1,
+      "test_sharpe": 0.677,
+      "test_return": 0.0366,
+      "test_maxdd": -0.0433,
+      "test_trades": 50,
+      "test_cost": 77.07
+     },
+     {
+      "fold": 4,
+      "test_start": "2024-09-12 00:00:00+00:00",
+      "test_end": "2025-09-11 00:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        20,
+        60,
+        120
+       ],
+       "target_vol": 0.1,
+       "rebalance_threshold": 0.15,
+       "entry_min_signal": 1.0,
+       "regime": {
+        "er_window": 0,
+        "er_min": 0.0
+       }
+      },
+      "train_sharpe": -1.029,
+      "test_sharpe": 0.932,
+      "test_return": 0.074,
+      "test_maxdd": -0.0495,
+      "test_trades": 57,
+      "test_cost": 78.62
      },
      {
       "fold": 5,
@@ -1407,12 +1105,12 @@
         "er_min": 0.0
        }
       },
-      "train_sharpe": -1.318,
-      "test_sharpe": 0.952,
-      "test_return": 0.0328,
-      "test_maxdd": -0.0264,
-      "test_trades": 122,
-      "test_cost": 41.8
+      "train_sharpe": -0.655,
+      "test_sharpe": 2.906,
+      "test_return": 0.2607,
+      "test_maxdd": -0.0331,
+      "test_trades": 27,
+      "test_cost": 34.76
      }
     ]
    }
@@ -1422,18 +1120,18 @@
    "history_source": "bitfinex:BTC/USDT",
    "costs": {
     "spread": 0.1,
-    "slippage": 4.932,
-    "swap_long_annual": -0.07531410000000001,
-    "swap_short_annual": 0.07531410000000001,
+    "slippage": 4.9388,
+    "swap_long_annual": -0.06516345,
+    "swap_short_annual": 0.06516345,
     "commission_per_lot": 0.0,
     "fee_pct": 0.001,
     "slippage_pct": 0.0001
    },
    "params": {
     "lookbacks": [
+     20,
      60,
-     180,
-     360
+     120
     ],
     "target_vol": 0.1,
     "vol_span": 20
@@ -1441,47 +1139,47 @@
    "in_sample": {
     "bars": 2189,
     "years": 6.0,
-    "start_equity": 1650.0,
-    "end_equity": 1932.77,
-    "total_return": 0.1714,
-    "cagr": 0.0267,
-    "ann_vol": 0.0329,
-    "sharpe": 0.818,
-    "sortino": 0.464,
-    "max_drawdown": -0.0536,
-    "calmar": 0.498,
-    "psr_gt_0": 0.98,
-    "trades": 463,
-    "total_cost": 91.27,
-    "total_swap": 8.73,
-    "pnl_per_trading_day": 0.13,
-    "worst_bar": -0.019,
-    "best_bar": 0.0155,
-    "time_in_market": 0.149,
-    "avg_abs_lots": 0.0064,
+    "start_equity": 2000.0,
+    "end_equity": 3180.88,
+    "total_return": 0.5904,
+    "cagr": 0.0804,
+    "ann_vol": 0.0606,
+    "sharpe": 1.306,
+    "sortino": 1.407,
+    "max_drawdown": -0.064,
+    "calmar": 1.257,
+    "psr_gt_0": 1.0,
+    "trades": 101,
+    "total_cost": 52.12,
+    "total_swap": 72.18,
+    "pnl_per_trading_day": 0.54,
+    "worst_bar": -0.0221,
+    "best_bar": 0.0373,
+    "time_in_market": 0.444,
+    "avg_abs_lots": 0.0101,
     "halted_at": null
    },
    "walk_forward": {
     "metrics": {
-     "bars": 8752,
-     "years": 4.0,
-     "start_equity": 1650.0,
-     "end_equity": 1887.99,
-     "total_return": 0.1442,
-     "cagr": 0.0343,
-     "ann_vol": 0.0355,
-     "sharpe": 0.967,
-     "sortino": 0.718,
-     "max_drawdown": -0.0378,
-     "calmar": 0.908,
-     "psr_gt_0": 0.978,
-     "trades": 249,
-     "total_cost": 53.43,
-     "total_swap": 6.52,
-     "pnl_per_trading_day": 0.16,
-     "worst_bar": -0.0137,
-     "best_bar": 0.0185,
-     "dsr": 0.003,
+     "bars": 1448,
+     "years": 3.97,
+     "start_equity": 2000.0,
+     "end_equity": 2315.43,
+     "total_return": 0.1577,
+     "cagr": 0.0376,
+     "ann_vol": 0.0585,
+     "sharpe": 0.66,
+     "sortino": 0.648,
+     "max_drawdown": -0.0641,
+     "calmar": 0.587,
+     "psr_gt_0": 0.912,
+     "trades": 84,
+     "total_cost": 32.97,
+     "total_swap": 41.27,
+     "pnl_per_trading_day": 0.22,
+     "worst_bar": -0.0228,
+     "best_bar": 0.0323,
+     "dsr": 0.004,
      "selector": "robust",
      "n_trials": 16
     },
@@ -1495,7 +1193,31 @@
         120,
         250
        ],
-       "target_vol": 0.12,
+       "target_vol": 0.1,
+       "rebalance_threshold": 0.15,
+       "entry_min_signal": 1.0,
+       "regime": {
+        "er_window": 20,
+        "er_min": 0.25
+       }
+      },
+      "train_sharpe": -0.955,
+      "test_sharpe": 0.876,
+      "test_return": 0.0064,
+      "test_maxdd": -0.0073,
+      "test_trades": 2,
+      "halted_at": null
+     },
+     {
+      "test_start": "2023-03-14 00:00:00+00:00",
+      "test_end": "2023-09-11 00:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        40,
+        120,
+        250
+       ],
+       "target_vol": 0.1,
        "rebalance_threshold": 0.15,
        "entry_min_signal": 1.0,
        "regime": {
@@ -1503,23 +1225,23 @@
         "er_min": 0.0
        }
       },
-      "train_sharpe": -0.434,
-      "test_sharpe": 2.086,
-      "test_return": 0.0534,
-      "test_maxdd": -0.0188,
-      "test_trades": 32,
+      "train_sharpe": -0.584,
+      "test_sharpe": -1.339,
+      "test_return": -0.0283,
+      "test_maxdd": -0.038,
+      "test_trades": 15,
       "halted_at": null
      },
      {
-      "test_start": "2023-03-14 12:00:00+00:00",
-      "test_end": "2023-09-12 20:00:00+00:00",
+      "test_start": "2023-09-12 00:00:00+00:00",
+      "test_end": "2024-03-11 00:00:00+00:00",
       "params": {
        "lookbacks": [
+        20,
         60,
-        180,
-        360
+        120
        ],
-       "target_vol": 0.12,
+       "target_vol": 0.1,
        "rebalance_threshold": 0.15,
        "entry_min_signal": 1.0,
        "regime": {
@@ -1527,119 +1249,95 @@
         "er_min": 0.0
        }
       },
-      "train_sharpe": -0.35,
-      "test_sharpe": -1.298,
-      "test_return": -0.0227,
-      "test_maxdd": -0.037,
-      "test_trades": 18,
+      "train_sharpe": -0.519,
+      "test_sharpe": 3.913,
+      "test_return": 0.1969,
+      "test_maxdd": -0.0228,
+      "test_trades": 14,
       "halted_at": null
      },
      {
-      "test_start": "2023-09-13 00:00:00+00:00",
-      "test_end": "2024-03-13 08:00:00+00:00",
+      "test_start": "2024-03-12 00:00:00+00:00",
+      "test_end": "2024-09-09 00:00:00+00:00",
       "params": {
        "lookbacks": [
-        90,
-        270,
-        540
+        40,
+        120,
+        250
        ],
-       "target_vol": 0.12,
-       "rebalance_threshold": 0.15,
-       "entry_min_signal": 0.0,
-       "regime": {
-        "er_window": 60,
-        "er_min": 0.25
-       }
-      },
-      "train_sharpe": 0.771,
-      "test_sharpe": 3.211,
-      "test_return": 0.1137,
-      "test_maxdd": -0.025,
-      "test_trades": 44,
-      "halted_at": null
-     },
-     {
-      "test_start": "2024-03-13 12:00:00+00:00",
-      "test_end": "2024-09-11 20:00:00+00:00",
-      "params": {
-       "lookbacks": [
-        60,
-        180,
-        360
-       ],
-       "target_vol": 0.08,
+       "target_vol": 0.1,
        "rebalance_threshold": 0.15,
        "entry_min_signal": 1.0,
        "regime": {
-        "er_window": 60,
-        "er_min": 0.25
+        "er_window": 0,
+        "er_min": 0.0
        }
       },
-      "train_sharpe": 1.873,
-      "test_sharpe": -1.202,
-      "test_return": -0.0071,
-      "test_maxdd": -0.0095,
-      "test_trades": 33,
+      "train_sharpe": -0.216,
+      "test_sharpe": -1.67,
+      "test_return": -0.0523,
+      "test_maxdd": -0.0523,
+      "test_trades": 6,
       "halted_at": null
      },
      {
-      "test_start": "2024-09-12 00:00:00+00:00",
-      "test_end": "2025-03-13 08:00:00+00:00",
+      "test_start": "2024-09-10 00:00:00+00:00",
+      "test_end": "2025-03-10 00:00:00+00:00",
       "params": {
        "lookbacks": [
+        20,
         60,
-        180,
-        360
+        120
        ],
-       "target_vol": 0.08,
+       "target_vol": 0.1,
        "rebalance_threshold": 0.15,
        "entry_min_signal": 1.0,
        "regime": {
-        "er_window": 60,
-        "er_min": 0.25
+        "er_window": 0,
+        "er_min": 0.0
        }
       },
-      "train_sharpe": 0.458,
-      "test_sharpe": 0.003,
-      "test_return": -0.0,
-      "test_maxdd": -0.0068,
+      "train_sharpe": -1.616,
+      "test_sharpe": 1.442,
+      "test_return": 0.0604,
+      "test_maxdd": -0.0292,
+      "test_trades": 9,
+      "halted_at": null
+     },
+     {
+      "test_start": "2025-03-11 00:00:00+00:00",
+      "test_end": "2025-09-08 00:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        20,
+        60,
+        120
+       ],
+       "target_vol": 0.1,
+       "rebalance_threshold": 0.15,
+       "entry_min_signal": 1.0,
+       "regime": {
+        "er_window": 0,
+        "er_min": 0.0
+       }
+      },
+      "train_sharpe": -0.415,
+      "test_sharpe": 0.025,
+      "test_return": -0.0002,
+      "test_maxdd": -0.0325,
       "test_trades": 28,
       "halted_at": null
      },
      {
-      "test_start": "2025-03-13 12:00:00+00:00",
-      "test_end": "2025-09-11 20:00:00+00:00",
+      "test_start": "2025-09-09 00:00:00+00:00",
+      "test_end": "2026-03-09 00:00:00+00:00",
       "params": {
        "lookbacks": [
-        90,
-        270,
-        540
+        20,
+        60,
+        120
        ],
-       "target_vol": 0.08,
-       "rebalance_threshold": 0.15,
-       "entry_min_signal": 0.0,
-       "regime": {
-        "er_window": 60,
-        "er_min": 0.25
-       }
-      },
-      "train_sharpe": -0.553,
-      "test_sharpe": -0.976,
-      "test_return": -0.0083,
-      "test_maxdd": -0.0161,
-      "test_trades": 35,
-      "halted_at": null
-     },
-     {
-      "test_start": "2025-09-12 00:00:00+00:00",
-      "test_end": "2026-03-13 08:00:00+00:00",
-      "params": {
-       "lookbacks": [
-        90,
-        270,
-        540
-       ],
-       "target_vol": 0.08,
+       "target_vol": 0.1,
        "rebalance_threshold": 0.15,
        "entry_min_signal": 1.0,
        "regime": {
@@ -1647,60 +1345,60 @@
         "er_min": 0.0
        }
       },
-      "train_sharpe": -1.445,
-      "test_sharpe": 0.937,
-      "test_return": 0.0147,
-      "test_maxdd": -0.0187,
-      "test_trades": 30,
+      "train_sharpe": -0.073,
+      "test_sharpe": -0.792,
+      "test_return": -0.0149,
+      "test_maxdd": -0.0304,
+      "test_trades": 3,
       "halted_at": null
      },
      {
-      "test_start": "2026-03-13 12:00:00+00:00",
-      "test_end": "2026-09-12 00:00:00+00:00",
+      "test_start": "2026-03-10 00:00:00+00:00",
+      "test_end": "2026-09-07 00:00:00+00:00",
       "params": {
        "lookbacks": [
-        90,
-        270,
-        540
+        20,
+        60,
+        120
        ],
-       "target_vol": 0.08,
+       "target_vol": 0.1,
        "rebalance_threshold": 0.15,
        "entry_min_signal": 1.0,
        "regime": {
-        "er_window": 60,
-        "er_min": 0.25
+        "er_window": 0,
+        "er_min": 0.0
        }
       },
-      "train_sharpe": -1.244,
-      "test_sharpe": -0.173,
-      "test_return": -0.0011,
-      "test_maxdd": -0.0099,
-      "test_trades": 29,
+      "train_sharpe": -1.039,
+      "test_sharpe": -0.334,
+      "test_return": -0.0007,
+      "test_maxdd": -0.002,
+      "test_trades": 7,
       "halted_at": null
      }
     ]
    },
    "directions": {
     "long": {
-     "bars": 8752,
-     "years": 4.0,
-     "start_equity": 1650.0,
-     "end_equity": 1848.74,
-     "total_return": 0.1204,
-     "cagr": 0.0289,
-     "ann_vol": 0.0353,
-     "sharpe": 0.823,
-     "sortino": 0.508,
-     "max_drawdown": -0.0629,
-     "calmar": 0.459,
-     "psr_gt_0": 0.959,
-     "trades": 204,
-     "total_cost": 69.94,
-     "total_swap": 13.65,
-     "pnl_per_trading_day": 0.14,
-     "worst_bar": -0.011,
-     "best_bar": 0.0226,
-     "dsr": 0.0,
+     "bars": 1448,
+     "years": 3.97,
+     "start_equity": 2000.0,
+     "end_equity": 2315.43,
+     "total_return": 0.1577,
+     "cagr": 0.0376,
+     "ann_vol": 0.0585,
+     "sharpe": 0.66,
+     "sortino": 0.648,
+     "max_drawdown": -0.0641,
+     "calmar": 0.587,
+     "psr_gt_0": 0.912,
+     "trades": 84,
+     "total_cost": 32.97,
+     "total_swap": 41.27,
+     "pnl_per_trading_day": 0.22,
+     "worst_bar": -0.0228,
+     "best_bar": 0.0323,
+     "dsr": 0.004,
      "selector": "robust",
      "n_trials": 16,
      "windows": [
@@ -1709,9 +1407,33 @@
        "test_end": "2023-03-13 00:00:00+00:00",
        "params": {
         "lookbacks": [
-         60,
-         180,
-         360
+         40,
+         120,
+         250
+        ],
+        "target_vol": 0.1,
+        "rebalance_threshold": 0.15,
+        "entry_min_signal": 1.0,
+        "regime": {
+         "er_window": 20,
+         "er_min": 0.25
+        }
+       },
+       "train_sharpe": -0.955,
+       "test_sharpe": 0.876,
+       "test_return": 0.0064,
+       "test_maxdd": -0.0073,
+       "test_trades": 2,
+       "halted_at": null
+      },
+      {
+       "test_start": "2023-03-14 00:00:00+00:00",
+       "test_end": "2023-09-11 00:00:00+00:00",
+       "params": {
+        "lookbacks": [
+         40,
+         120,
+         250
         ],
         "target_vol": 0.1,
         "rebalance_threshold": 0.15,
@@ -1721,35 +1443,11 @@
          "er_min": 0.0
         }
        },
-       "train_sharpe": -0.743,
-       "test_sharpe": 2.219,
-       "test_return": 0.0576,
-       "test_maxdd": -0.0186,
-       "test_trades": 26,
-       "halted_at": null
-      },
-      {
-       "test_start": "2023-03-14 00:00:00+00:00",
-       "test_end": "2023-09-11 00:00:00+00:00",
-       "params": {
-        "lookbacks": [
-         60,
-         180,
-         360
-        ],
-        "target_vol": 0.1,
-        "rebalance_threshold": 0.15,
-        "entry_min_signal": 0.0,
-        "regime": {
-         "er_window": 0,
-         "er_min": 0.0
-        }
-       },
-       "train_sharpe": -0.434,
-       "test_sharpe": -0.1,
-       "test_return": -0.0017,
-       "test_maxdd": -0.0178,
-       "test_trades": 9,
+       "train_sharpe": -0.584,
+       "test_sharpe": -1.339,
+       "test_return": -0.0283,
+       "test_maxdd": -0.038,
+       "test_trades": 15,
        "halted_at": null
       },
       {
@@ -1769,11 +1467,11 @@
          "er_min": 0.0
         }
        },
-       "train_sharpe": 0.055,
-       "test_sharpe": 3.401,
-       "test_return": 0.125,
-       "test_maxdd": -0.0179,
-       "test_trades": 40,
+       "train_sharpe": -0.519,
+       "test_sharpe": 3.913,
+       "test_return": 0.1969,
+       "test_maxdd": -0.0228,
+       "test_trades": 14,
        "halted_at": null
       },
       {
@@ -1793,180 +1491,11 @@
          "er_min": 0.0
         }
        },
-       "train_sharpe": 1.461,
-       "test_sharpe": -0.259,
-       "test_return": -0.0016,
-       "test_maxdd": -0.007,
-       "test_trades": 9,
-       "halted_at": null
-      },
-      {
-       "test_start": "2025-03-11 00:00:00+00:00",
-       "test_end": "2025-09-08 00:00:00+00:00",
-       "params": {
-        "lookbacks": [
-         20,
-         60,
-         120
-        ],
-        "target_vol": 0.08,
-        "rebalance_threshold": 0.15,
-        "entry_min_signal": 0.0,
-        "regime": {
-         "er_window": 60,
-         "er_min": 0.25
-        }
-       },
-       "train_sharpe": 1.601,
-       "test_sharpe": -0.63,
-       "test_return": -0.0033,
-       "test_maxdd": -0.0065,
-       "test_trades": 36,
-       "halted_at": null
-      },
-      {
-       "test_start": "2025-03-13 12:00:00+00:00",
-       "test_end": "2025-09-11 20:00:00+00:00",
-       "params": {
-        "lookbacks": [
-         60,
-         180,
-         360
-        ],
-        "target_vol": 0.12,
-        "rebalance_threshold": 0.15,
-        "entry_min_signal": 0.0,
-        "regime": {
-         "er_window": 60,
-         "er_min": 0.25
-        }
-       },
-       "train_sharpe": 0.268,
-       "test_sharpe": -1.589,
-       "test_return": -0.024,
-       "test_maxdd": -0.0262,
-       "test_trades": 52,
-       "halted_at": null
-      },
-      {
-       "test_start": "2025-09-12 00:00:00+00:00",
-       "test_end": "2026-03-13 08:00:00+00:00",
-       "params": {
-        "lookbacks": [
-         30,
-         90,
-         180
-        ],
-        "target_vol": 0.12,
-        "rebalance_threshold": 0.15,
-        "entry_min_signal": 1.0,
-        "regime": {
-         "er_window": 0,
-         "er_min": 0.0
-        }
-       },
-       "train_sharpe": -1.263,
-       "test_sharpe": -2.291,
-       "test_return": -0.0207,
-       "test_maxdd": -0.0219,
-       "test_trades": 23,
-       "halted_at": null
-      },
-      {
-       "test_start": "2025-09-09 00:00:00+00:00",
-       "test_end": "2026-03-09 00:00:00+00:00",
-       "params": {
-        "lookbacks": [
-         20,
-         60,
-         120
-        ],
-        "target_vol": 0.1,
-        "rebalance_threshold": 0.15,
-        "entry_min_signal": 1.0,
-        "regime": {
-         "er_window": 0,
-         "er_min": 0.0
-        }
-       },
-       "train_sharpe": -1.44,
-       "test_sharpe": -1.714,
-       "test_return": -0.0082,
-       "test_maxdd": -0.0094,
-       "test_trades": 9,
-       "halted_at": null
-      }
-     ]
-    },
-    "short": {
-     "bars": 8752,
-     "years": 4.0,
-     "start_equity": 1650.0,
-     "end_equity": 1612.82,
-     "total_return": -0.0225,
-     "cagr": -0.0057,
-     "ann_vol": 0.0192,
-     "sharpe": -0.287,
-     "sortino": -0.124,
-     "max_drawdown": -0.0553,
-     "calmar": -0.103,
-     "psr_gt_0": 0.282,
-     "trades": 155,
-     "total_cost": 23.79,
-     "total_swap": -4.44,
-     "pnl_per_trading_day": -0.03,
-     "worst_bar": -0.0128,
-     "best_bar": 0.0084,
-     "dsr": 0.0,
-     "selector": "robust",
-     "n_trials": 16,
-     "windows": [
-      {
-       "test_start": "2022-09-13 00:00:00+00:00",
-       "test_end": "2023-03-13 00:00:00+00:00",
-       "params": {
-        "lookbacks": [
-         30,
-         90,
-         180
-        ],
-        "target_vol": 0.1,
-        "rebalance_threshold": 0.15,
-        "entry_min_signal": 0.0,
-        "regime": {
-         "er_window": 0,
-         "er_min": 0.0
-        }
-       },
-       "train_sharpe": -0.852,
-       "test_sharpe": -0.931,
-       "test_return": -0.0149,
-       "test_maxdd": -0.0243,
-       "test_trades": 10,
-       "halted_at": null
-      },
-      {
-       "test_start": "2023-03-14 00:00:00+00:00",
-       "test_end": "2023-09-11 00:00:00+00:00",
-       "params": {
-        "lookbacks": [
-         40,
-         120,
-         250
-        ],
-        "target_vol": 0.1,
-        "rebalance_threshold": 0.15,
-        "entry_min_signal": 0.0,
-        "regime": {
-         "er_window": 0,
-         "er_min": 0.0
-        }
-       },
-       "train_sharpe": -0.43,
-       "test_sharpe": -0.995,
-       "test_return": -0.0142,
-       "test_maxdd": -0.023,
-       "test_trades": 50,
+       "train_sharpe": -0.216,
+       "test_sharpe": -1.67,
+       "test_return": -0.0523,
+       "test_maxdd": -0.0523,
+       "test_trades": 6,
        "halted_at": null
       },
       {
@@ -1986,11 +1515,11 @@
          "er_min": 0.0
         }
        },
-       "train_sharpe": 0.059,
-       "test_sharpe": -1.785,
-       "test_return": -0.0223,
-       "test_maxdd": -0.0319,
-       "test_trades": 20,
+       "train_sharpe": -1.616,
+       "test_sharpe": 1.442,
+       "test_return": 0.0604,
+       "test_maxdd": -0.0292,
+       "test_trades": 9,
        "halted_at": null
       },
       {
@@ -2010,82 +1539,227 @@
          "er_min": 0.0
         }
        },
-       "train_sharpe": -0.476,
-       "test_sharpe": -2.095,
-       "test_return": -0.0076,
-       "test_maxdd": -0.0083,
-       "test_trades": 17,
+       "train_sharpe": -0.415,
+       "test_sharpe": 0.025,
+       "test_return": -0.0002,
+       "test_maxdd": -0.0325,
+       "test_trades": 28,
        "halted_at": null
       },
       {
-       "test_start": "2024-03-13 12:00:00+00:00",
-       "test_end": "2024-09-11 20:00:00+00:00",
+       "test_start": "2025-09-09 00:00:00+00:00",
+       "test_end": "2026-03-09 00:00:00+00:00",
        "params": {
         "lookbacks": [
-         90,
-         270,
-         540
+         20,
+         60,
+         120
         ],
-        "target_vol": 0.08,
+        "target_vol": 0.1,
         "rebalance_threshold": 0.15,
-        "entry_min_signal": 0.0,
+        "entry_min_signal": 1.0,
         "regime": {
-         "er_window": 60,
-         "er_min": 0.25
+         "er_window": 0,
+         "er_min": 0.0
         }
        },
-       "train_sharpe": -0.076,
-       "test_sharpe": -0.539,
-       "test_return": -0.0032,
-       "test_maxdd": -0.0093,
-       "test_trades": 22,
+       "train_sharpe": -0.073,
+       "test_sharpe": -0.792,
+       "test_return": -0.0149,
+       "test_maxdd": -0.0304,
+       "test_trades": 3,
        "halted_at": null
       },
       {
-       "test_start": "2024-09-12 00:00:00+00:00",
-       "test_end": "2025-03-13 08:00:00+00:00",
+       "test_start": "2026-03-10 00:00:00+00:00",
+       "test_end": "2026-09-07 00:00:00+00:00",
        "params": {
         "lookbacks": [
-         90,
-         270,
-         540
+         20,
+         60,
+         120
         ],
-        "target_vol": 0.08,
+        "target_vol": 0.1,
+        "rebalance_threshold": 0.15,
+        "entry_min_signal": 1.0,
+        "regime": {
+         "er_window": 0,
+         "er_min": 0.0
+        }
+       },
+       "train_sharpe": -1.039,
+       "test_sharpe": -0.334,
+       "test_return": -0.0007,
+       "test_maxdd": -0.002,
+       "test_trades": 7,
+       "halted_at": null
+      }
+     ]
+    },
+    "short": {
+     "bars": 1448,
+     "years": 3.97,
+     "start_equity": 2000.0,
+     "end_equity": 2001.35,
+     "total_return": 0.0007,
+     "cagr": 0.0002,
+     "ann_vol": 0.0323,
+     "sharpe": 0.021,
+     "sortino": 0.014,
+     "max_drawdown": -0.067,
+     "calmar": 0.003,
+     "psr_gt_0": 0.517,
+     "trades": 74,
+     "total_cost": 18.41,
+     "total_swap": -12.53,
+     "pnl_per_trading_day": 0.0,
+     "worst_bar": -0.0168,
+     "best_bar": 0.0215,
+     "dsr": 0.001,
+     "selector": "robust",
+     "n_trials": 16,
+     "windows": [
+      {
+       "test_start": "2022-09-13 00:00:00+00:00",
+       "test_end": "2023-03-13 00:00:00+00:00",
+       "params": {
+        "lookbacks": [
+         40,
+         120,
+         250
+        ],
+        "target_vol": 0.1,
         "rebalance_threshold": 0.15,
         "entry_min_signal": 0.0,
         "regime": {
-         "er_window": 60,
-         "er_min": 0.25
+         "er_window": 0,
+         "er_min": 0.0
         }
        },
-       "train_sharpe": -0.869,
-       "test_sharpe": 0.706,
-       "test_return": 0.0072,
-       "test_maxdd": -0.0092,
-       "test_trades": 4,
+       "train_sharpe": -0.874,
+       "test_sharpe": -0.921,
+       "test_return": -0.0151,
+       "test_maxdd": -0.0245,
+       "test_trades": 10,
        "halted_at": null
       },
       {
-       "test_start": "2025-03-13 12:00:00+00:00",
-       "test_end": "2025-09-11 20:00:00+00:00",
+       "test_start": "2023-03-14 00:00:00+00:00",
+       "test_end": "2023-09-11 00:00:00+00:00",
        "params": {
         "lookbacks": [
-         90,
-         270,
-         540
+         40,
+         120,
+         250
         ],
-        "target_vol": 0.08,
+        "target_vol": 0.1,
         "rebalance_threshold": 0.15,
-        "entry_min_signal": 0.0,
+        "entry_min_signal": 1.0,
         "regime": {
-         "er_window": 60,
+         "er_window": 0,
+         "er_min": 0.0
+        }
+       },
+       "train_sharpe": -0.715,
+       "test_sharpe": 0.0,
+       "test_return": 0.0,
+       "test_maxdd": 0.0,
+       "test_trades": 0,
+       "halted_at": null
+      },
+      {
+       "test_start": "2023-09-12 00:00:00+00:00",
+       "test_end": "2024-03-11 00:00:00+00:00",
+       "params": {
+        "lookbacks": [
+         40,
+         120,
+         250
+        ],
+        "target_vol": 0.1,
+        "rebalance_threshold": 0.15,
+        "entry_min_signal": 1.0,
+        "regime": {
+         "er_window": 0,
+         "er_min": 0.0
+        }
+       },
+       "train_sharpe": -0.716,
+       "test_sharpe": 0.0,
+       "test_return": 0.0,
+       "test_maxdd": 0.0,
+       "test_trades": 0,
+       "halted_at": null
+      },
+      {
+       "test_start": "2024-03-12 00:00:00+00:00",
+       "test_end": "2024-09-09 00:00:00+00:00",
+       "params": {
+        "lookbacks": [
+         20,
+         60,
+         120
+        ],
+        "target_vol": 0.1,
+        "rebalance_threshold": 0.15,
+        "entry_min_signal": 1.0,
+        "regime": {
+         "er_window": 0,
+         "er_min": 0.0
+        }
+       },
+       "train_sharpe": -0.962,
+       "test_sharpe": -0.466,
+       "test_return": -0.0124,
+       "test_maxdd": -0.0339,
+       "test_trades": 14,
+       "halted_at": null
+      },
+      {
+       "test_start": "2024-09-10 00:00:00+00:00",
+       "test_end": "2025-03-10 00:00:00+00:00",
+       "params": {
+        "lookbacks": [
+         20,
+         60,
+         120
+        ],
+        "target_vol": 0.1,
+        "rebalance_threshold": 0.15,
+        "entry_min_signal": 1.0,
+        "regime": {
+         "er_window": 0,
+         "er_min": 0.0
+        }
+       },
+       "train_sharpe": -1.212,
+       "test_sharpe": -3.172,
+       "test_return": -0.0142,
+       "test_maxdd": -0.0142,
+       "test_trades": 5,
+       "halted_at": null
+      },
+      {
+       "test_start": "2025-03-11 00:00:00+00:00",
+       "test_end": "2025-09-08 00:00:00+00:00",
+       "params": {
+        "lookbacks": [
+         20,
+         60,
+         120
+        ],
+        "target_vol": 0.1,
+        "rebalance_threshold": 0.15,
+        "entry_min_signal": 1.0,
+        "regime": {
+         "er_window": 20,
          "er_min": 0.25
         }
        },
-       "train_sharpe": 0.018,
-       "test_sharpe": -1.483,
-       "test_return": -0.0032,
-       "test_maxdd": -0.0032,
+       "train_sharpe": -1.435,
+       "test_sharpe": -1.438,
+       "test_return": -0.0034,
+       "test_maxdd": -0.0034,
        "test_trades": 2,
        "halted_at": null
       },
@@ -2106,11 +1780,11 @@
          "er_min": 0.25
         }
        },
-       "train_sharpe": 0.194,
-       "test_sharpe": 1.055,
-       "test_return": 0.0144,
-       "test_maxdd": -0.0169,
-       "test_trades": 20,
+       "train_sharpe": -2.085,
+       "test_sharpe": 0.054,
+       "test_return": 0.0007,
+       "test_maxdd": -0.0383,
+       "test_trades": 21,
        "halted_at": null
       },
       {
@@ -2130,11 +1804,11 @@
          "er_min": 0.25
         }
        },
-       "train_sharpe": 0.167,
-       "test_sharpe": 1.201,
-       "test_return": 0.0066,
-       "test_maxdd": -0.0043,
-       "test_trades": 20,
+       "train_sharpe": -0.126,
+       "test_sharpe": 1.762,
+       "test_return": 0.0465,
+       "test_maxdd": -0.0234,
+       "test_trades": 22,
        "halted_at": null
       }
      ]
@@ -2144,250 +1818,250 @@
     "long": {
      "summary": {
       "folds": 6,
-      "embargo_bars": 870,
+      "embargo_bars": 330,
       "horizon": 30,
       "barrier_k": 1.0,
-      "events": 141,
-      "primary_median_sharpe": -0.088,
-      "meta_median_sharpe": -0.095,
-      "primary_positive_folds": 2,
+      "events": 20,
+      "primary_median_sharpe": 0.486,
+      "meta_median_sharpe": 0.486,
+      "primary_positive_folds": 3,
       "meta_positive_folds": 3,
-      "meta_better_folds": 4,
-      "accepted_share": 0.709
+      "meta_better_folds": 0,
+      "accepted_share": 1.0
      },
      "folds": [
       {
        "fold": 0,
-       "test_start": "2020-09-12 12:00:00+00:00",
-       "test_end": "2021-09-12 12:00:00+00:00",
-       "events": 44,
-       "accepted": 19,
-       "train_events": 90,
-       "base_rate": 0.522,
-       "mean_p": 0.503,
-       "primary_sharpe": -0.016,
-       "meta_sharpe": -0.504,
-       "primary_return": -0.001,
-       "meta_return": -0.0091,
-       "primary_trades": 89,
-       "meta_trades": 38,
-       "primary_maxdd": -0.0216,
-       "meta_maxdd": -0.0149
+       "test_start": "2020-09-13 00:00:00+00:00",
+       "test_end": "2021-09-12 00:00:00+00:00",
+       "events": 5,
+       "accepted": 5,
+       "train_events": 12,
+       "base_rate": 0.667,
+       "mean_p": null,
+       "primary_sharpe": 3.217,
+       "meta_sharpe": 3.217,
+       "primary_return": 0.3248,
+       "meta_return": 0.3248,
+       "primary_trades": 12,
+       "meta_trades": 12,
+       "primary_maxdd": -0.0413,
+       "meta_maxdd": -0.0413
       },
       {
        "fold": 1,
-       "test_start": "2021-09-12 16:00:00+00:00",
-       "test_end": "2022-09-12 20:00:00+00:00",
-       "events": 14,
-       "accepted": 9,
-       "train_events": 110,
-       "base_rate": 0.591,
-       "mean_p": 0.544,
-       "primary_sharpe": -0.16,
-       "meta_sharpe": 0.314,
-       "primary_return": -0.0035,
-       "meta_return": 0.0042,
-       "primary_trades": 30,
-       "meta_trades": 18,
-       "primary_maxdd": -0.0189,
-       "meta_maxdd": -0.0111
+       "test_start": "2021-09-13 00:00:00+00:00",
+       "test_end": "2022-09-12 00:00:00+00:00",
+       "events": 2,
+       "accepted": 2,
+       "train_events": 11,
+       "base_rate": 0.727,
+       "mean_p": null,
+       "primary_sharpe": -0.116,
+       "meta_sharpe": -0.116,
+       "primary_return": -0.0027,
+       "meta_return": -0.0027,
+       "primary_trades": 10,
+       "meta_trades": 10,
+       "primary_maxdd": -0.0233,
+       "meta_maxdd": -0.0233
       },
       {
        "fold": 2,
        "test_start": "2022-09-13 00:00:00+00:00",
-       "test_end": "2023-09-13 04:00:00+00:00",
-       "events": 19,
-       "accepted": 14,
-       "train_events": 114,
-       "base_rate": 0.623,
-       "mean_p": 0.598,
-       "primary_sharpe": 2.029,
-       "meta_sharpe": 2.119,
-       "primary_return": 0.0812,
-       "meta_return": 0.0826,
-       "primary_trades": 48,
-       "meta_trades": 38,
-       "primary_maxdd": -0.0125,
-       "meta_maxdd": -0.0113
+       "test_end": "2023-09-12 00:00:00+00:00",
+       "events": 3,
+       "accepted": 3,
+       "train_events": 12,
+       "base_rate": 0.75,
+       "mean_p": null,
+       "primary_sharpe": -0.03,
+       "meta_sharpe": -0.03,
+       "primary_return": -0.0026,
+       "meta_return": -0.0026,
+       "primary_trades": 16,
+       "meta_trades": 16,
+       "primary_maxdd": -0.029,
+       "meta_maxdd": -0.029
       },
       {
        "fold": 3,
-       "test_start": "2023-09-13 08:00:00+00:00",
-       "test_end": "2024-09-12 04:00:00+00:00",
-       "events": 18,
-       "accepted": 17,
-       "train_events": 105,
-       "base_rate": 0.629,
-       "mean_p": 0.628,
-       "primary_sharpe": 2.122,
-       "meta_sharpe": 2.121,
-       "primary_return": 0.0956,
-       "meta_return": 0.095,
-       "primary_trades": 48,
-       "meta_trades": 46,
-       "primary_maxdd": -0.0217,
-       "meta_maxdd": -0.0217
+       "test_start": "2023-09-13 00:00:00+00:00",
+       "test_end": "2024-09-11 00:00:00+00:00",
+       "events": 5,
+       "accepted": 5,
+       "train_events": 8,
+       "base_rate": 0.75,
+       "mean_p": null,
+       "primary_sharpe": 2.226,
+       "meta_sharpe": 2.226,
+       "primary_return": 0.1711,
+       "meta_return": 0.1711,
+       "primary_trades": 22,
+       "meta_trades": 22,
+       "primary_maxdd": -0.0242,
+       "meta_maxdd": -0.0242
       },
       {
        "fold": 4,
-       "test_start": "2024-09-12 08:00:00+00:00",
-       "test_end": "2025-09-12 08:00:00+00:00",
-       "events": 35,
-       "accepted": 31,
-       "train_events": 99,
-       "base_rate": 0.626,
-       "mean_p": 0.613,
-       "primary_sharpe": -1.26,
-       "meta_sharpe": -1.151,
-       "primary_return": -0.0219,
-       "meta_return": -0.02,
-       "primary_trades": 68,
-       "meta_trades": 60,
-       "primary_maxdd": -0.0261,
-       "meta_maxdd": -0.0252
+       "test_start": "2024-09-12 00:00:00+00:00",
+       "test_end": "2025-09-11 00:00:00+00:00",
+       "events": 3,
+       "accepted": 3,
+       "train_events": 11,
+       "base_rate": 0.727,
+       "mean_p": null,
+       "primary_sharpe": 1.003,
+       "meta_sharpe": 1.003,
+       "primary_return": 0.0679,
+       "meta_return": 0.0679,
+       "primary_trades": 41,
+       "meta_trades": 41,
+       "primary_maxdd": -0.0324,
+       "meta_maxdd": -0.0324
       },
       {
        "fold": 5,
-       "test_start": "2025-09-12 12:00:00+00:00",
-       "test_end": "2026-09-12 16:00:00+00:00",
-       "events": 11,
-       "accepted": 10,
-       "train_events": 112,
-       "base_rate": 0.598,
-       "mean_p": 0.602,
-       "primary_sharpe": -0.81,
-       "meta_sharpe": -0.695,
-       "primary_return": -0.0138,
-       "meta_return": -0.0118,
-       "primary_trades": 36,
-       "meta_trades": 34,
-       "primary_maxdd": -0.0321,
-       "meta_maxdd": -0.0301
+       "test_start": "2025-09-12 00:00:00+00:00",
+       "test_end": "2026-09-11 00:00:00+00:00",
+       "events": 2,
+       "accepted": 2,
+       "train_events": 16,
+       "base_rate": 0.625,
+       "mean_p": null,
+       "primary_sharpe": -0.526,
+       "meta_sharpe": -0.526,
+       "primary_return": -0.014,
+       "meta_return": -0.014,
+       "primary_trades": 11,
+       "meta_trades": 11,
+       "primary_maxdd": -0.0326,
+       "meta_maxdd": -0.0326
       }
      ]
     },
     "both": {
      "summary": {
       "folds": 6,
-      "embargo_bars": 870,
+      "embargo_bars": 330,
       "horizon": 30,
       "barrier_k": 1.0,
-      "events": 231,
-      "primary_median_sharpe": 0.464,
-      "meta_median_sharpe": 0.351,
-      "primary_positive_folds": 5,
+      "events": 41,
+      "primary_median_sharpe": -0.114,
+      "meta_median_sharpe": -0.114,
+      "primary_positive_folds": 3,
       "meta_positive_folds": 3,
-      "meta_better_folds": 3,
-      "accepted_share": 0.563
+      "meta_better_folds": 0,
+      "accepted_share": 1.0
      },
      "folds": [
       {
        "fold": 0,
-       "test_start": "2020-09-12 12:00:00+00:00",
-       "test_end": "2021-09-12 12:00:00+00:00",
-       "events": 53,
-       "accepted": 10,
-       "train_events": 164,
-       "base_rate": 0.5,
-       "mean_p": 0.443,
-       "primary_sharpe": 0.049,
-       "meta_sharpe": -0.072,
-       "primary_return": 0.001,
-       "meta_return": -0.0011,
-       "primary_trades": 95,
-       "meta_trades": 20,
-       "primary_maxdd": -0.0216,
-       "meta_maxdd": -0.0094
+       "test_start": "2020-09-13 00:00:00+00:00",
+       "test_end": "2021-09-12 00:00:00+00:00",
+       "events": 7,
+       "accepted": 7,
+       "train_events": 27,
+       "base_rate": 0.556,
+       "mean_p": null,
+       "primary_sharpe": 2.586,
+       "meta_sharpe": 2.586,
+       "primary_return": 0.269,
+       "meta_return": 0.269,
+       "primary_trades": 18,
+       "meta_trades": 18,
+       "primary_maxdd": -0.0661,
+       "meta_maxdd": -0.0661
       },
       {
        "fold": 1,
-       "test_start": "2021-09-12 16:00:00+00:00",
-       "test_end": "2022-09-12 20:00:00+00:00",
-       "events": 37,
-       "accepted": 16,
-       "train_events": 159,
-       "base_rate": 0.535,
-       "mean_p": 0.509,
-       "primary_sharpe": 0.604,
-       "meta_sharpe": -0.577,
-       "primary_return": 0.0158,
-       "meta_return": -0.0091,
-       "primary_trades": 72,
-       "meta_trades": 33,
-       "primary_maxdd": -0.0292,
-       "meta_maxdd": -0.0243
+       "test_start": "2021-09-13 00:00:00+00:00",
+       "test_end": "2022-09-12 00:00:00+00:00",
+       "events": 7,
+       "accepted": 7,
+       "train_events": 23,
+       "base_rate": 0.522,
+       "mean_p": null,
+       "primary_sharpe": 0.051,
+       "meta_sharpe": 0.051,
+       "primary_return": 0.0013,
+       "meta_return": 0.0013,
+       "primary_trades": 37,
+       "meta_trades": 37,
+       "primary_maxdd": -0.0466,
+       "meta_maxdd": -0.0466
       },
       {
        "fold": 2,
        "test_start": "2022-09-13 00:00:00+00:00",
-       "test_end": "2023-09-13 04:00:00+00:00",
-       "events": 33,
-       "accepted": 20,
-       "train_events": 180,
-       "base_rate": 0.528,
-       "mean_p": 0.533,
-       "primary_sharpe": 1.743,
-       "meta_sharpe": 2.002,
-       "primary_return": 0.0709,
-       "meta_return": 0.0782,
-       "primary_trades": 75,
-       "meta_trades": 49,
-       "primary_maxdd": -0.0161,
-       "meta_maxdd": -0.0161
+       "test_end": "2023-09-12 00:00:00+00:00",
+       "events": 7,
+       "accepted": 7,
+       "train_events": 21,
+       "base_rate": 0.619,
+       "mean_p": null,
+       "primary_sharpe": -1.038,
+       "meta_sharpe": -1.038,
+       "primary_return": -0.0515,
+       "meta_return": -0.0515,
+       "primary_trades": 25,
+       "meta_trades": 25,
+       "primary_maxdd": -0.0623,
+       "meta_maxdd": -0.0623
       },
       {
        "fold": 3,
-       "test_start": "2023-09-13 08:00:00+00:00",
-       "test_end": "2024-09-12 04:00:00+00:00",
-       "events": 38,
-       "accepted": 34,
-       "train_events": 170,
-       "base_rate": 0.594,
-       "mean_p": 0.609,
-       "primary_sharpe": 1.836,
-       "meta_sharpe": 1.998,
-       "primary_return": 0.0807,
-       "meta_return": 0.0854,
-       "primary_trades": 72,
-       "meta_trades": 63,
-       "primary_maxdd": -0.0218,
-       "meta_maxdd": -0.0218
+       "test_start": "2023-09-13 00:00:00+00:00",
+       "test_end": "2024-09-11 00:00:00+00:00",
+       "events": 9,
+       "accepted": 9,
+       "train_events": 20,
+       "base_rate": 0.75,
+       "mean_p": null,
+       "primary_sharpe": 2.315,
+       "meta_sharpe": 2.315,
+       "primary_return": 0.1728,
+       "meta_return": 0.1728,
+       "primary_trades": 33,
+       "meta_trades": 33,
+       "primary_maxdd": -0.0263,
+       "meta_maxdd": -0.0263
       },
       {
        "fold": 4,
-       "test_start": "2024-09-12 08:00:00+00:00",
-       "test_end": "2025-09-12 08:00:00+00:00",
-       "events": 38,
-       "accepted": 38,
-       "train_events": 153,
-       "base_rate": 0.614,
-       "mean_p": 0.612,
-       "primary_sharpe": -0.663,
-       "meta_sharpe": -0.663,
-       "primary_return": -0.0114,
-       "meta_return": -0.0114,
-       "primary_trades": 67,
-       "meta_trades": 67,
-       "primary_maxdd": -0.0183,
-       "meta_maxdd": -0.0183
+       "test_start": "2024-09-12 00:00:00+00:00",
+       "test_end": "2025-09-11 00:00:00+00:00",
+       "events": 5,
+       "accepted": 5,
+       "train_events": 23,
+       "base_rate": 0.652,
+       "mean_p": null,
+       "primary_sharpe": -0.278,
+       "meta_sharpe": -0.278,
+       "primary_return": -0.0121,
+       "meta_return": -0.0121,
+       "primary_trades": 49,
+       "meta_trades": 49,
+       "primary_maxdd": -0.041,
+       "meta_maxdd": -0.041
       },
       {
        "fold": 5,
-       "test_start": "2025-09-12 12:00:00+00:00",
-       "test_end": "2026-09-12 16:00:00+00:00",
-       "events": 32,
-       "accepted": 12,
-       "train_events": 181,
-       "base_rate": 0.541,
-       "mean_p": 0.523,
-       "primary_sharpe": 0.323,
-       "meta_sharpe": 0.773,
-       "primary_return": 0.0084,
-       "meta_return": 0.0201,
-       "primary_trades": 68,
-       "meta_trades": 34,
-       "primary_maxdd": -0.0288,
-       "meta_maxdd": -0.0242
+       "test_start": "2025-09-12 00:00:00+00:00",
+       "test_end": "2026-09-11 00:00:00+00:00",
+       "events": 6,
+       "accepted": 6,
+       "train_events": 32,
+       "base_rate": 0.562,
+       "mean_p": null,
+       "primary_sharpe": -0.766,
+       "meta_sharpe": -0.766,
+       "primary_return": -0.0377,
+       "meta_return": -0.0377,
+       "primary_trades": 37,
+       "meta_trades": 37,
+       "primary_maxdd": -0.0613,
+       "meta_maxdd": -0.0613
       }
      ]
     }
@@ -2395,12 +2069,12 @@
    "purged_cv": {
     "summary": {
      "folds": 6,
-     "embargo_bars": 1040,
-     "mean_oos_sharpe": -0.065,
-     "median_oos_sharpe": -0.253,
-     "positive_folds": 2,
-     "worst_fold_sharpe": -1.287,
-     "total_oos_trades": 603
+     "embargo_bars": 450,
+     "mean_oos_sharpe": 0.948,
+     "median_oos_sharpe": 0.406,
+     "positive_folds": 4,
+     "worst_fold_sharpe": -0.438,
+     "total_oos_trades": 106
     },
     "folds": [
      {
@@ -2409,104 +2083,54 @@
       "test_end": "2021-09-12 00:00:00+00:00",
       "params": {
        "lookbacks": [
-        40,
-        120,
-        250
+        20,
+        60,
+        120
        ],
-       "target_vol": 0.08,
+       "target_vol": 0.1,
        "rebalance_threshold": 0.15,
        "entry_min_signal": 1.0,
-       "regime": {
-        "er_window": 60,
-        "er_min": 0.25
-       }
-      },
-      "train_sharpe": 0.57,
-      "test_sharpe": -0.064,
-      "test_return": -0.0019,
-      "test_maxdd": -0.0178,
-      "test_trades": 89,
-      "test_cost": 12.87
-     },
-     {
-      "fold": 1,
-      "test_start": "2021-09-12 16:00:00+00:00",
-      "test_end": "2022-09-12 20:00:00+00:00",
-      "params": {
-       "lookbacks": [
-        90,
-        270,
-        540
-       ],
-       "target_vol": 0.08,
-       "rebalance_threshold": 0.15,
-       "entry_min_signal": 0.0,
        "regime": {
         "er_window": 0,
         "er_min": 0.0
        }
       },
-      "train_sharpe": 1.161,
-      "test_sharpe": -1.287,
-      "test_return": -0.0299,
-      "test_maxdd": -0.0398,
-      "test_trades": 120,
-      "test_cost": 8.8
+      "train_sharpe": 0.725,
+      "test_sharpe": 3.217,
+      "test_return": 0.3248,
+      "test_maxdd": -0.0413,
+      "test_trades": 12,
+      "test_cost": 6.15
+     },
+     {
+      "fold": 1,
+      "test_start": "2021-09-13 00:00:00+00:00",
+      "test_end": "2022-09-12 00:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        20,
+        60,
+        120
+       ],
+       "target_vol": 0.1,
+       "rebalance_threshold": 0.15,
+       "entry_min_signal": 1.0,
+       "regime": {
+        "er_window": 20,
+        "er_min": 0.25
+       }
+      },
+      "train_sharpe": 0.757,
+      "test_sharpe": -0.127,
+      "test_return": -0.0008,
+      "test_maxdd": -0.0077,
+      "test_trades": 8,
+      "test_cost": 0.69
      },
      {
       "fold": 2,
       "test_start": "2022-09-13 00:00:00+00:00",
-      "test_end": "2023-09-13 04:00:00+00:00",
-      "params": {
-       "lookbacks": [
-        90,
-        270,
-        540
-       ],
-       "target_vol": 0.08,
-       "rebalance_threshold": 0.15,
-       "entry_min_signal": 0.0,
-       "regime": {
-        "er_window": 60,
-        "er_min": 0.25
-       }
-      },
-      "train_sharpe": -0.209,
-      "test_sharpe": 0.736,
-      "test_return": 0.0147,
-      "test_maxdd": -0.0111,
-      "test_trades": 91,
-      "test_cost": 12.52
-     },
-     {
-      "fold": 3,
-      "test_start": "2023-09-13 08:00:00+00:00",
-      "test_end": "2024-09-12 04:00:00+00:00",
-      "params": {
-       "lookbacks": [
-        90,
-        270,
-        540
-       ],
-       "target_vol": 0.12,
-       "rebalance_threshold": 0.15,
-       "entry_min_signal": 1.0,
-       "regime": {
-        "er_window": 60,
-        "er_min": 0.25
-       }
-      },
-      "train_sharpe": -0.426,
-      "test_sharpe": 1.483,
-      "test_return": 0.0773,
-      "test_maxdd": -0.039,
-      "test_trades": 82,
-      "test_cost": 23.3
-     },
-     {
-      "fold": 4,
-      "test_start": "2024-09-12 08:00:00+00:00",
-      "test_end": "2025-09-12 08:00:00+00:00",
+      "test_end": "2023-09-12 00:00:00+00:00",
       "params": {
        "lookbacks": [
         40,
@@ -2515,18 +2139,68 @@
        ],
        "target_vol": 0.1,
        "rebalance_threshold": 0.15,
-       "entry_min_signal": 0.0,
+       "entry_min_signal": 1.0,
        "regime": {
-        "er_window": 20,
-        "er_min": 0.25
+        "er_window": 0,
+        "er_min": 0.0
        }
       },
-      "train_sharpe": 1.001,
-      "test_sharpe": -0.441,
-      "test_return": -0.0062,
-      "test_maxdd": -0.014,
-      "test_trades": 67,
-      "test_cost": 9.76
+      "train_sharpe": 0.599,
+      "test_sharpe": 0.299,
+      "test_return": 0.0139,
+      "test_maxdd": -0.0328,
+      "test_trades": 8,
+      "test_cost": 3.32
+     },
+     {
+      "fold": 3,
+      "test_start": "2023-09-13 00:00:00+00:00",
+      "test_end": "2024-09-11 00:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        40,
+        120,
+        250
+       ],
+       "target_vol": 0.1,
+       "rebalance_threshold": 0.15,
+       "entry_min_signal": 1.0,
+       "regime": {
+        "er_window": 0,
+        "er_min": 0.0
+       }
+      },
+      "train_sharpe": 0.574,
+      "test_sharpe": 2.224,
+      "test_return": 0.1861,
+      "test_maxdd": -0.049,
+      "test_trades": 27,
+      "test_cost": 11.96
+     },
+     {
+      "fold": 4,
+      "test_start": "2024-09-12 00:00:00+00:00",
+      "test_end": "2025-09-11 00:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        20,
+        60,
+        120
+       ],
+       "target_vol": 0.1,
+       "rebalance_threshold": 0.15,
+       "entry_min_signal": 0.0,
+       "regime": {
+        "er_window": 0,
+        "er_min": 0.0
+       }
+      },
+      "train_sharpe": 0.976,
+      "test_sharpe": 0.514,
+      "test_return": 0.0305,
+      "test_maxdd": -0.0464,
+      "test_trades": 44,
+      "test_cost": 13.47
      },
      {
       "fold": 5,
@@ -2540,18 +2214,18 @@
        ],
        "target_vol": 0.1,
        "rebalance_threshold": 0.15,
-       "entry_min_signal": 0.0,
+       "entry_min_signal": 1.0,
        "regime": {
         "er_window": 0,
         "er_min": 0.0
        }
       },
-      "train_sharpe": 1.669,
-      "test_sharpe": -0.31,
-      "test_return": -0.0222,
-      "test_maxdd": -0.0734,
-      "test_trades": 50,
-      "test_cost": 11.88
+      "train_sharpe": 1.664,
+      "test_sharpe": -0.438,
+      "test_return": -0.0162,
+      "test_maxdd": -0.0416,
+      "test_trades": 7,
+      "test_cost": 4.33
      }
     ]
    }
@@ -2562,17 +2236,17 @@
    "costs": {
     "spread": 0.01,
     "slippage": 0.228385,
-    "swap_long_annual": -0.00132495,
-    "swap_short_annual": 0.00132495,
+    "swap_long_annual": -0.00855195,
+    "swap_short_annual": 0.00855195,
     "commission_per_lot": 0.0,
     "fee_pct": 0.001,
     "slippage_pct": 0.0001
    },
    "params": {
     "lookbacks": [
+     20,
      60,
-     180,
-     360
+     120
     ],
     "target_vol": 0.1,
     "vol_span": 20
@@ -2580,47 +2254,47 @@
    "in_sample": {
     "bars": 2189,
     "years": 6.0,
-    "start_equity": 1650.0,
-    "end_equity": 1608.26,
-    "total_return": -0.0253,
-    "cagr": -0.0043,
-    "ann_vol": 0.0307,
-    "sharpe": -0.124,
-    "sortino": -0.071,
-    "max_drawdown": -0.1034,
-    "calmar": -0.041,
-    "psr_gt_0": 0.381,
-    "trades": 132,
-    "total_cost": 11.2,
-    "total_swap": 0.08,
-    "pnl_per_trading_day": -0.02,
-    "worst_bar": -0.017,
-    "best_bar": 0.0197,
-    "time_in_market": 0.179,
-    "avg_abs_lots": 0.0495,
+    "start_equity": 1666.67,
+    "end_equity": 2351.22,
+    "total_return": 0.4107,
+    "cagr": 0.0591,
+    "ann_vol": 0.062,
+    "sharpe": 0.956,
+    "sortino": 0.858,
+    "max_drawdown": -0.0765,
+    "calmar": 0.772,
+    "psr_gt_0": 0.991,
+    "trades": 51,
+    "total_cost": 12.93,
+    "total_swap": 4.6,
+    "pnl_per_trading_day": 0.31,
+    "worst_bar": -0.0262,
+    "best_bar": 0.0358,
+    "time_in_market": 0.44,
+    "avg_abs_lots": 0.1224,
     "halted_at": null
    },
    "walk_forward": {
     "metrics": {
      "bars": 1448,
      "years": 3.97,
-     "start_equity": 1650.0,
-     "end_equity": 1574.63,
-     "total_return": -0.0457,
-     "cagr": -0.0117,
-     "ann_vol": 0.06,
-     "sharpe": -0.166,
-     "sortino": -0.171,
-     "max_drawdown": -0.1728,
-     "calmar": -0.068,
-     "psr_gt_0": 0.37,
-     "trades": 89,
-     "total_cost": 15.47,
-     "total_swap": 0.03,
-     "pnl_per_trading_day": -0.05,
-     "worst_bar": -0.0389,
-     "best_bar": 0.0263,
-     "dsr": 0.0,
+     "start_equity": 1666.67,
+     "end_equity": 1724.11,
+     "total_return": 0.0345,
+     "cagr": 0.0086,
+     "ann_vol": 0.0572,
+     "sharpe": 0.178,
+     "sortino": 0.147,
+     "max_drawdown": -0.0716,
+     "calmar": 0.12,
+     "psr_gt_0": 0.639,
+     "trades": 70,
+     "total_cost": 11.28,
+     "total_swap": 2.3,
+     "pnl_per_trading_day": 0.04,
+     "worst_bar": -0.0215,
+     "best_bar": 0.0368,
+     "dsr": 0.001,
      "selector": "robust",
      "n_trials": 16
     },
@@ -2642,95 +2316,71 @@
         "er_min": 0.0
        }
       },
-      "train_sharpe": 1.174,
-      "test_sharpe": -0.815,
-      "test_return": -0.0303,
-      "test_maxdd": -0.0429,
-      "test_trades": 154,
-      "test_cost": 21.66
-     }
-    ]
-   }
-  },
-  "ETH/USDT:USDT": {
-   "data": "data/eth_H4.csv",
-   "history_source": "bitfinex:ETH/USDT",
-   "costs": {
-    "spread": 0.01,
-    "slippage": 0.22805,
-    "swap_long_annual": -0.0078621,
-    "swap_short_annual": 0.0078621,
-    "commission_per_lot": 0.0,
-    "fee_pct": 0.001,
-    "slippage_pct": 0.0001
-   },
-   "params": {
-    "lookbacks": [
-     60,
-     180,
-     360
-    ],
-    "target_vol": 0.1,
-    "vol_span": 60
-   },
-   "in_sample": {
-    "bars": 13142,
-    "years": 6.0,
-    "start_equity": 1650.0,
-    "end_equity": 1783.7,
-    "total_return": 0.081,
-    "cagr": 0.0131,
-    "ann_vol": 0.028,
-    "sharpe": 0.478,
-    "sortino": 0.243,
-    "max_drawdown": -0.0419,
-    "calmar": 0.312,
-    "psr_gt_0": 0.879,
-    "trades": 471,
-    "total_cost": 60.14,
-    "total_swap": 0.3,
-    "pnl_per_trading_day": 0.06,
-    "worst_bar": -0.0227,
-    "best_bar": 0.0237,
-    "time_in_market": 0.15,
-    "avg_abs_lots": 0.0629,
-    "halted_at": null
-   },
-   "walk_forward": {
-    "metrics": {
-     "bars": 8752,
-     "years": 4.0,
-     "start_equity": 1650.0,
-     "end_equity": 1752.56,
-     "total_return": 0.0622,
-     "cagr": 0.0152,
-     "ann_vol": 0.0569,
-     "sharpe": 0.293,
-     "sortino": 0.276,
-     "max_drawdown": -0.0608,
-     "calmar": 0.25,
-     "psr_gt_0": 0.72,
-     "trades": 329,
-     "total_cost": 59.1,
-     "total_swap": 0.68,
-     "pnl_per_trading_day": 0.07,
-     "worst_bar": -0.0272,
-     "best_bar": 0.0104,
-     "dsr": 0.011,
-     "selector": "robust",
-     "n_trials": 48
-    },
-    "windows": [
+      "train_sharpe": 1.204,
+      "test_sharpe": -1.667,
+      "test_return": -0.0419,
+      "test_maxdd": -0.0504,
+      "test_trades": 5,
+      "halted_at": null
+     },
      {
-      "test_start": "2022-09-12 20:00:00+00:00",
-      "test_end": "2023-03-14 08:00:00+00:00",
+      "test_start": "2023-03-14 00:00:00+00:00",
+      "test_end": "2023-09-11 00:00:00+00:00",
       "params": {
        "lookbacks": [
-        60,
-        180,
-        360
+        40,
+        120,
+        250
        ],
-       "target_vol": 0.12,
+       "target_vol": 0.1,
+       "rebalance_threshold": 0.15,
+       "entry_min_signal": 1.0,
+       "regime": {
+        "er_window": 20,
+        "er_min": 0.25
+       }
+      },
+      "train_sharpe": 1.03,
+      "test_sharpe": -1.629,
+      "test_return": -0.0236,
+      "test_maxdd": -0.0243,
+      "test_trades": 21,
+      "halted_at": null
+     },
+     {
+      "test_start": "2023-09-12 00:00:00+00:00",
+      "test_end": "2024-03-11 00:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        20,
+        60,
+        120
+       ],
+       "target_vol": 0.1,
+       "rebalance_threshold": 0.15,
+       "entry_min_signal": 0.0,
+       "regime": {
+        "er_window": 20,
+        "er_min": 0.25
+       }
+      },
+      "train_sharpe": -0.443,
+      "test_sharpe": 3.641,
+      "test_return": 0.1793,
+      "test_maxdd": -0.027,
+      "test_trades": 22,
+      "halted_at": null
+     },
+     {
+      "test_start": "2024-03-12 00:00:00+00:00",
+      "test_end": "2024-09-09 00:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        40,
+        120,
+        250
+       ],
+       "target_vol": 0.1,
        "rebalance_threshold": 0.15,
        "entry_min_signal": 1.0,
        "regime": {
@@ -2738,143 +2388,23 @@
         "er_min": 0.0
        }
       },
-      "train_sharpe": 1.213,
-      "test_sharpe": -0.57,
-      "test_return": -0.0183,
-      "test_maxdd": -0.0363,
-      "test_trades": 42,
+      "train_sharpe": 0.692,
+      "test_sharpe": -0.763,
+      "test_return": -0.0348,
+      "test_maxdd": -0.0553,
+      "test_trades": 4,
       "halted_at": null
      },
      {
-      "test_start": "2023-03-14 12:00:00+00:00",
-      "test_end": "2023-09-12 20:00:00+00:00",
+      "test_start": "2024-09-10 00:00:00+00:00",
+      "test_end": "2025-03-10 00:00:00+00:00",
       "params": {
        "lookbacks": [
-        90,
-        270,
-        540
+        40,
+        120,
+        250
        ],
-       "target_vol": 0.12,
-       "rebalance_threshold": 0.15,
-       "entry_min_signal": 0.0,
-       "regime": {
-        "er_window": 60,
-        "er_min": 0.25
-       }
-      },
-      "train_sharpe": 0.71,
-      "test_sharpe": -0.62,
-      "test_return": -0.0088,
-      "test_maxdd": -0.0199,
-      "test_trades": 51,
-      "halted_at": null
-     },
-     {
-      "test_start": "2023-09-13 00:00:00+00:00",
-      "test_end": "2024-03-13 08:00:00+00:00",
-      "params": {
-       "lookbacks": [
-        90,
-        270,
-        540
-       ],
-       "target_vol": 0.12,
-       "rebalance_threshold": 0.15,
-       "entry_min_signal": 0.0,
-       "regime": {
-        "er_window": 60,
-        "er_min": 0.25
-       }
-      },
-      "train_sharpe": 0.29,
-      "test_sharpe": 0.636,
-      "test_return": 0.0172,
-      "test_maxdd": -0.0275,
-      "test_trades": 66,
-      "halted_at": null
-     },
-     {
-      "test_start": "2024-03-13 12:00:00+00:00",
-      "test_end": "2024-09-11 20:00:00+00:00",
-      "params": {
-       "lookbacks": [
-        90,
-        270,
-        540
-       ],
-       "target_vol": 0.12,
-       "rebalance_threshold": 0.15,
-       "entry_min_signal": 0.0,
-       "regime": {
-        "er_window": 60,
-        "er_min": 0.25
-       }
-      },
-      "train_sharpe": 0.169,
-      "test_sharpe": -1.427,
-      "test_return": -0.0155,
-      "test_maxdd": -0.0215,
-      "test_trades": 49,
-      "halted_at": null
-     },
-     {
-      "test_start": "2024-09-12 00:00:00+00:00",
-      "test_end": "2025-03-13 08:00:00+00:00",
-      "params": {
-       "lookbacks": [
-        90,
-        270,
-        540
-       ],
-       "target_vol": 0.12,
-       "rebalance_threshold": 0.15,
-       "entry_min_signal": 0.0,
-       "regime": {
-        "er_window": 0,
-        "er_min": 0.0
-       }
-      },
-      "train_sharpe": -0.063,
-      "test_sharpe": 0.411,
-      "test_return": 0.0146,
-      "test_maxdd": -0.0468,
-      "test_trades": 40,
-      "halted_at": null
-     },
-     {
-      "test_start": "2025-03-13 12:00:00+00:00",
-      "test_end": "2025-09-11 20:00:00+00:00",
-      "params": {
-       "lookbacks": [
-        60,
-        180,
-        360
-       ],
-       "target_vol": 0.12,
-       "rebalance_threshold": 0.15,
-       "entry_min_signal": 0.0,
-       "regime": {
-        "er_window": 0,
-        "er_min": 0.0
-       }
-      },
-      "train_sharpe": -0.018,
-      "test_sharpe": 2.503,
-      "test_return": 0.1122,
-      "test_maxdd": -0.0335,
-      "test_trades": 20,
-      "halted_at": null
-     },
-     {
-      "test_start": "2025-09-12 00:00:00+00:00",
-      "test_end": "2026-03-13 08:00:00+00:00",
-      "params": {
-       "lookbacks": [
-        60,
-        180,
-        360
-       ],
-       "target_vol": 0.12,
+       "target_vol": 0.1,
        "rebalance_threshold": 0.15,
        "entry_min_signal": 1.0,
        "regime": {
@@ -2882,23 +2412,47 @@
         "er_min": 0.0
        }
       },
-      "train_sharpe": 1.286,
-      "test_sharpe": -0.864,
-      "test_return": -0.024,
-      "test_maxdd": -0.0472,
-      "test_trades": 34,
+      "train_sharpe": -1.913,
+      "test_sharpe": -0.809,
+      "test_return": -0.0105,
+      "test_maxdd": -0.0186,
+      "test_trades": 4,
       "halted_at": null
      },
      {
-      "test_start": "2026-03-13 12:00:00+00:00",
-      "test_end": "2026-09-12 04:00:00+00:00",
+      "test_start": "2025-03-11 00:00:00+00:00",
+      "test_end": "2025-09-08 00:00:00+00:00",
       "params": {
        "lookbacks": [
-        90,
-        270,
-        540
+        20,
+        60,
+        120
        ],
-       "target_vol": 0.12,
+       "target_vol": 0.1,
+       "rebalance_threshold": 0.15,
+       "entry_min_signal": 1.0,
+       "regime": {
+        "er_window": 0,
+        "er_min": 0.0
+       }
+      },
+      "train_sharpe": -1.381,
+      "test_sharpe": 1.865,
+      "test_return": 0.0275,
+      "test_maxdd": -0.011,
+      "test_trades": 3,
+      "halted_at": null
+     },
+     {
+      "test_start": "2025-09-09 00:00:00+00:00",
+      "test_end": "2026-03-09 00:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        40,
+        120,
+        250
+       ],
+       "target_vol": 0.1,
        "rebalance_threshold": 0.15,
        "entry_min_signal": 0.0,
        "regime": {
@@ -2906,49 +2460,73 @@
         "er_min": 0.0
        }
       },
-      "train_sharpe": 0.073,
-      "test_sharpe": -0.596,
-      "test_return": -0.0103,
-      "test_maxdd": -0.0253,
-      "test_trades": 27,
+      "train_sharpe": -0.462,
+      "test_sharpe": -1.321,
+      "test_return": -0.044,
+      "test_maxdd": -0.0572,
+      "test_trades": 8,
+      "halted_at": null
+     },
+     {
+      "test_start": "2026-03-10 00:00:00+00:00",
+      "test_end": "2026-09-07 00:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        40,
+        120,
+        250
+       ],
+       "target_vol": 0.1,
+       "rebalance_threshold": 0.15,
+       "entry_min_signal": 0.0,
+       "regime": {
+        "er_window": 20,
+        "er_min": 0.25
+       }
+      },
+      "train_sharpe": -0.92,
+      "test_sharpe": -0.52,
+      "test_return": -0.0004,
+      "test_maxdd": -0.0009,
+      "test_trades": 3,
       "halted_at": null
      }
     ]
    },
    "directions": {
     "long": {
-     "bars": 8752,
-     "years": 4.0,
-     "start_equity": 1650.0,
-     "end_equity": 1866.62,
-     "total_return": 0.1313,
-     "cagr": 0.0313,
-     "ann_vol": 0.0491,
-     "sharpe": 0.653,
-     "sortino": 0.402,
-     "max_drawdown": -0.0792,
-     "calmar": 0.396,
-     "psr_gt_0": 0.9,
-     "trades": 245,
-     "total_cost": 50.14,
-     "total_swap": 1.65,
-     "pnl_per_trading_day": 0.15,
-     "worst_bar": -0.0384,
-     "best_bar": 0.0281,
-     "dsr": 0.016,
+     "bars": 1448,
+     "years": 3.97,
+     "start_equity": 1666.67,
+     "end_equity": 1724.11,
+     "total_return": 0.0345,
+     "cagr": 0.0086,
+     "ann_vol": 0.0572,
+     "sharpe": 0.178,
+     "sortino": 0.147,
+     "max_drawdown": -0.0716,
+     "calmar": 0.12,
+     "psr_gt_0": 0.639,
+     "trades": 70,
+     "total_cost": 11.28,
+     "total_swap": 2.3,
+     "pnl_per_trading_day": 0.04,
+     "worst_bar": -0.0215,
+     "best_bar": 0.0368,
+     "dsr": 0.001,
      "selector": "robust",
-     "n_trials": 48,
+     "n_trials": 16,
      "windows": [
       {
-       "test_start": "2022-09-12 20:00:00+00:00",
-       "test_end": "2023-03-14 08:00:00+00:00",
+       "test_start": "2022-09-13 00:00:00+00:00",
+       "test_end": "2023-03-13 00:00:00+00:00",
        "params": {
         "lookbacks": [
-         30,
-         90,
-         180
+         20,
+         60,
+         120
         ],
-        "target_vol": 0.12,
+        "target_vol": 0.1,
         "rebalance_threshold": 0.15,
         "entry_min_signal": 1.0,
         "regime": {
@@ -2956,47 +2534,71 @@
          "er_min": 0.0
         }
        },
-       "train_sharpe": 1.1,
-       "test_sharpe": 1.154,
-       "test_return": 0.0478,
-       "test_maxdd": -0.0468,
-       "test_trades": 40,
+       "train_sharpe": 1.204,
+       "test_sharpe": -1.667,
+       "test_return": -0.0419,
+       "test_maxdd": -0.0504,
+       "test_trades": 5,
        "halted_at": null
       },
       {
-       "test_start": "2023-03-14 12:00:00+00:00",
-       "test_end": "2023-09-12 20:00:00+00:00",
+       "test_start": "2023-03-14 00:00:00+00:00",
+       "test_end": "2023-09-11 00:00:00+00:00",
        "params": {
         "lookbacks": [
-         30,
-         90,
-         180
+         40,
+         120,
+         250
         ],
-        "target_vol": 0.08,
+        "target_vol": 0.1,
+        "rebalance_threshold": 0.15,
+        "entry_min_signal": 1.0,
+        "regime": {
+         "er_window": 20,
+         "er_min": 0.25
+        }
+       },
+       "train_sharpe": 1.03,
+       "test_sharpe": -1.629,
+       "test_return": -0.0236,
+       "test_maxdd": -0.0243,
+       "test_trades": 21,
+       "halted_at": null
+      },
+      {
+       "test_start": "2023-09-12 00:00:00+00:00",
+       "test_end": "2024-03-11 00:00:00+00:00",
+       "params": {
+        "lookbacks": [
+         20,
+         60,
+         120
+        ],
+        "target_vol": 0.1,
         "rebalance_threshold": 0.15,
         "entry_min_signal": 0.0,
         "regime": {
-         "er_window": 0,
-         "er_min": 0.0
+         "er_window": 20,
+         "er_min": 0.25
         }
        },
-       "train_sharpe": 0.77,
-       "test_sharpe": -1.359,
-       "test_return": -0.0188,
-       "test_maxdd": -0.0359,
-       "test_trades": 51,
+       "train_sharpe": -0.443,
+       "test_sharpe": 3.641,
+       "test_return": 0.1793,
+       "test_maxdd": -0.027,
+       "test_trades": 22,
        "halted_at": null
       },
       {
-       "test_start": "2023-09-13 00:00:00+00:00",
-       "test_end": "2024-03-13 08:00:00+00:00",
+       "test_start": "2024-03-12 00:00:00+00:00",
+       "test_end": "2024-09-09 00:00:00+00:00",
        "params": {
         "lookbacks": [
-         30,
-         90,
-         180
+         40,
+         120,
+         250
         ],
-        "target_vol": 0.12,
+        "target_vol": 0.1,
         "rebalance_threshold": 0.15,
         "entry_min_signal": 1.0,
         "regime": {
@@ -3004,23 +2606,23 @@
          "er_min": 0.0
         }
        },
-       "train_sharpe": -0.152,
-       "test_sharpe": 2.05,
-       "test_return": 0.1042,
-       "test_maxdd": -0.0522,
-       "test_trades": 51,
+       "train_sharpe": 0.692,
+       "test_sharpe": -0.763,
+       "test_return": -0.0348,
+       "test_maxdd": -0.0553,
+       "test_trades": 4,
        "halted_at": null
       },
       {
-       "test_start": "2024-03-13 12:00:00+00:00",
-       "test_end": "2024-09-11 20:00:00+00:00",
+       "test_start": "2024-09-10 00:00:00+00:00",
+       "test_end": "2025-03-10 00:00:00+00:00",
        "params": {
         "lookbacks": [
-         30,
-         90,
-         180
+         40,
+         120,
+         250
         ],
-        "target_vol": 0.12,
+        "target_vol": 0.1,
         "rebalance_threshold": 0.15,
         "entry_min_signal": 1.0,
         "regime": {
@@ -3028,168 +2630,120 @@
          "er_min": 0.0
         }
        },
-       "train_sharpe": 0.365,
-       "test_sharpe": -1.097,
-       "test_return": -0.0143,
-       "test_maxdd": -0.0242,
-       "test_trades": 18,
+       "train_sharpe": -1.913,
+       "test_sharpe": -0.809,
+       "test_return": -0.0105,
+       "test_maxdd": -0.0186,
+       "test_trades": 4,
        "halted_at": null
       },
       {
-       "test_start": "2024-09-12 00:00:00+00:00",
-       "test_end": "2025-03-13 08:00:00+00:00",
+       "test_start": "2025-03-11 00:00:00+00:00",
+       "test_end": "2025-09-08 00:00:00+00:00",
        "params": {
         "lookbacks": [
+         20,
          60,
-         180,
-         360
+         120
         ],
-        "target_vol": 0.08,
+        "target_vol": 0.1,
         "rebalance_threshold": 0.15,
-        "entry_min_signal": 0.0,
+        "entry_min_signal": 1.0,
         "regime": {
-         "er_window": 60,
-         "er_min": 0.25
+         "er_window": 0,
+         "er_min": 0.0
         }
        },
-       "train_sharpe": 0.429,
-       "test_sharpe": 0.2,
-       "test_return": 0.0023,
-       "test_maxdd": -0.02,
-       "test_trades": 31,
+       "train_sharpe": -1.381,
+       "test_sharpe": 1.865,
+       "test_return": 0.0275,
+       "test_maxdd": -0.011,
+       "test_trades": 3,
        "halted_at": null
       },
       {
-       "test_start": "2025-03-13 12:00:00+00:00",
-       "test_end": "2025-09-11 20:00:00+00:00",
+       "test_start": "2025-09-09 00:00:00+00:00",
+       "test_end": "2026-03-09 00:00:00+00:00",
        "params": {
         "lookbacks": [
-         60,
-         180,
-         360
+         40,
+         120,
+         250
         ],
-        "target_vol": 0.08,
+        "target_vol": 0.1,
         "rebalance_threshold": 0.15,
         "entry_min_signal": 0.0,
         "regime": {
-         "er_window": 60,
-         "er_min": 0.25
+         "er_window": 0,
+         "er_min": 0.0
         }
        },
-       "train_sharpe": -0.26,
-       "test_sharpe": 1.26,
-       "test_return": 0.0114,
-       "test_maxdd": -0.0104,
-       "test_trades": 20,
+       "train_sharpe": -0.462,
+       "test_sharpe": -1.321,
+       "test_return": -0.044,
+       "test_maxdd": -0.0572,
+       "test_trades": 8,
        "halted_at": null
       },
       {
-       "test_start": "2025-09-12 00:00:00+00:00",
-       "test_end": "2026-03-13 08:00:00+00:00",
+       "test_start": "2026-03-10 00:00:00+00:00",
+       "test_end": "2026-09-07 00:00:00+00:00",
        "params": {
         "lookbacks": [
-         60,
-         180,
-         360
+         40,
+         120,
+         250
         ],
-        "target_vol": 0.08,
+        "target_vol": 0.1,
         "rebalance_threshold": 0.15,
         "entry_min_signal": 0.0,
         "regime": {
-         "er_window": 60,
+         "er_window": 20,
          "er_min": 0.25
         }
        },
-       "train_sharpe": 0.908,
-       "test_sharpe": -0.286,
-       "test_return": -0.0007,
-       "test_maxdd": -0.0031,
-       "test_trades": 10,
-       "halted_at": null
-      },
-      {
-       "test_start": "2026-03-13 12:00:00+00:00",
-       "test_end": "2026-09-12 04:00:00+00:00",
-       "params": {
-        "lookbacks": [
-         60,
-         180,
-         360
-        ],
-        "target_vol": 0.08,
-        "rebalance_threshold": 0.15,
-        "entry_min_signal": 0.0,
-        "regime": {
-         "er_window": 60,
-         "er_min": 0.25
-        }
-       },
-       "train_sharpe": 0.397,
-       "test_sharpe": -0.943,
-       "test_return": -0.0021,
-       "test_maxdd": -0.0056,
-       "test_trades": 24,
+       "train_sharpe": -0.92,
+       "test_sharpe": -0.52,
+       "test_return": -0.0004,
+       "test_maxdd": -0.0009,
+       "test_trades": 3,
        "halted_at": null
       }
      ]
     },
     "short": {
-     "bars": 8752,
-     "years": 4.0,
-     "start_equity": 1650.0,
-     "end_equity": 1604.23,
-     "total_return": -0.0277,
-     "cagr": -0.007,
-     "ann_vol": 0.036,
-     "sharpe": -0.177,
-     "sortino": -0.109,
-     "max_drawdown": -0.0673,
-     "calmar": -0.104,
-     "psr_gt_0": 0.361,
-     "trades": 182,
-     "total_cost": 25.06,
-     "total_swap": -1.24,
-     "pnl_per_trading_day": -0.03,
-     "worst_bar": -0.0117,
-     "best_bar": 0.0113,
+     "bars": 1448,
+     "years": 3.97,
+     "start_equity": 1666.67,
+     "end_equity": 1676.63,
+     "total_return": 0.006,
+     "cagr": 0.0015,
+     "ann_vol": 0.0382,
+     "sharpe": 0.058,
+     "sortino": 0.043,
+     "max_drawdown": -0.0785,
+     "calmar": 0.019,
+     "psr_gt_0": 0.546,
+     "trades": 110,
+     "total_cost": 15.88,
+     "total_swap": -1.53,
+     "pnl_per_trading_day": 0.01,
+     "worst_bar": -0.0278,
+     "best_bar": 0.0292,
      "dsr": 0.0,
      "selector": "robust",
-     "n_trials": 48,
+     "n_trials": 16,
      "windows": [
       {
-       "test_start": "2022-09-12 20:00:00+00:00",
-       "test_end": "2023-03-14 08:00:00+00:00",
+       "test_start": "2022-09-13 00:00:00+00:00",
+       "test_end": "2023-03-13 00:00:00+00:00",
        "params": {
         "lookbacks": [
-         60,
-         180,
-         360
+         40,
+         120,
+         250
         ],
-        "target_vol": 0.08,
-        "rebalance_threshold": 0.15,
-        "entry_min_signal": 1.0,
-        "regime": {
-         "er_window": 60,
-         "er_min": 0.25
-        }
-       },
-       "train_sharpe": 0.717,
-       "test_sharpe": -0.668,
-       "test_return": -0.0014,
-       "test_maxdd": -0.0022,
-       "test_trades": 22,
-       "halted_at": null
-      },
-      {
-       "test_start": "2023-03-14 12:00:00+00:00",
-       "test_end": "2023-09-12 20:00:00+00:00",
-       "params": {
-        "lookbacks": [
-         60,
-         180,
-         360
-        ],
-        "target_vol": 0.08,
+        "target_vol": 0.1,
         "rebalance_threshold": 0.15,
         "entry_min_signal": 0.0,
         "regime": {
@@ -3197,143 +2751,47 @@
          "er_min": 0.0
         }
        },
-       "train_sharpe": 0.082,
-       "test_sharpe": -0.219,
-       "test_return": -0.0039,
-       "test_maxdd": -0.0193,
-       "test_trades": 44,
+       "train_sharpe": 0.582,
+       "test_sharpe": -0.692,
+       "test_return": -0.0106,
+       "test_maxdd": -0.0305,
+       "test_trades": 12,
        "halted_at": null
       },
       {
-       "test_start": "2023-09-13 00:00:00+00:00",
-       "test_end": "2024-03-13 08:00:00+00:00",
+       "test_start": "2023-03-14 00:00:00+00:00",
+       "test_end": "2023-09-11 00:00:00+00:00",
        "params": {
         "lookbacks": [
+         20,
          60,
-         180,
-         360
+         120
         ],
-        "target_vol": 0.08,
+        "target_vol": 0.1,
         "rebalance_threshold": 0.15,
         "entry_min_signal": 1.0,
-        "regime": {
-         "er_window": 60,
-         "er_min": 0.25
-        }
-       },
-       "train_sharpe": 0.184,
-       "test_sharpe": -2.303,
-       "test_return": -0.0016,
-       "test_maxdd": -0.0016,
-       "test_trades": 8,
-       "halted_at": null
-      },
-      {
-       "test_start": "2024-03-13 12:00:00+00:00",
-       "test_end": "2024-09-11 20:00:00+00:00",
-       "params": {
-        "lookbacks": [
-         60,
-         180,
-         360
-        ],
-        "target_vol": 0.08,
-        "rebalance_threshold": 0.15,
-        "entry_min_signal": 1.0,
-        "regime": {
-         "er_window": 60,
-         "er_min": 0.25
-        }
-       },
-       "train_sharpe": -1.696,
-       "test_sharpe": -0.762,
-       "test_return": -0.0049,
-       "test_maxdd": -0.0078,
-       "test_trades": 14,
-       "halted_at": null
-      },
-      {
-       "test_start": "2024-09-12 00:00:00+00:00",
-       "test_end": "2025-03-13 08:00:00+00:00",
-       "params": {
-        "lookbacks": [
-         60,
-         180,
-         360
-        ],
-        "target_vol": 0.12,
-        "rebalance_threshold": 0.15,
-        "entry_min_signal": 0.0,
-        "regime": {
-         "er_window": 60,
-         "er_min": 0.25
-        }
-       },
-       "train_sharpe": -1.668,
-       "test_sharpe": -2.175,
-       "test_return": -0.0124,
-       "test_maxdd": -0.0134,
-       "test_trades": 25,
-       "halted_at": null
-      },
-      {
-       "test_start": "2025-03-13 12:00:00+00:00",
-       "test_end": "2025-09-11 20:00:00+00:00",
-       "params": {
-        "lookbacks": [
-         90,
-         270,
-         540
-        ],
-        "target_vol": 0.12,
-        "rebalance_threshold": 0.15,
-        "entry_min_signal": 0.0,
         "regime": {
          "er_window": 0,
          "er_min": 0.0
         }
        },
-       "train_sharpe": -1.599,
-       "test_sharpe": -0.832,
-       "test_return": -0.0184,
-       "test_maxdd": -0.0441,
+       "train_sharpe": 0.761,
+       "test_sharpe": -0.045,
+       "test_return": -0.001,
+       "test_maxdd": -0.0206,
        "test_trades": 10,
        "halted_at": null
       },
       {
-       "test_start": "2025-09-12 00:00:00+00:00",
-       "test_end": "2026-03-13 08:00:00+00:00",
+       "test_start": "2023-09-12 00:00:00+00:00",
+       "test_end": "2024-03-11 00:00:00+00:00",
        "params": {
         "lookbacks": [
-         60,
-         180,
-         360
+         40,
+         120,
+         250
         ],
-        "target_vol": 0.12,
-        "rebalance_threshold": 0.15,
-        "entry_min_signal": 1.0,
-        "regime": {
-         "er_window": 0,
-         "er_min": 0.0
-        }
-       },
-       "train_sharpe": -0.941,
-       "test_sharpe": -0.28,
-       "test_return": -0.0093,
-       "test_maxdd": -0.0381,
-       "test_trades": 25,
-       "halted_at": null
-      },
-      {
-       "test_start": "2026-03-13 12:00:00+00:00",
-       "test_end": "2026-09-12 04:00:00+00:00",
-       "params": {
-        "lookbacks": [
-         60,
-         180,
-         360
-        ],
-        "target_vol": 0.12,
+        "target_vol": 0.1,
         "rebalance_threshold": 0.15,
         "entry_min_signal": 0.0,
         "regime": {
@@ -3341,11 +2799,131 @@
          "er_min": 0.0
         }
        },
-       "train_sharpe": -0.041,
-       "test_sharpe": 0.847,
-       "test_return": 0.0243,
-       "test_maxdd": -0.0323,
-       "test_trades": 34,
+       "train_sharpe": 0.045,
+       "test_sharpe": -1.076,
+       "test_return": -0.0145,
+       "test_maxdd": -0.0177,
+       "test_trades": 8,
+       "halted_at": null
+      },
+      {
+       "test_start": "2024-03-12 00:00:00+00:00",
+       "test_end": "2024-09-09 00:00:00+00:00",
+       "params": {
+        "lookbacks": [
+         40,
+         120,
+         250
+        ],
+        "target_vol": 0.1,
+        "rebalance_threshold": 0.15,
+        "entry_min_signal": 0.0,
+        "regime": {
+         "er_window": 0,
+         "er_min": 0.0
+        }
+       },
+       "train_sharpe": -0.762,
+       "test_sharpe": 1.972,
+       "test_return": 0.0198,
+       "test_maxdd": -0.0078,
+       "test_trades": 3,
+       "halted_at": null
+      },
+      {
+       "test_start": "2024-09-10 00:00:00+00:00",
+       "test_end": "2025-03-10 00:00:00+00:00",
+       "params": {
+        "lookbacks": [
+         40,
+         120,
+         250
+        ],
+        "target_vol": 0.1,
+        "rebalance_threshold": 0.15,
+        "entry_min_signal": 0.0,
+        "regime": {
+         "er_window": 0,
+         "er_min": 0.0
+        }
+       },
+       "train_sharpe": -0.806,
+       "test_sharpe": -1.976,
+       "test_return": -0.0427,
+       "test_maxdd": -0.0463,
+       "test_trades": 22,
+       "halted_at": null
+      },
+      {
+       "test_start": "2025-03-11 00:00:00+00:00",
+       "test_end": "2025-09-08 00:00:00+00:00",
+       "params": {
+        "lookbacks": [
+         20,
+         60,
+         120
+        ],
+        "target_vol": 0.1,
+        "rebalance_threshold": 0.15,
+        "entry_min_signal": 0.0,
+        "regime": {
+         "er_window": 20,
+         "er_min": 0.25
+        }
+       },
+       "train_sharpe": -1.66,
+       "test_sharpe": -1.47,
+       "test_return": -0.0074,
+       "test_maxdd": -0.01,
+       "test_trades": 18,
+       "halted_at": null
+      },
+      {
+       "test_start": "2025-09-09 00:00:00+00:00",
+       "test_end": "2026-03-09 00:00:00+00:00",
+       "params": {
+        "lookbacks": [
+         20,
+         60,
+         120
+        ],
+        "target_vol": 0.1,
+        "rebalance_threshold": 0.15,
+        "entry_min_signal": 0.0,
+        "regime": {
+         "er_window": 20,
+         "er_min": 0.25
+        }
+       },
+       "train_sharpe": -1.992,
+       "test_sharpe": 1.364,
+       "test_return": 0.0121,
+       "test_maxdd": -0.0089,
+       "test_trades": 26,
+       "halted_at": null
+      },
+      {
+       "test_start": "2026-03-10 00:00:00+00:00",
+       "test_end": "2026-09-07 00:00:00+00:00",
+       "params": {
+        "lookbacks": [
+         20,
+         60,
+         120
+        ],
+        "target_vol": 0.1,
+        "rebalance_threshold": 0.15,
+        "entry_min_signal": 1.0,
+        "regime": {
+         "er_window": 0,
+         "er_min": 0.0
+        }
+       },
+       "train_sharpe": -0.857,
+       "test_sharpe": 1.359,
+       "test_return": 0.0528,
+       "test_maxdd": -0.0342,
+       "test_trades": 11,
        "halted_at": null
       }
      ]
@@ -3355,250 +2933,250 @@
     "long": {
      "summary": {
       "folds": 6,
-      "embargo_bars": 870,
+      "embargo_bars": 330,
       "horizon": 30,
       "barrier_k": 1.0,
-      "events": 130,
-      "primary_median_sharpe": 0.435,
-      "meta_median_sharpe": 0.772,
+      "events": 20,
+      "primary_median_sharpe": 0.779,
+      "meta_median_sharpe": 0.779,
       "primary_positive_folds": 4,
       "meta_positive_folds": 4,
-      "meta_better_folds": 3,
-      "accepted_share": 0.546
+      "meta_better_folds": 0,
+      "accepted_share": 1.0
      },
      "folds": [
       {
        "fold": 0,
-       "test_start": "2020-09-12 12:00:00+00:00",
-       "test_end": "2021-09-12 12:00:00+00:00",
-       "events": 39,
-       "accepted": 11,
-       "train_events": 84,
-       "base_rate": 0.571,
-       "mean_p": 0.502,
-       "primary_sharpe": 0.18,
-       "meta_sharpe": -0.081,
-       "primary_return": 0.0032,
-       "meta_return": -0.0011,
-       "primary_trades": 78,
-       "meta_trades": 22,
-       "primary_maxdd": -0.0223,
-       "meta_maxdd": -0.0133
+       "test_start": "2020-09-13 00:00:00+00:00",
+       "test_end": "2021-09-12 00:00:00+00:00",
+       "events": 4,
+       "accepted": 4,
+       "train_events": 14,
+       "base_rate": 0.5,
+       "mean_p": null,
+       "primary_sharpe": 2.579,
+       "meta_sharpe": 2.579,
+       "primary_return": 0.3262,
+       "meta_return": 0.3262,
+       "primary_trades": 11,
+       "meta_trades": 11,
+       "primary_maxdd": -0.0566,
+       "meta_maxdd": -0.0566
       },
       {
        "fold": 1,
-       "test_start": "2021-09-12 16:00:00+00:00",
-       "test_end": "2022-09-12 20:00:00+00:00",
-       "events": 19,
-       "accepted": 5,
-       "train_events": 93,
-       "base_rate": 0.505,
-       "mean_p": 0.455,
-       "primary_sharpe": -1.311,
-       "meta_sharpe": -1.211,
-       "primary_return": -0.0063,
-       "meta_return": -0.0035,
-       "primary_trades": 36,
-       "meta_trades": 10,
-       "primary_maxdd": -0.0065,
-       "meta_maxdd": -0.0037
+       "test_start": "2021-09-13 00:00:00+00:00",
+       "test_end": "2022-09-12 00:00:00+00:00",
+       "events": 1,
+       "accepted": 1,
+       "train_events": 9,
+       "base_rate": 0.667,
+       "mean_p": null,
+       "primary_sharpe": 0.427,
+       "meta_sharpe": 0.427,
+       "primary_return": 0.0185,
+       "meta_return": 0.0185,
+       "primary_trades": 6,
+       "meta_trades": 6,
+       "primary_maxdd": -0.0253,
+       "meta_maxdd": -0.0253
       },
       {
        "fold": 2,
        "test_start": "2022-09-13 00:00:00+00:00",
-       "test_end": "2023-09-13 00:00:00+00:00",
-       "events": 17,
-       "accepted": 14,
-       "train_events": 97,
-       "base_rate": 0.577,
-       "mean_p": 0.632,
-       "primary_sharpe": 1.725,
-       "meta_sharpe": 1.721,
-       "primary_return": 0.0629,
-       "meta_return": 0.0626,
-       "primary_trades": 38,
-       "meta_trades": 32,
-       "primary_maxdd": -0.0118,
-       "meta_maxdd": -0.0121
+       "test_end": "2023-09-12 00:00:00+00:00",
+       "events": 6,
+       "accepted": 6,
+       "train_events": 10,
+       "base_rate": 0.8,
+       "mean_p": null,
+       "primary_sharpe": -1.178,
+       "meta_sharpe": -1.178,
+       "primary_return": -0.0585,
+       "meta_return": -0.0585,
+       "primary_trades": 18,
+       "meta_trades": 18,
+       "primary_maxdd": -0.0652,
+       "meta_maxdd": -0.0652
       },
       {
        "fold": 3,
-       "test_start": "2023-09-13 04:00:00+00:00",
-       "test_end": "2024-09-12 04:00:00+00:00",
-       "events": 27,
-       "accepted": 19,
-       "train_events": 86,
-       "base_rate": 0.512,
-       "mean_p": 0.608,
-       "primary_sharpe": 0.902,
-       "meta_sharpe": 1.376,
-       "primary_return": 0.0337,
-       "meta_return": 0.0467,
-       "primary_trades": 57,
-       "meta_trades": 41,
-       "primary_maxdd": -0.0217,
-       "meta_maxdd": -0.0215
+       "test_start": "2023-09-13 00:00:00+00:00",
+       "test_end": "2024-09-11 00:00:00+00:00",
+       "events": 3,
+       "accepted": 3,
+       "train_events": 6,
+       "base_rate": 0.833,
+       "mean_p": null,
+       "primary_sharpe": 2.085,
+       "meta_sharpe": 2.085,
+       "primary_return": 0.1328,
+       "meta_return": 0.1328,
+       "primary_trades": 8,
+       "meta_trades": 8,
+       "primary_maxdd": -0.0419,
+       "meta_maxdd": -0.0419
       },
       {
        "fold": 4,
-       "test_start": "2024-09-12 08:00:00+00:00",
-       "test_end": "2025-09-12 04:00:00+00:00",
-       "events": 21,
-       "accepted": 16,
-       "train_events": 105,
-       "base_rate": 0.524,
-       "mean_p": 0.559,
-       "primary_sharpe": 0.691,
-       "meta_sharpe": 0.409,
-       "primary_return": 0.0181,
-       "meta_return": 0.0102,
-       "primary_trades": 43,
-       "meta_trades": 33,
-       "primary_maxdd": -0.0233,
-       "meta_maxdd": -0.0233
+       "test_start": "2024-09-12 00:00:00+00:00",
+       "test_end": "2025-09-11 00:00:00+00:00",
+       "events": 4,
+       "accepted": 4,
+       "train_events": 11,
+       "base_rate": 0.636,
+       "mean_p": null,
+       "primary_sharpe": 1.132,
+       "meta_sharpe": 1.132,
+       "primary_return": 0.0663,
+       "meta_return": 0.0663,
+       "primary_trades": 9,
+       "meta_trades": 9,
+       "primary_maxdd": -0.0338,
+       "meta_maxdd": -0.0338
       },
       {
        "fold": 5,
-       "test_start": "2025-09-12 08:00:00+00:00",
-       "test_end": "2026-09-12 16:00:00+00:00",
-       "events": 7,
-       "accepted": 6,
-       "train_events": 114,
-       "base_rate": 0.544,
-       "mean_p": 0.573,
-       "primary_sharpe": -0.233,
-       "meta_sharpe": 1.135,
-       "primary_return": -0.0032,
-       "meta_return": 0.0086,
-       "primary_trades": 19,
-       "meta_trades": 12,
-       "primary_maxdd": -0.0151,
-       "meta_maxdd": -0.0038
+       "test_start": "2025-09-12 00:00:00+00:00",
+       "test_end": "2026-09-11 00:00:00+00:00",
+       "events": 2,
+       "accepted": 2,
+       "train_events": 14,
+       "base_rate": 0.643,
+       "mean_p": null,
+       "primary_sharpe": -2.17,
+       "meta_sharpe": -2.17,
+       "primary_return": -0.0629,
+       "meta_return": -0.0629,
+       "primary_trades": 6,
+       "meta_trades": 6,
+       "primary_maxdd": -0.0651,
+       "meta_maxdd": -0.0651
       }
      ]
     },
     "both": {
      "summary": {
       "folds": 6,
-      "embargo_bars": 870,
+      "embargo_bars": 330,
       "horizon": 30,
       "barrier_k": 1.0,
-      "events": 232,
-      "primary_median_sharpe": 0.393,
-      "meta_median_sharpe": 0.612,
+      "events": 37,
+      "primary_median_sharpe": 0.973,
+      "meta_median_sharpe": 0.973,
       "primary_positive_folds": 5,
-      "meta_positive_folds": 4,
-      "meta_better_folds": 4,
-      "accepted_share": 0.448
+      "meta_positive_folds": 5,
+      "meta_better_folds": 0,
+      "accepted_share": 1.0
      },
      "folds": [
       {
        "fold": 0,
-       "test_start": "2020-09-12 12:00:00+00:00",
-       "test_end": "2021-09-12 12:00:00+00:00",
-       "events": 44,
-       "accepted": 34,
-       "train_events": 175,
-       "base_rate": 0.52,
-       "mean_p": 0.546,
-       "primary_sharpe": 0.058,
-       "meta_sharpe": -0.402,
-       "primary_return": 0.001,
-       "meta_return": -0.0073,
-       "primary_trades": 88,
-       "meta_trades": 68,
-       "primary_maxdd": -0.0223,
-       "meta_maxdd": -0.0174
+       "test_start": "2020-09-13 00:00:00+00:00",
+       "test_end": "2021-09-12 00:00:00+00:00",
+       "events": 6,
+       "accepted": 6,
+       "train_events": 27,
+       "base_rate": 0.519,
+       "mean_p": null,
+       "primary_sharpe": 2.315,
+       "meta_sharpe": 2.315,
+       "primary_return": 0.2958,
+       "meta_return": 0.2958,
+       "primary_trades": 14,
+       "meta_trades": 14,
+       "primary_maxdd": -0.0717,
+       "meta_maxdd": -0.0717
       },
       {
        "fold": 1,
-       "test_start": "2021-09-12 16:00:00+00:00",
-       "test_end": "2022-09-12 20:00:00+00:00",
-       "events": 36,
-       "accepted": 11,
-       "train_events": 162,
-       "base_rate": 0.469,
-       "mean_p": 0.484,
-       "primary_sharpe": 0.983,
-       "meta_sharpe": 0.545,
-       "primary_return": 0.0281,
-       "meta_return": 0.0059,
-       "primary_trades": 70,
-       "meta_trades": 22,
-       "primary_maxdd": -0.0169,
-       "meta_maxdd": -0.0058
+       "test_start": "2021-09-13 00:00:00+00:00",
+       "test_end": "2022-09-12 00:00:00+00:00",
+       "events": 3,
+       "accepted": 3,
+       "train_events": 18,
+       "base_rate": 0.611,
+       "mean_p": null,
+       "primary_sharpe": 0.907,
+       "meta_sharpe": 0.907,
+       "primary_return": 0.0434,
+       "meta_return": 0.0434,
+       "primary_trades": 12,
+       "meta_trades": 12,
+       "primary_maxdd": -0.0253,
+       "meta_maxdd": -0.0253
       },
       {
        "fold": 2,
        "test_start": "2022-09-13 00:00:00+00:00",
-       "test_end": "2023-09-13 00:00:00+00:00",
-       "events": 36,
-       "accepted": 15,
-       "train_events": 168,
-       "base_rate": 0.506,
-       "mean_p": 0.492,
-       "primary_sharpe": 1.141,
-       "meta_sharpe": 1.52,
-       "primary_return": 0.0424,
-       "meta_return": 0.0513,
-       "primary_trades": 81,
-       "meta_trades": 38,
-       "primary_maxdd": -0.0223,
-       "meta_maxdd": -0.0153
+       "test_end": "2023-09-12 00:00:00+00:00",
+       "events": 11,
+       "accepted": 11,
+       "train_events": 18,
+       "base_rate": 0.667,
+       "mean_p": null,
+       "primary_sharpe": -0.998,
+       "meta_sharpe": -0.998,
+       "primary_return": -0.0324,
+       "meta_return": -0.0324,
+       "primary_trades": 26,
+       "meta_trades": 26,
+       "primary_maxdd": -0.0577,
+       "meta_maxdd": -0.0577
       },
       {
        "fold": 3,
-       "test_start": "2023-09-13 04:00:00+00:00",
-       "test_end": "2024-09-12 04:00:00+00:00",
-       "events": 38,
-       "accepted": 11,
-       "train_events": 164,
-       "base_rate": 0.506,
-       "mean_p": 0.494,
-       "primary_sharpe": 0.455,
-       "meta_sharpe": 0.919,
-       "primary_return": 0.0161,
-       "meta_return": 0.0274,
-       "primary_trades": 77,
-       "meta_trades": 23,
-       "primary_maxdd": -0.023,
-       "meta_maxdd": -0.0233
+       "test_start": "2023-09-13 00:00:00+00:00",
+       "test_end": "2024-09-11 00:00:00+00:00",
+       "events": 5,
+       "accepted": 5,
+       "train_events": 14,
+       "base_rate": 0.786,
+       "mean_p": null,
+       "primary_sharpe": 1.637,
+       "meta_sharpe": 1.637,
+       "primary_return": 0.1232,
+       "meta_return": 0.1232,
+       "primary_trades": 13,
+       "meta_trades": 13,
+       "primary_maxdd": -0.0529,
+       "meta_maxdd": -0.0529
       },
       {
        "fold": 4,
-       "test_start": "2024-09-12 08:00:00+00:00",
-       "test_end": "2025-09-12 04:00:00+00:00",
-       "events": 43,
-       "accepted": 25,
-       "train_events": 164,
-       "base_rate": 0.537,
-       "mean_p": 0.536,
-       "primary_sharpe": 0.33,
-       "meta_sharpe": 0.678,
-       "primary_return": 0.0069,
-       "meta_return": 0.0125,
-       "primary_trades": 87,
-       "meta_trades": 51,
-       "primary_maxdd": -0.014,
-       "meta_maxdd": -0.0139
+       "test_start": "2024-09-12 00:00:00+00:00",
+       "test_end": "2025-09-11 00:00:00+00:00",
+       "events": 7,
+       "accepted": 7,
+       "train_events": 20,
+       "base_rate": 0.55,
+       "mean_p": null,
+       "primary_sharpe": 1.038,
+       "meta_sharpe": 1.038,
+       "primary_return": 0.059,
+       "meta_return": 0.059,
+       "primary_trades": 21,
+       "meta_trades": 21,
+       "primary_maxdd": -0.034,
+       "meta_maxdd": -0.034
       },
       {
        "fold": 5,
-       "test_start": "2025-09-12 08:00:00+00:00",
-       "test_end": "2026-09-12 16:00:00+00:00",
-       "events": 35,
-       "accepted": 8,
-       "train_events": 185,
-       "base_rate": 0.503,
-       "mean_p": 0.492,
-       "primary_sharpe": -0.455,
-       "meta_sharpe": -0.042,
-       "primary_return": -0.0056,
-       "meta_return": -0.0004,
-       "primary_trades": 71,
+       "test_start": "2025-09-12 00:00:00+00:00",
+       "test_end": "2026-09-11 00:00:00+00:00",
+       "events": 5,
+       "accepted": 5,
+       "train_events": 27,
+       "base_rate": 0.519,
+       "mean_p": null,
+       "primary_sharpe": 0.163,
+       "meta_sharpe": 0.163,
+       "primary_return": 0.0088,
+       "meta_return": 0.0088,
+       "primary_trades": 17,
        "meta_trades": 17,
-       "primary_maxdd": -0.0111,
-       "meta_maxdd": -0.0063
+       "primary_maxdd": -0.0671,
+       "meta_maxdd": -0.0671
       }
      ]
     }
@@ -3606,75 +3184,75 @@
    "purged_cv": {
     "summary": {
      "folds": 6,
-     "embargo_bars": 1040,
-     "mean_oos_sharpe": 0.435,
-     "median_oos_sharpe": 0.328,
+     "embargo_bars": 450,
+     "mean_oos_sharpe": 0.418,
+     "median_oos_sharpe": 0.581,
      "positive_folds": 4,
-     "worst_fold_sharpe": -0.612,
-     "total_oos_trades": 414
+     "worst_fold_sharpe": -1.221,
+     "total_oos_trades": 116
     },
     "folds": [
      {
       "fold": 0,
-      "test_start": "2020-09-12 12:00:00+00:00",
-      "test_end": "2021-09-12 12:00:00+00:00",
+      "test_start": "2020-09-13 00:00:00+00:00",
+      "test_end": "2021-09-12 00:00:00+00:00",
       "params": {
        "lookbacks": [
-        60,
-        180,
-        360
+        40,
+        120,
+        250
        ],
-       "target_vol": 0.12,
-       "rebalance_threshold": 0.15,
-       "entry_min_signal": 1.0,
-       "regime": {
-        "er_window": 0,
-        "er_min": 0.0
-       }
-      },
-      "train_sharpe": 0.487,
-      "test_sharpe": 1.981,
-      "test_return": 0.2194,
-      "test_maxdd": -0.0529,
-      "test_trades": 34,
-      "test_cost": 14.65
-     },
-     {
-      "fold": 1,
-      "test_start": "2021-09-12 16:00:00+00:00",
-      "test_end": "2022-09-12 20:00:00+00:00",
-      "params": {
-       "lookbacks": [
-        90,
-        270,
-        540
-       ],
-       "target_vol": 0.12,
+       "target_vol": 0.1,
        "rebalance_threshold": 0.15,
        "entry_min_signal": 0.0,
        "regime": {
-        "er_window": 0,
-        "er_min": 0.0
+        "er_window": 20,
+        "er_min": 0.25
        }
       },
-      "train_sharpe": 0.839,
-      "test_sharpe": -0.148,
-      "test_return": -0.016,
-      "test_maxdd": -0.0768,
-      "test_trades": 68,
-      "test_cost": 7.45
+      "train_sharpe": 0.755,
+      "test_sharpe": 1.462,
+      "test_return": 0.1506,
+      "test_maxdd": -0.0362,
+      "test_trades": 46,
+      "test_cost": 10.87
+     },
+     {
+      "fold": 1,
+      "test_start": "2021-09-13 00:00:00+00:00",
+      "test_end": "2022-09-12 00:00:00+00:00",
+      "params": {
+       "lookbacks": [
+        40,
+        120,
+        250
+       ],
+       "target_vol": 0.1,
+       "rebalance_threshold": 0.15,
+       "entry_min_signal": 0.0,
+       "regime": {
+        "er_window": 20,
+        "er_min": 0.25
+       }
+      },
+      "train_sharpe": 0.882,
+      "test_sharpe": 0.299,
+      "test_return": 0.0039,
+      "test_maxdd": -0.0125,
+      "test_trades": 26,
+      "test_cost": 2.7
      },
      {
       "fold": 2,
       "test_start": "2022-09-13 00:00:00+00:00",
-      "test_end": "2023-09-13 00:00:00+00:00",
+      "test_end": "2023-09-12 00:00:00+00:00",
       "params": {
        "lookbacks": [
-        60,
-        180,
-        360
+        40,
+        120,
+        250
        ],
-       "target_vol": 0.12,
+       "target_vol": 0.1,
        "rebalance_threshold": 0.15,
        "entry_min_signal": 1.0,
        "regime": {
@@ -3682,74 +3260,74 @@
         "er_min": 0.0
        }
       },
-      "train_sharpe": 0.751,
-      "test_sharpe": -0.612,
-      "test_return": -0.0377,
-      "test_maxdd": -0.0628,
-      "test_trades": 92,
-      "test_cost": 23.74
+      "train_sharpe": 1.192,
+      "test_sharpe": -0.606,
+      "test_return": -0.0233,
+      "test_maxdd": -0.0495,
+      "test_trades": 14,
+      "test_cost": 2.82
      },
      {
       "fold": 3,
-      "test_start": "2023-09-13 04:00:00+00:00",
-      "test_end": "2024-09-12 04:00:00+00:00",
+      "test_start": "2023-09-13 00:00:00+00:00",
+      "test_end": "2024-09-11 00:00:00+00:00",
       "params": {
        "lookbacks": [
-        60,
-        180,
-        360
+        40,
+        120,
+        250
        ],
-       "target_vol": 0.08,
+       "target_vol": 0.1,
        "rebalance_threshold": 0.15,
        "entry_min_signal": 1.0,
        "regime": {
-        "er_window": 60,
-        "er_min": 0.25
+        "er_window": 0,
+        "er_min": 0.0
        }
       },
-      "train_sharpe": 0.611,
-      "test_sharpe": 0.472,
-      "test_return": 0.0133,
-      "test_maxdd": -0.0188,
-      "test_trades": 79,
-      "test_cost": 8.46
+      "train_sharpe": 1.417,
+      "test_sharpe": 1.712,
+      "test_return": 0.1453,
+      "test_maxdd": -0.0613,
+      "test_trades": 10,
+      "test_cost": 2.61
      },
      {
       "fold": 4,
-      "test_start": "2024-09-12 08:00:00+00:00",
-      "test_end": "2025-09-12 04:00:00+00:00",
+      "test_start": "2024-09-12 00:00:00+00:00",
+      "test_end": "2025-09-11 00:00:00+00:00",
       "params": {
        "lookbacks": [
-        90,
-        270,
-        540
+        40,
+        120,
+        250
        ],
-       "target_vol": 0.12,
+       "target_vol": 0.1,
        "rebalance_threshold": 0.15,
        "entry_min_signal": 1.0,
        "regime": {
-        "er_window": 60,
-        "er_min": 0.25
+        "er_window": 0,
+        "er_min": 0.0
        }
       },
-      "train_sharpe": 1.119,
-      "test_sharpe": 0.183,
-      "test_return": 0.0041,
-      "test_maxdd": -0.0164,
-      "test_trades": 94,
-      "test_cost": 11.87
+      "train_sharpe": 0.512,
+      "test_sharpe": 0.863,
+      "test_return": 0.0495,
+      "test_maxdd": -0.0343,
+      "test_trades": 11,
+      "test_cost": 1.59
      },
      {
       "fold": 5,
-      "test_start": "2025-09-12 08:00:00+00:00",
-      "test_end": "2026-09-12 16:00:00+00:00",
+      "test_start": "2025-09-12 00:00:00+00:00",
+      "test_end": "2026-09-11 00:00:00+00:00",
       "params": {
        "lookbacks": [
-        90,
-        270,
-        540
+        40,
+        120,
+        250
        ],
-       "target_vol": 0.08,
+       "target_vol": 0.1,
        "rebalance_threshold": 0.15,
        "entry_min_signal": 0.0,
        "regime": {
@@ -3757,78 +3335,392 @@
         "er_min": 0.0
        }
       },
-      "train_sharpe": 0.926,
-      "test_sharpe": 0.732,
-      "test_return": 0.0292,
-      "test_maxdd": -0.028,
-      "test_trades": 47,
-      "test_cost": 4.54
+      "train_sharpe": 1.279,
+      "test_sharpe": -1.221,
+      "test_return": -0.052,
+      "test_maxdd": -0.0531,
+      "test_trades": 9,
+      "test_cost": 0.73
      }
     ]
    }
   }
  },
  "weights": {
-  "XAU/USDT:USDT": 0.34,
-  "BTC/USDT:USDT": 0.33,
-  "ETH/USDT:USDT": 0.33
+  "XAU/USDT:USDT": 0.6,
+  "BTC/USDT:USDT": 0.4,
+  "ETH/USDT:USDT": 0.0
  },
  "selector": "robust",
  "portfolio": {
   "metrics": {
-   "bars": 8760,
-   "years": 4.0,
+   "bars": 1448,
+   "years": 3.97,
    "start_equity": 5000.0,
-   "end_equity": 5212.86,
-   "total_return": 0.0426,
-   "cagr": 0.0105,
-   "ann_vol": 0.022,
-   "sharpe": 0.485,
-   "sortino": 0.359,
-   "max_drawdown": -0.0356,
-   "calmar": 0.295,
-   "psr_gt_0": 0.839,
-   "trades": 1141,
+   "end_equity": 5564.67,
+   "total_return": 0.1129,
+   "cagr": 0.0273,
+   "ann_vol": 0.0418,
+   "sharpe": 0.666,
+   "sortino": 0.798,
+   "max_drawdown": -0.0626,
+   "calmar": 0.437,
+   "psr_gt_0": 0.91,
+   "trades": 568,
    "total_cost": 0.0,
    "total_swap": 0.0,
-   "pnl_per_trading_day": 0.15,
-   "worst_bar": -0.0066,
-   "best_bar": 0.0136
+   "pnl_per_trading_day": 0.39,
+   "worst_bar": -0.0137,
+   "best_bar": 0.015
   },
   "kind": "walk_forward_dynamic"
  },
+ "meta_pooled": {
+  "folds": 6,
+  "horizon": 15,
+  "embargo_bars": 315,
+  "pooled_events": 69,
+  "per_symbol": {
+   "XAU/USDT:USDT": {
+    "folds": [
+     {
+      "fold": 0,
+      "test_start": "2020-09-13",
+      "test_end": "2021-09-12",
+      "events": 7,
+      "accepted": 6,
+      "train_events": 45,
+      "mean_p": 0.581,
+      "primary_sharpe": -0.64,
+      "meta_sharpe": -0.822,
+      "primary_return": -0.0331,
+      "meta_return": -0.0324,
+      "primary_trades": 21,
+      "meta_trades": 15
+     },
+     {
+      "fold": 1,
+      "test_start": "2021-09-12",
+      "test_end": "2022-09-12",
+      "events": 5,
+      "accepted": 5,
+      "train_events": 38,
+      "mean_p": null,
+      "primary_sharpe": -0.6,
+      "meta_sharpe": -0.6,
+      "primary_return": -0.0189,
+      "meta_return": -0.0189,
+      "primary_trades": 22,
+      "meta_trades": 22
+     },
+     {
+      "fold": 2,
+      "test_start": "2022-09-12",
+      "test_end": "2023-09-12",
+      "events": 4,
+      "accepted": 4,
+      "train_events": 39,
+      "mean_p": null,
+      "primary_sharpe": -0.05,
+      "meta_sharpe": -0.05,
+      "primary_return": -0.0037,
+      "meta_return": -0.0037,
+      "primary_trades": 26,
+      "meta_trades": 26
+     },
+     {
+      "fold": 3,
+      "test_start": "2023-09-12",
+      "test_end": "2024-09-11",
+      "events": 6,
+      "accepted": 6,
+      "train_events": 33,
+      "mean_p": null,
+      "primary_sharpe": 0.961,
+      "meta_sharpe": 0.961,
+      "primary_return": 0.0656,
+      "meta_return": 0.0656,
+      "primary_trades": 51,
+      "meta_trades": 51
+     },
+     {
+      "fold": 4,
+      "test_start": "2024-09-11",
+      "test_end": "2025-09-11",
+      "events": 6,
+      "accepted": 1,
+      "train_events": 42,
+      "mean_p": 0.521,
+      "primary_sharpe": 0.932,
+      "meta_sharpe": -0.016,
+      "primary_return": 0.074,
+      "meta_return": -0.0022,
+      "primary_trades": 57,
+      "meta_trades": 18
+     },
+     {
+      "fold": 5,
+      "test_start": "2025-09-11",
+      "test_end": "2026-09-11",
+      "events": 1,
+      "accepted": 1,
+      "train_events": 52,
+      "mean_p": 0.769,
+      "primary_sharpe": 2.91,
+      "meta_sharpe": 2.91,
+      "primary_return": 0.2607,
+      "meta_return": 0.2607,
+      "primary_trades": 27,
+      "meta_trades": 27
+     }
+    ],
+    "primary_median_sharpe": 0.441,
+    "meta_median_sharpe": -0.033,
+    "primary_positive_folds": 3,
+    "meta_positive_folds": 2,
+    "meta_better_folds": 0,
+    "n_folds": 6,
+    "accepted_share": 0.793
+   },
+   "BTC/USDT:USDT": {
+    "folds": [
+     {
+      "fold": 0,
+      "test_start": "2020-09-13",
+      "test_end": "2021-09-12",
+      "events": 5,
+      "accepted": 5,
+      "train_events": 45,
+      "mean_p": 0.639,
+      "primary_sharpe": 3.217,
+      "meta_sharpe": 3.217,
+      "primary_return": 0.3248,
+      "meta_return": 0.3248,
+      "primary_trades": 12,
+      "meta_trades": 12
+     },
+     {
+      "fold": 1,
+      "test_start": "2021-09-12",
+      "test_end": "2022-09-12",
+      "events": 2,
+      "accepted": 2,
+      "train_events": 38,
+      "mean_p": null,
+      "primary_sharpe": -0.116,
+      "meta_sharpe": -0.116,
+      "primary_return": -0.0027,
+      "meta_return": -0.0027,
+      "primary_trades": 10,
+      "meta_trades": 10
+     },
+     {
+      "fold": 2,
+      "test_start": "2022-09-12",
+      "test_end": "2023-09-12",
+      "events": 3,
+      "accepted": 3,
+      "train_events": 39,
+      "mean_p": null,
+      "primary_sharpe": -0.03,
+      "meta_sharpe": -0.03,
+      "primary_return": -0.0026,
+      "meta_return": -0.0026,
+      "primary_trades": 16,
+      "meta_trades": 16
+     },
+     {
+      "fold": 3,
+      "test_start": "2023-09-12",
+      "test_end": "2024-09-11",
+      "events": 5,
+      "accepted": 5,
+      "train_events": 33,
+      "mean_p": null,
+      "primary_sharpe": 2.226,
+      "meta_sharpe": 2.226,
+      "primary_return": 0.1711,
+      "meta_return": 0.1711,
+      "primary_trades": 22,
+      "meta_trades": 22
+     },
+     {
+      "fold": 4,
+      "test_start": "2024-09-11",
+      "test_end": "2025-09-11",
+      "events": 3,
+      "accepted": 2,
+      "train_events": 42,
+      "mean_p": 0.565,
+      "primary_sharpe": 1.003,
+      "meta_sharpe": 1.19,
+      "primary_return": 0.0679,
+      "meta_return": 0.067,
+      "primary_trades": 41,
+      "meta_trades": 20
+     },
+     {
+      "fold": 5,
+      "test_start": "2025-09-11",
+      "test_end": "2026-09-11",
+      "events": 2,
+      "accepted": 1,
+      "train_events": 52,
+      "mean_p": 0.648,
+      "primary_sharpe": -0.527,
+      "meta_sharpe": -0.38,
+      "primary_return": -0.014,
+      "meta_return": -0.0012,
+      "primary_trades": 11,
+      "meta_trades": 10
+     }
+    ],
+    "primary_median_sharpe": 0.486,
+    "meta_median_sharpe": 0.58,
+    "primary_positive_folds": 3,
+    "meta_positive_folds": 3,
+    "meta_better_folds": 2,
+    "n_folds": 6,
+    "accepted_share": 0.9
+   },
+   "ETH/USDT:USDT": {
+    "folds": [
+     {
+      "fold": 0,
+      "test_start": "2020-09-13",
+      "test_end": "2021-09-12",
+      "events": 4,
+      "accepted": 1,
+      "train_events": 45,
+      "mean_p": 0.493,
+      "primary_sharpe": 2.579,
+      "meta_sharpe": 1.397,
+      "primary_return": 0.3262,
+      "meta_return": 0.0932,
+      "primary_trades": 11,
+      "meta_trades": 3
+     },
+     {
+      "fold": 1,
+      "test_start": "2021-09-12",
+      "test_end": "2022-09-12",
+      "events": 1,
+      "accepted": 1,
+      "train_events": 38,
+      "mean_p": null,
+      "primary_sharpe": 0.427,
+      "meta_sharpe": 0.427,
+      "primary_return": 0.0185,
+      "meta_return": 0.0185,
+      "primary_trades": 6,
+      "meta_trades": 6
+     },
+     {
+      "fold": 2,
+      "test_start": "2022-09-12",
+      "test_end": "2023-09-12",
+      "events": 6,
+      "accepted": 6,
+      "train_events": 39,
+      "mean_p": null,
+      "primary_sharpe": -1.178,
+      "meta_sharpe": -1.178,
+      "primary_return": -0.0585,
+      "meta_return": -0.0585,
+      "primary_trades": 18,
+      "meta_trades": 18
+     },
+     {
+      "fold": 3,
+      "test_start": "2023-09-12",
+      "test_end": "2024-09-11",
+      "events": 3,
+      "accepted": 3,
+      "train_events": 33,
+      "mean_p": null,
+      "primary_sharpe": 2.085,
+      "meta_sharpe": 2.085,
+      "primary_return": 0.1328,
+      "meta_return": 0.1328,
+      "primary_trades": 8,
+      "meta_trades": 8
+     },
+     {
+      "fold": 4,
+      "test_start": "2024-09-11",
+      "test_end": "2025-09-11",
+      "events": 4,
+      "accepted": 2,
+      "train_events": 42,
+      "mean_p": 0.498,
+      "primary_sharpe": 1.132,
+      "meta_sharpe": 1.239,
+      "primary_return": 0.0663,
+      "meta_return": 0.0686,
+      "primary_trades": 9,
+      "meta_trades": 5
+     },
+     {
+      "fold": 5,
+      "test_start": "2025-09-11",
+      "test_end": "2026-09-11",
+      "events": 2,
+      "accepted": 2,
+      "train_events": 52,
+      "mean_p": 0.8,
+      "primary_sharpe": -2.226,
+      "meta_sharpe": -2.226,
+      "primary_return": -0.0643,
+      "meta_return": -0.0643,
+      "primary_trades": 6,
+      "meta_trades": 6
+     }
+    ],
+    "primary_median_sharpe": 0.779,
+    "meta_median_sharpe": 0.833,
+    "primary_positive_folds": 4,
+    "meta_positive_folds": 4,
+    "meta_better_folds": 1,
+    "n_folds": 6,
+    "accepted_share": 0.75
+   }
+  },
+  "pooled_primary_median_sharpe": 0.679,
+  "pooled_meta_median_sharpe": 0.205,
+  "pooled_meta_better": "3/18"
+ },
  "portfolio_dynamic": {
   "metrics": {
-   "bars": 8760,
-   "years": 4.0,
+   "bars": 1448,
+   "years": 3.97,
    "start_equity": 5000.0,
-   "end_equity": 5212.86,
-   "total_return": 0.0426,
-   "cagr": 0.0105,
-   "ann_vol": 0.022,
-   "sharpe": 0.485,
-   "sortino": 0.359,
-   "max_drawdown": -0.0356,
-   "calmar": 0.295,
-   "psr_gt_0": 0.839,
-   "trades": 1141,
+   "end_equity": 5564.67,
+   "total_return": 0.1129,
+   "cagr": 0.0273,
+   "ann_vol": 0.0418,
+   "sharpe": 0.666,
+   "sortino": 0.798,
+   "max_drawdown": -0.0626,
+   "calmar": 0.437,
+   "psr_gt_0": 0.91,
+   "trades": 568,
    "total_cost": 0.0,
    "total_swap": 0.0,
-   "pnl_per_trading_day": 0.15,
-   "worst_bar": -0.0066,
-   "best_bar": 0.0136
+   "pnl_per_trading_day": 0.39,
+   "worst_bar": -0.0137,
+   "best_bar": 0.015
   },
   "final_weights": {
    "XAU-long": 0.6,
    "XAU-short": 0.0,
    "BTC-long": 0.4,
    "BTC-short": 0.0,
-   "ETH-long": 0.6,
+   "ETH-long": 0.0,
    "ETH-short": 0.0
   },
   "weight_history": [
    {
-    "from": "2022-09-12 20:00:00+00:00",
+    "from": "2022-09-13 00:00:00+00:00",
     "XAU-long": 0.167,
     "XAU-short": 0.167,
     "BTC-long": 0.167,
@@ -3837,34 +3729,7 @@
     "ETH-short": 0.167
    },
    {
-    "from": "2022-09-26 00:00:00+00:00",
-    "XAU-long": 0.167,
-    "XAU-short": 0.167,
-    "BTC-long": 0.167,
-    "BTC-short": 0.167,
-    "ETH-long": 0.167,
-    "ETH-short": 0.167
-   },
-   {
-    "from": "2023-03-14 12:00:00+00:00",
-    "XAU-long": 0.0,
-    "XAU-short": 0.0,
-    "BTC-long": 0.6,
-    "BTC-short": 0.0,
-    "ETH-long": 0.4,
-    "ETH-short": 0.0
-   },
-   {
-    "from": "2023-04-03 04:00:00+00:00",
-    "XAU-long": 0.0,
-    "XAU-short": 0.0,
-    "BTC-long": 0.6,
-    "BTC-short": 0.0,
-    "ETH-long": 0.4,
-    "ETH-short": 0.0
-   },
-   {
-    "from": "2023-09-13 00:00:00+00:00",
+    "from": "2023-03-14 00:00:00+00:00",
     "XAU-long": 0.0,
     "XAU-short": 0.0,
     "BTC-long": 0.6,
@@ -3873,231 +3738,195 @@
     "ETH-short": 0.0
    },
    {
-    "from": "2023-10-12 00:00:00+00:00",
+    "from": "2023-09-12 00:00:00+00:00",
     "XAU-long": 0.0,
     "XAU-short": 0.0,
-    "BTC-long": 0.6,
+    "BTC-long": 0.0,
     "BTC-short": 0.0,
     "ETH-long": 0.0,
     "ETH-short": 0.0
    },
    {
-    "from": "2024-03-13 12:00:00+00:00",
-    "XAU-long": 0.0,
+    "from": "2024-03-12 00:00:00+00:00",
+    "XAU-long": 0.265,
     "XAU-short": 0.0,
     "BTC-long": 0.6,
     "BTC-short": 0.0,
-    "ETH-long": 0.4,
+    "ETH-long": 0.135,
     "ETH-short": 0.0
    },
    {
-    "from": "2024-04-11 12:00:00+00:00",
-    "XAU-long": 0.0,
+    "from": "2024-09-10 00:00:00+00:00",
+    "XAU-long": 0.488,
     "XAU-short": 0.0,
-    "BTC-long": 0.6,
+    "BTC-long": 0.47,
     "BTC-short": 0.0,
-    "ETH-long": 0.4,
-    "ETH-short": 0.0
+    "ETH-long": 0.0,
+    "ETH-short": 0.042
    },
    {
-    "from": "2024-09-12 00:00:00+00:00",
-    "XAU-long": 0.0,
+    "from": "2025-03-11 00:00:00+00:00",
+    "XAU-long": 0.482,
     "XAU-short": 0.0,
-    "BTC-long": 0.6,
+    "BTC-long": 0.518,
     "BTC-short": 0.0,
-    "ETH-long": 0.4,
+    "ETH-long": 0.0,
     "ETH-short": 0.0
    },
    {
-    "from": "2024-10-11 04:00:00+00:00",
-    "XAU-long": 0.0,
+    "from": "2025-09-09 00:00:00+00:00",
+    "XAU-long": 0.515,
     "XAU-short": 0.0,
-    "BTC-long": 0.6,
+    "BTC-long": 0.405,
     "BTC-short": 0.0,
-    "ETH-long": 0.4,
+    "ETH-long": 0.08,
     "ETH-short": 0.0
    },
    {
-    "from": "2025-03-13 12:00:00+00:00",
-    "XAU-long": 0.0,
-    "XAU-short": 0.0,
-    "BTC-long": 0.6,
-    "BTC-short": 0.0,
-    "ETH-long": 0.4,
-    "ETH-short": 0.0
-   },
-   {
-    "from": "2025-04-15 00:00:00+00:00",
-    "XAU-long": 0.0,
-    "XAU-short": 0.0,
-    "BTC-long": 0.6,
-    "BTC-short": 0.0,
-    "ETH-long": 0.4,
-    "ETH-short": 0.0
-   },
-   {
-    "from": "2025-09-12 00:00:00+00:00",
-    "XAU-long": 0.0,
-    "XAU-short": 0.0,
-    "BTC-long": 0.579,
-    "BTC-short": 0.0,
-    "ETH-long": 0.421,
-    "ETH-short": 0.0
-   },
-   {
-    "from": "2025-10-18 12:00:00+00:00",
-    "XAU-long": 0.0,
-    "XAU-short": 0.0,
-    "BTC-long": 0.579,
-    "BTC-short": 0.0,
-    "ETH-long": 0.421,
-    "ETH-short": 0.0
-   },
-   {
-    "from": "2026-03-13 12:00:00+00:00",
-    "XAU-long": 0.0,
+    "from": "2026-03-10 00:00:00+00:00",
+    "XAU-long": 0.6,
     "XAU-short": 0.0,
     "BTC-long": 0.4,
     "BTC-short": 0.0,
-    "ETH-long": 0.6,
+    "ETH-long": 0.0,
     "ETH-short": 0.0
    }
   ],
   "sleeves": {
    "XAU-long": {
-    "bars": 7658,
-    "years": 3.5,
-    "start_equity": 1700.0,
-    "end_equity": 1852.1,
-    "total_return": 0.0895,
-    "cagr": 0.0248,
-    "ann_vol": 0.0435,
-    "sharpe": 0.585,
-    "sortino": 0.503,
-    "max_drawdown": -0.0616,
-    "calmar": 0.403,
-    "psr_gt_0": 0.862,
-    "trades": 253,
-    "total_cost": 128.94,
-    "total_swap": 35.04,
-    "pnl_per_trading_day": 0.12,
-    "worst_bar": -0.0132,
-    "best_bar": 0.0172,
+    "bars": 1448,
+    "years": 3.97,
+    "start_equity": 3000.0,
+    "end_equity": 4270.75,
+    "total_return": 0.4236,
+    "cagr": 0.0931,
+    "ann_vol": 0.0727,
+    "sharpe": 1.261,
+    "sortino": 1.406,
+    "max_drawdown": -0.0563,
+    "calmar": 1.654,
+    "psr_gt_0": 0.994,
+    "trades": 167,
+    "total_cost": 236.72,
+    "total_swap": 86.71,
+    "pnl_per_trading_day": 0.88,
+    "worst_bar": -0.0286,
+    "best_bar": 0.027,
     "dsr": 0.001,
     "selector": "robust",
     "n_trials": 16
    },
    "XAU-short": {
-    "bars": 7658,
-    "years": 3.5,
-    "start_equity": 1700.0,
-    "end_equity": 1670.05,
-    "total_return": -0.0176,
-    "cagr": -0.0051,
-    "ann_vol": 0.008,
-    "sharpe": -0.631,
-    "sortino": -0.162,
-    "max_drawdown": -0.0267,
-    "calmar": -0.19,
-    "psr_gt_0": 0.107,
-    "trades": 102,
-    "total_cost": 29.61,
-    "total_swap": -2.35,
-    "pnl_per_trading_day": -0.02,
-    "worst_bar": -0.007,
-    "best_bar": 0.0032,
-    "dsr": 0.0,
+    "bars": 1448,
+    "years": 3.97,
+    "start_equity": 3000.0,
+    "end_equity": 2908.0,
+    "total_return": -0.0307,
+    "cagr": -0.0078,
+    "ann_vol": 0.0289,
+    "sharpe": -0.257,
+    "sortino": -0.119,
+    "max_drawdown": -0.05,
+    "calmar": -0.157,
+    "psr_gt_0": 0.302,
+    "trades": 63,
+    "total_cost": 47.04,
+    "total_swap": -12.42,
+    "pnl_per_trading_day": -0.06,
+    "worst_bar": -0.0219,
+    "best_bar": 0.0163,
+    "dsr": 0.001,
     "selector": "robust",
     "n_trials": 16
    },
    "BTC-long": {
-    "bars": 8752,
-    "years": 4.0,
-    "start_equity": 1650.0,
-    "end_equity": 1848.74,
-    "total_return": 0.1204,
-    "cagr": 0.0289,
-    "ann_vol": 0.0353,
-    "sharpe": 0.823,
-    "sortino": 0.508,
-    "max_drawdown": -0.0629,
-    "calmar": 0.459,
-    "psr_gt_0": 0.959,
-    "trades": 204,
-    "total_cost": 69.94,
-    "total_swap": 13.65,
-    "pnl_per_trading_day": 0.14,
-    "worst_bar": -0.011,
-    "best_bar": 0.0226,
-    "dsr": 0.0,
+    "bars": 1448,
+    "years": 3.97,
+    "start_equity": 2000.0,
+    "end_equity": 2315.43,
+    "total_return": 0.1577,
+    "cagr": 0.0376,
+    "ann_vol": 0.0585,
+    "sharpe": 0.66,
+    "sortino": 0.648,
+    "max_drawdown": -0.0641,
+    "calmar": 0.587,
+    "psr_gt_0": 0.912,
+    "trades": 84,
+    "total_cost": 32.97,
+    "total_swap": 41.27,
+    "pnl_per_trading_day": 0.22,
+    "worst_bar": -0.0228,
+    "best_bar": 0.0323,
+    "dsr": 0.004,
     "selector": "robust",
     "n_trials": 16
    },
    "BTC-short": {
-    "bars": 8752,
-    "years": 4.0,
-    "start_equity": 1650.0,
-    "end_equity": 1612.82,
-    "total_return": -0.0225,
-    "cagr": -0.0057,
-    "ann_vol": 0.0192,
-    "sharpe": -0.287,
-    "sortino": -0.124,
-    "max_drawdown": -0.0553,
-    "calmar": -0.103,
-    "psr_gt_0": 0.282,
-    "trades": 155,
-    "total_cost": 23.79,
-    "total_swap": -4.44,
-    "pnl_per_trading_day": -0.03,
-    "worst_bar": -0.0128,
-    "best_bar": 0.0084,
-    "dsr": 0.0,
+    "bars": 1448,
+    "years": 3.97,
+    "start_equity": 2000.0,
+    "end_equity": 2001.35,
+    "total_return": 0.0007,
+    "cagr": 0.0002,
+    "ann_vol": 0.0323,
+    "sharpe": 0.021,
+    "sortino": 0.014,
+    "max_drawdown": -0.067,
+    "calmar": 0.003,
+    "psr_gt_0": 0.517,
+    "trades": 74,
+    "total_cost": 18.41,
+    "total_swap": -12.53,
+    "pnl_per_trading_day": 0.0,
+    "worst_bar": -0.0168,
+    "best_bar": 0.0215,
+    "dsr": 0.001,
     "selector": "robust",
-    "n_trials": 48
+    "n_trials": 16
    },
    "ETH-long": {
-    "bars": 8752,
-    "years": 4.0,
-    "start_equity": 1650.0,
-    "end_equity": 1866.62,
-    "total_return": 0.1313,
-    "cagr": 0.0313,
-    "ann_vol": 0.0491,
-    "sharpe": 0.653,
-    "sortino": 0.402,
-    "max_drawdown": -0.0792,
-    "calmar": 0.396,
-    "psr_gt_0": 0.9,
-    "trades": 245,
-    "total_cost": 50.14,
-    "total_swap": 1.65,
-    "pnl_per_trading_day": 0.15,
-    "worst_bar": -0.0384,
-    "best_bar": 0.0281,
-    "dsr": 0.016,
+    "bars": 1448,
+    "years": 3.97,
+    "start_equity": 1666.67,
+    "end_equity": 1724.11,
+    "total_return": 0.0345,
+    "cagr": 0.0086,
+    "ann_vol": 0.0572,
+    "sharpe": 0.178,
+    "sortino": 0.147,
+    "max_drawdown": -0.0716,
+    "calmar": 0.12,
+    "psr_gt_0": 0.639,
+    "trades": 70,
+    "total_cost": 11.28,
+    "total_swap": 2.3,
+    "pnl_per_trading_day": 0.04,
+    "worst_bar": -0.0215,
+    "best_bar": 0.0368,
+    "dsr": 0.001,
     "selector": "robust",
-    "n_trials": 48
+    "n_trials": 16
    },
    "ETH-short": {
-    "bars": 8752,
-    "years": 4.0,
-    "start_equity": 1650.0,
-    "end_equity": 1604.23,
-    "total_return": -0.0277,
-    "cagr": -0.007,
-    "ann_vol": 0.036,
-    "sharpe": -0.177,
-    "sortino": -0.109,
-    "max_drawdown": -0.0673,
-    "calmar": -0.104,
-    "psr_gt_0": 0.361,
-    "trades": 182,
-    "total_cost": 25.06,
-    "total_swap": -1.24,
-    "pnl_per_trading_day": -0.03,
-    "worst_bar": -0.0117,
-    "best_bar": 0.0113,
+    "bars": 1448,
+    "years": 3.97,
+    "start_equity": 1666.67,
+    "end_equity": 1676.63,
+    "total_return": 0.006,
+    "cagr": 0.0015,
+    "ann_vol": 0.0382,
+    "sharpe": 0.058,
+    "sortino": 0.043,
+    "max_drawdown": -0.0785,
+    "calmar": 0.019,
+    "psr_gt_0": 0.546,
+    "trades": 110,
+    "total_cost": 15.88,
+    "total_swap": -1.53,
+    "pnl_per_trading_day": 0.01,
+    "worst_bar": -0.0278,
+    "best_bar": 0.0292,
     "dsr": 0.0,
     "selector": "robust",
     "n_trials": 16
@@ -4106,24 +3935,24 @@
  },
  "portfolio_static": {
   "metrics": {
-   "bars": 8760,
-   "years": 4.0,
-   "start_equity": 5000.0,
-   "end_equity": 5457.95,
-   "total_return": 0.0916,
-   "cagr": 0.0222,
-   "ann_vol": 0.0271,
-   "sharpe": 0.822,
-   "sortino": 0.892,
-   "max_drawdown": -0.0304,
-   "calmar": 0.728,
-   "psr_gt_0": 0.949,
-   "trades": 928,
+   "bars": 1448,
+   "years": 3.97,
+   "start_equity": 6666.67,
+   "end_equity": 8310.3,
+   "total_return": 0.2465,
+   "cagr": 0.0571,
+   "ann_vol": 0.0445,
+   "sharpe": 1.271,
+   "sortino": 1.659,
+   "max_drawdown": -0.0324,
+   "calmar": 1.764,
+   "psr_gt_0": 0.995,
+   "trades": 321,
    "total_cost": 0.0,
    "total_swap": 0.0,
-   "pnl_per_trading_day": 0.31,
-   "worst_bar": -0.0116,
-   "best_bar": 0.0067
+   "pnl_per_trading_day": 1.14,
+   "worst_bar": -0.0135,
+   "best_bar": 0.0165
   },
   "kind": "walk_forward"
  },
@@ -4131,54 +3960,54 @@
   "horizon_bars": 365,
   "sims": 2000,
   "block": 20,
-  "return_p05": -0.0283,
-  "return_p50": 0.0081,
-  "return_p95": 0.0564,
-  "maxdd_p05": -0.0387,
-  "maxdd_p50": -0.0193,
-  "maxdd_p95": -0.0098,
-  "prob_loss": 0.37,
+  "return_p05": -0.0359,
+  "return_p50": 0.0272,
+  "return_p95": 0.1044,
+  "maxdd_p05": -0.0631,
+  "maxdd_p50": -0.0324,
+  "maxdd_p95": -0.0178,
+  "prob_loss": 0.259,
   "prob_dd_gt_20pct": 0.0
  },
  "gates": {
   "XAU median purged-CV Sharpe > 0.5": {
-   "value": -0.626,
+   "value": 0.039,
    "pass": false
   },
   "XAU positive folds >= 4/6": {
-   "value": 1,
+   "value": 3,
    "pass": false
   },
   "BTC median purged-CV Sharpe > 0.5": {
-   "value": -0.253,
+   "value": 0.406,
    "pass": false
   },
   "BTC positive folds >= 4/6": {
-   "value": 2,
-   "pass": false
+   "value": 4,
+   "pass": true
   },
   "ETH median purged-CV Sharpe > 0.5": {
-   "value": 0.328,
-   "pass": false
+   "value": 0.581,
+   "pass": true
   },
   "ETH positive folds >= 4/6": {
    "value": 4,
    "pass": true
   },
   "portfolio Sharpe > 1.0": {
-   "value": 0.485,
+   "value": 0.666,
    "pass": false
   },
   "portfolio PSR > 0.95": {
-   "value": 0.839,
+   "value": 0.91,
    "pass": false
   },
   "portfolio MaxDD > -15%": {
-   "value": -0.0356,
+   "value": -0.0626,
    "pass": true
   },
   "bootstrap P(loss 1y) < 20%": {
-   "value": 0.37,
+   "value": 0.259,
    "pass": false
   }
  }

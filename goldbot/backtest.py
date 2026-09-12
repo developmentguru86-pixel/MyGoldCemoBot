@@ -350,15 +350,15 @@ def evaluate_gates(report: dict) -> dict:
         cv = (e.get("purged_cv") or {}).get("summary")
         if cv:
             out[f"{sym.split('/')[0]} median purged-CV Sharpe > {GATES['median_cv_sharpe']}"] = (
-                cv["median_oos_sharpe"], cv["median_oos_sharpe"] > GATES["median_cv_sharpe"])
+                cv["median_oos_sharpe"], bool(cv["median_oos_sharpe"] > GATES["median_cv_sharpe"]))
             out[f"{sym.split('/')[0]} positive folds >= {GATES['positive_folds']}/{cv['folds']}"] = (
-                cv["positive_folds"], cv["positive_folds"] >= GATES["positive_folds"])
+                cv["positive_folds"], bool(cv["positive_folds"] >= GATES["positive_folds"]))
     pm = (report.get("portfolio") or {}).get("metrics") or {}
     if pm:
-        out[f"portfolio Sharpe > {GATES['portfolio_sharpe']}"] = (pm.get("sharpe"), (pm.get("sharpe") or 0) > GATES["portfolio_sharpe"])
-        out[f"portfolio PSR > {GATES['portfolio_psr']}"] = (pm.get("psr_gt_0"), (pm.get("psr_gt_0") or 0) > GATES["portfolio_psr"])
-        out[f"portfolio MaxDD > {GATES['portfolio_maxdd']:.0%}"] = (pm.get("max_drawdown"), (pm.get("max_drawdown") or -1) > GATES["portfolio_maxdd"])
+        out[f"portfolio Sharpe > {GATES['portfolio_sharpe']}"] = (pm.get("sharpe"), bool((pm.get("sharpe") or 0) > GATES["portfolio_sharpe"]))
+        out[f"portfolio PSR > {GATES['portfolio_psr']}"] = (pm.get("psr_gt_0"), bool((pm.get("psr_gt_0") or 0) > GATES["portfolio_psr"]))
+        out[f"portfolio MaxDD > {GATES['portfolio_maxdd']:.0%}"] = (pm.get("max_drawdown"), bool((pm.get("max_drawdown") or -1) > GATES["portfolio_maxdd"]))
     bs = report.get("bootstrap_1y") or {}
     if bs:
-        out[f"bootstrap P(loss 1y) < {GATES['prob_loss_1y']:.0%}"] = (bs.get("prob_loss"), (bs.get("prob_loss") or 1) < GATES["prob_loss_1y"])
+        out[f"bootstrap P(loss 1y) < {GATES['prob_loss_1y']:.0%}"] = (bs.get("prob_loss"), bool((bs.get("prob_loss") or 1) < GATES["prob_loss_1y"]))
     return out

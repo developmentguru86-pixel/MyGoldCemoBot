@@ -1,0 +1,16 @@
+{
+ "symbol": "XAU/USDT:USDT",
+ "history_source": "XAU/USDT:USDT",
+ "bars": 10999,
+ "years": 0.31,
+ "first": "2026-01-30 08:00:00+00:00",
+ "last": "2026-09-02 10:45:00+00:00",
+ "contract_size": 1.0,
+ "min_lot": 0.001,
+ "lot_step": 0.001,
+ "max_lot": 1000000000.0,
+ "spread": 0.64,
+ "price": 4358.19,
+ "fee_pct": 0.001,
+ "funding_annual": 0.0250974
+}

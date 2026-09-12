@@ -16,7 +16,7 @@ from .costs import swap_cost, trade_cost
 from .metrics import summarize
 from .risk import RiskManager
 from .sizing import exposure_to_lots, lots_to_exposure
-from .strategy import compute_exposure
+from .strategy import bars_needed, compute_exposure
 
 TRADE_COLS = ["time", "delta_lots", "lots_after", "price", "spread", "cost", "reason"]
 
@@ -114,14 +114,23 @@ def run_backtest(df: pd.DataFrame, cfg: Config) -> BacktestResult:
 
 
 def default_grid() -> list[dict]:
-    """Walk-forward selects among these in-sample; slower lookbacks and a wider rebalance band
-    exist to cut turnover — on thin venues costs are the dominant term."""
+    """Walk-forward / purged CV select among these in-sample. Axes: speed (lookbacks), risk (target vol),
+    turnover (rebalance band), selectivity (unanimous entry), regime (efficiency-ratio trend filter)."""
     grid = []
     for lb in ([30, 90, 180], [60, 180, 360], [90, 270, 540]):
         for tv in (0.08, 0.12):
             for thr in (0.15, 0.35):
-                grid.append({"lookbacks": lb, "target_vol": tv, "rebalance_threshold": thr})
+                for entry in (0.0, 1.0):
+                    for regime in ({"er_window": 0, "er_min": 0.0}, {"er_window": 60, "er_min": 0.25}):
+                        grid.append({"lookbacks": lb, "target_vol": tv, "rebalance_threshold": thr,
+                                     "entry_min_signal": entry, "regime": regime})
     return grid
+
+
+def grid_label(p: dict) -> str:
+    r = p.get("regime") or {}
+    return (f"lb={p['lookbacks']} tv={p['target_vol']} thr={p.get('rebalance_threshold')} "
+            f"entry={p.get('entry_min_signal', 0)} er={'on' if r.get('er_window') else 'off'}")
 
 
 @dataclass
@@ -179,3 +188,48 @@ def walk_forward(df: pd.DataFrame, cfg: Config, grid: list[dict] | None = None,
     equity = pd.concat(parts)
     m = summarize(equity, bpy, cfg.bars_per_day, trades=n_trades, total_cost=tot_cost, total_swap=tot_swap)
     return WalkForwardResult(equity, windows, m, n_trades)
+
+
+@dataclass
+class PurgedCVResult:
+    folds: list[dict]
+    summary: dict
+
+
+def purged_cv(df: pd.DataFrame, cfg: Config, grid: list[dict] | None = None, k: int = 6,
+              embargo_bars: int | None = None, min_trades: int = 10) -> PurgedCVResult:
+    """Purged K-fold CV with embargo (López de Prado): for each fold, parameters are chosen on the
+    OTHER folds with an embargo of at least the feature memory around the test fold, then evaluated
+    on the fold. Gives K roughly independent out-of-sample segments instead of one chained curve."""
+    grid = grid or default_grid()
+    n = len(df)
+    if embargo_bars is None:
+        embargo_bars = max(bars_needed(cfg.with_strategy(**p)) for p in grid)
+    expos = [compute_exposure(df, cfg.with_strategy(**p))["exposure"] for p in grid]
+    bounds = [(i * n // k, (i + 1) * n // k) for i in range(k)]
+    min_seg = max(cfg.bars_per_year // 4, 200)
+    folds: list[dict] = []
+    for fi, (a, b) in enumerate(bounds):
+        lo, hi = max(0, a - embargo_bars), min(n, b + embargo_bars)
+        segs = [(x, y) for (x, y) in ((0, lo), (hi, n)) if y - x >= min_seg]
+        best_i, best_sc = 0, -np.inf
+        for gi in range(len(grid)):
+            tot = w = 0.0
+            for (x, y) in segs:
+                m = simulate(df.iloc[x:y], expos[gi].iloc[x:y], cfg).metrics
+                if m["trades"] >= min_trades:
+                    tot += m["sharpe"] * (y - x); w += (y - x)
+            sc = tot / w if w else -np.inf
+            if sc > best_sc:
+                best_i, best_sc = gi, sc
+        res = simulate(df.iloc[a:b], expos[best_i].iloc[a:b], cfg)
+        folds.append({"fold": fi, "test_start": str(df.index[a]), "test_end": str(df.index[b - 1]),
+                      "params": grid[best_i], "train_sharpe": None if best_sc == -np.inf else round(float(best_sc), 3),
+                      "test_sharpe": res.metrics["sharpe"], "test_return": res.metrics["total_return"],
+                      "test_maxdd": res.metrics["max_drawdown"], "test_trades": res.metrics["trades"],
+                      "test_cost": res.metrics["total_cost"]})
+    sh = [f["test_sharpe"] for f in folds]
+    summary = {"folds": k, "embargo_bars": embargo_bars, "mean_oos_sharpe": round(float(np.mean(sh)), 3),
+               "median_oos_sharpe": round(float(np.median(sh)), 3), "positive_folds": int(sum(x > 0 for x in sh)),
+               "worst_fold_sharpe": round(float(min(sh)), 3), "total_oos_trades": int(sum(f["test_trades"] for f in folds))}
+    return PurgedCVResult(folds, summary)

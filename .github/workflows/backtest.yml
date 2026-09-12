@@ -37,7 +37,7 @@ jobs:
           EXTRA=""
           [ -n "${{ github.event.inputs.spread }}" ] && EXTRA="$EXTRA --spread ${{ github.event.inputs.spread }}"
           [ -n "${{ github.event.inputs.fee }}" ] && EXTRA="$EXTRA --fee ${{ github.event.inputs.fee }}"
-          python scripts/run_backtest.py --walk-forward --bootstrap $EXTRA 2>&1 | tee reports/summary.txt
+          python scripts/run_backtest.py --walk-forward --bootstrap --purged-cv --directions $EXTRA 2>&1 | tee reports/summary.txt
       - name: send to Telegram
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
@@ -56,7 +56,13 @@ jobs:
           for sym, e in r["symbols"].items():
               m = (e.get("walk_forward") or {}).get("metrics") or e["in_sample"]
               txt += (f"{sym.split('/')[0]} ({r['weights'][sym]:.0%}): CAGR {m['cagr']:+.1%} Sharpe {m['sharpe']} MaxDD {m['max_drawdown']:.1%} "
-                      f"Trades {m['trades']} Kosten {m['total_cost']}  [{e.get('history_source')}]\n")
+                      f"Trades {m['trades']} Kosten {m['total_cost']}\n")
+              cv = (e.get("purged_cv") or {}).get("summary")
+              if cv:
+                  txt += f"   Purged-CV: {cv['positive_folds']}/{cv['folds']} Folds positiv, median OOS-Sharpe {cv['median_oos_sharpe']}\n"
+              dd = e.get("directions") or {}
+              if dd:
+                  txt += "   " + "  ".join(f"{k}: SR {v['sharpe']} ({v['trades']} T)" for k, v in dd.items()) + "\n"
           if bs:
               txt += f"\nBootstrap 1J: p05/p50/p95 {bs['return_p05']:+.1%}/{bs['return_p50']:+.1%}/{bs['return_p95']:+.1%}, P(Verlust) {bs['prob_loss']:.0%}"
           notify.send_photo(cfg, "reports/backtest.png", txt)

@@ -22,6 +22,17 @@ class KellyCfg:
     fraction: float = 0.5      # fractional Kelly (0.5 = half Kelly)
     window: int = 500          # bars used to estimate mu/sigma^2 of the unthrottled strategy
     min_mult: float = 0.25     # never throttle below this multiplier
+    cost_aware: bool = True    # subtract the strategy's own cost drag (turnover x cost) from mu before f* = mu/var
+    cost_margin: float = 1.5   # safety multiplier on the estimated cost drag
+
+
+@dataclass
+class RegimeCfg:
+    er_window: int = 0         # Kaufman efficiency ratio window (bars); 0 = off
+    er_min: float = 0.0        # trade only when ER >= er_min (trending); below = range -> flat
+    vol_pct_window: int = 0    # rolling window for the realised-vol percentile; 0 = off
+    vol_pct_max: float = 1.0   # above this percentile (e.g. 0.9) exposure is scaled by high_vol_scale
+    high_vol_scale: float = 0.5
 
 
 @dataclass
@@ -32,6 +43,12 @@ class StrategyCfg:
     max_leverage: float = 3.0  # notional / equity
     rebalance_threshold: float = 0.15  # only trade if |target_exp - current_exp| >= this
     vol_floor: float = 0.05
+    entry_min_signal: float = 0.0      # |signal| needed to OPEN (1.0 = all lookbacks agree); 0 = off
+    exit_min_signal: float = 0.0       # position is kept while |signal| >= this (hysteresis); 0 = until sign flips
+    z_min: float = 0.0                 # mean |z| (vol-normalised momentum) needed to open; 0 = off
+    min_hold_bars: int = 0             # no sign flip / re-entry within this many bars of the last entry
+    direction: str = "both"            # both | long | short (diagnostics: where does the edge live?)
+    regime: RegimeCfg = field(default_factory=RegimeCfg)
     kelly: KellyCfg = field(default_factory=KellyCfg)
 
 
@@ -130,9 +147,10 @@ class Config:
         d = dict(d)
         strat = dict(d.pop("strategy", {}) or {})
         kelly = KellyCfg(**(strat.pop("kelly", {}) or {}))
+        regime = RegimeCfg(**(strat.pop("regime", {}) or {}))
         return cls(
             contract=ContractCfg(**(d.pop("contract", {}) or {})),
-            strategy=StrategyCfg(kelly=kelly, **strat),
+            strategy=StrategyCfg(kelly=kelly, regime=regime, **strat),
             costs=CostCfg(**(d.pop("costs", {}) or {})),
             risk=RiskCfg(**(d.pop("risk", {}) or {})),
             bridge=BridgeCfg(**(d.pop("bridge", {}) or {})),
@@ -148,7 +166,12 @@ class Config:
             return cls.from_dict(yaml.safe_load(f) or {})
 
     def with_strategy(self, **overrides: Any) -> "Config":
-        """Copy with strategy parameters replaced (used by the walk-forward grid)."""
+        """Copy with strategy parameters replaced (used by the walk-forward / CV grids).
+        Nested dicts (`regime`, `kelly`) are merged, not replaced."""
         d = asdict(self)
-        d["strategy"].update(overrides)
+        for key, val in overrides.items():
+            if isinstance(val, dict) and isinstance(d["strategy"].get(key), dict):
+                d["strategy"][key].update(val)
+            else:
+                d["strategy"][key] = val
         return Config.from_dict(d)

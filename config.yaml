@@ -1,7 +1,7 @@
-# goldbot — serverlos: GitHub Actions (Cron alle 4h) + Kraken Futures Demo. Gold als PAXG/USD-Perpetual (3 J. Historie).
+# goldbot — serverlos: GitHub Actions (Cron alle 4h) + OKX Demo-Trading. Gold als XAU/USDT-Perpetual; Backtest-Historie 5,9 J. via Bitfinex XAUT.
 # Werte unter contract/costs werden vom Backtest-Workflow automatisch vom Exchange gesetzt.
 venue: exchange
-symbol: PAXG/USD:USD         # Kraken Futures Gold-Perp (ccxt-Notation)
+symbol: XAU/USDT:USDT        # OKX Gold-Index-Perp (ccxt-Notation); vom Runner erreichbar (gemessen)
 timeframe: H4
 bars_per_day: 6
 trading_days_per_year: 365   # Krypto handelt 24/7
@@ -9,10 +9,10 @@ starting_equity: 5000        # Backtest-Start
 equity_cap: 5000             # Demo-Konto hat ~100k; Bot handelt, als wären es 5.000 + realisierter P&L
 
 contract:                    # wird von fetch_history_ccxt --update-config gesetzt
-  size: 1.0
-  min_lot: 0.001
-  lot_step: 0.001
-  max_lot: 1000000000.0
+  size: 0.001
+  min_lot: 1
+  lot_step: 1
+  max_lot: 100000000
 
 strategy:
   lookbacks: [30, 90, 180]   # H4-Bars ≈ 5 / 15 / 30 Tage
@@ -33,7 +33,7 @@ costs:
   swap_long_annual: 0.00914    # Funding annualisiert, wird vom Exchange gesetzt (long zahlt bei positivem Funding)
   swap_short_annual: -0.00914
   commission_per_lot: 0.0
-  fee_pct: 0.0005            # Kraken Futures Taker 0.05 %, wird vom Exchange gesetzt
+  fee_pct: 0.0005            # OKX Taker 0.05 %, wird vom Exchange gesetzt
 
 risk:
   daily_loss_limit: 0.03
@@ -43,12 +43,12 @@ risk:
   poll_seconds: 30
 
 exchange:
-  id: krakenfutures
-  demo: true                 # demo-futures.kraken.com; false = Echtgeld, braucht --allow-real-account
+  id: okx
+  demo: true                 # OKX Demo-Trading (Header x-simulated-trading); false = Echtgeld, braucht --allow-real-account
   leverage: 3
   api_key: ""                # leer lassen – GitHub Secret EXCHANGE_API_KEY
   api_secret: ""             # EXCHANGE_API_SECRET
-  api_passphrase: ""         # nur OKX/KuCoin/Bitget
+  api_passphrase: ""         # EXCHANGE_API_PASSPHRASE (OKX verlangt eine)
   history_symbol: ""
   history_sources:           # weitere öffentliche Quellen, die längste Historie gewinnt
     - "bitfinex:XAUT/USDT"
@@ -71,7 +71,7 @@ bridge:                      # nur für venue: mt5
   magic: 20260912
 
 paths:
-  data: data/PAXG_H4.csv
+  data: data/XAU_H4.csv
   reports: reports
   state_live: state/live_state.json
   state_paper: state/paper_state.json

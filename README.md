@@ -10,7 +10,7 @@ zeigt der Walk-Forward-Report auf echten Daten – nicht dieser Text.
 
 Der Bot läuft alle 4 Stunden als Cron-Job in GitHub Actions, handelt Gold als XAU/USDT-Perpetual im
 OKX-Demo-Trading und meldet jeden Trade per Telegram. Kein Server, kein PC, kostenlos.
-(Bybit und Binance blocken GitHub-Runner per Geo-Sperre – gemessen, siehe `reports/probe.log`.)
+(Bybit, Binance und Kraken-Futures-Demo blocken GitHub-Runner per Geo-Sperre – gemessen, siehe `reports/probe*.log`. OKX-Demo antwortet.)
 
 **Einmalig einrichten (≈ 15 Minuten, alles im Handy-Browser):**
 

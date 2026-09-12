@@ -1,6 +1,7 @@
-"""Backtest + walk-forward + bootstrap report.
+"""Backtest + walk-forward + bootstrap, per symbol and for the weighted portfolio.
 
-  python scripts/run_backtest.py --data data/XAUUSD_H4.csv --walk-forward --bootstrap
+  python scripts/run_backtest.py --walk-forward --bootstrap            # all portfolio symbols from data/<slug>_H4.csv
+  python scripts/run_backtest.py --data data/SYNTHETIC_H4.csv         # single file, primary symbol
 """
 from __future__ import annotations
 
@@ -9,11 +10,18 @@ import json
 import sys
 from pathlib import Path
 
+import numpy as np
+import pandas as pd
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from goldbot.backtest import run_backtest, walk_forward  # noqa: E402
 from goldbot.config import Config  # noqa: E402
 from goldbot.data import load_csv  # noqa: E402
-from goldbot.metrics import block_bootstrap, drawdown  # noqa: E402
+from goldbot.metrics import block_bootstrap, drawdown, summarize  # noqa: E402
+
+
+def slug(symbol: str) -> str:
+    return symbol.split("/")[0].lower()
 
 
 def print_metrics(title: str, m: dict) -> None:
@@ -22,81 +30,135 @@ def print_metrics(title: str, m: dict) -> None:
         print(f"  {k:<22} {v}")
 
 
-def plot(res, wf, out: Path) -> None:
+def wf_windows(cfg: Config, n: int) -> tuple[int, int]:
+    bpy = cfg.bars_per_year
+    train_bars, test_bars = 2 * bpy, bpy // 2
+    if n < train_bars + 2 * test_bars:
+        test_bars = max(bpy // 4, 60)
+        train_bars = max(bpy // 2, n - 3 * test_bars)
+        print(f"!!! short history ({n / bpy:.1f} y): walk-forward train={train_bars} / test={test_bars} bars — low confidence")
+    return train_bars, test_bars
+
+
+def plot(curves: dict, out: Path) -> None:
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-
-    fig, ax = plt.subplots(3, 1, figsize=(12, 9), sharex=True)
-    ax[0].plot(res.equity.index, res.equity.values, label="in-sample (fixed params)")
-    if wf is not None:
-        ax[0].plot(wf.equity.index, wf.equity.values, label="walk-forward OOS", alpha=0.85)
-    ax[0].set_ylabel("equity"); ax[0].legend(); ax[0].grid(alpha=0.3)
-    ax[1].fill_between(res.equity.index, drawdown(res.equity).values, 0, alpha=0.4)
+    fig, ax = plt.subplots(2, 1, figsize=(12, 7), sharex=True)
+    for name, eq in curves.items():
+        ax[0].plot(eq.index, eq.values / eq.iloc[0] * 100, label=name)
+    ax[0].set_ylabel("equity (start = 100)"); ax[0].legend(); ax[0].grid(alpha=0.3)
+    port = curves.get("portfolio") or next(iter(curves.values()))
+    ax[1].fill_between(port.index, drawdown(port).values, 0, alpha=0.4)
     ax[1].set_ylabel("drawdown"); ax[1].grid(alpha=0.3)
-    ax[2].step(res.lots.index, res.lots.values, where="post")
-    ax[2].set_ylabel("lots"); ax[2].grid(alpha=0.3)
     fig.tight_layout(); fig.savefig(out, dpi=110); plt.close(fig)
+
+
+def symbol_cfg(cfg: Config, meta: dict | None, df: pd.DataFrame) -> Config:
+    """Per-symbol costs from the venue meta; slippage from slippage_pct if set."""
+    if not meta:
+        return cfg
+    over = {"spread": float(meta.get("spread") or cfg.costs.spread)}
+    if meta.get("fee_pct") is not None:
+        over["fee_pct"] = float(meta["fee_pct"])
+    if meta.get("funding_annual") is not None:
+        over["swap_long_annual"] = -float(meta["funding_annual"])
+        over["swap_short_annual"] = float(meta["funding_annual"])
+    if cfg.costs.slippage_pct > 0:
+        over["slippage"] = round(float(df["close"].median()) * cfg.costs.slippage_pct, 6)
+    c = cfg.with_costs(**over)
+    c.contract.size = float(meta.get("contract_size") or 1.0)
+    c.contract.min_lot = float(meta.get("min_lot") or c.contract.min_lot)
+    c.contract.lot_step = float(meta.get("lot_step") or c.contract.lot_step)
+    return c
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="config.yaml")
-    ap.add_argument("--data", default=None)
+    ap.add_argument("--data", default=None, help="single CSV (primary symbol only)")
     ap.add_argument("--walk-forward", action="store_true")
     ap.add_argument("--bootstrap", action="store_true")
     ap.add_argument("--out", default=None)
-    ap.add_argument("--spread", type=float, default=None, help="override costs.spread (venue sensitivity)")
-    ap.add_argument("--fee", type=float, default=None, help="override costs.fee_pct")
+    ap.add_argument("--spread", type=float, default=None, help="override spread for ALL symbols (venue sensitivity)")
+    ap.add_argument("--fee", type=float, default=None, help="override taker fee for ALL symbols")
     a = ap.parse_args()
 
     cfg = Config.load(a.config)
-    if a.spread is not None:
-        cfg.costs.spread = a.spread
-    if a.fee is not None:
-        cfg.costs.fee_pct = a.fee
-    print(f"costs: spread {cfg.costs.spread} fee {cfg.costs.fee_pct} slippage {cfg.costs.slippage}")
-    data_path = a.data or cfg.paths.get("data")
     out = Path(a.out or cfg.paths.get("reports", "reports")); out.mkdir(parents=True, exist_ok=True)
-    df = load_csv(data_path)
-    if a.spread is not None and "spread" in df.columns:
-        df = df.drop(columns=["spread"])
-    print(f"data: {data_path}  {len(df)} bars  {df.index[0]} .. {df.index[-1]}")
-    if "SYNTHETIC" in str(data_path).upper():
-        print("!!! SYNTHETIC DATA — pipeline check only, numbers are meaningless !!!")
+    portfolio = cfg.portfolio()
+    if a.data:
+        portfolio = {cfg.symbol: next(iter(portfolio.values()))}
 
-    res = run_backtest(df, cfg)
-    print_metrics(f"In-sample, fixed params {res.params}", res.metrics)
-    report = {"data": str(data_path), "params": res.params, "in_sample": res.metrics}
-    res.equity.to_csv(out / "equity_insample.csv"); res.trades.to_csv(out / "trades_insample.csv", index=False)
+    report: dict = {"symbols": {}, "weights": {s: sc.weight for s, sc in portfolio.items()}}
+    wf_curves: dict[str, pd.Series] = {}
+    is_curves: dict[str, pd.Series] = {}
+    for sym, sc in portfolio.items():
+        path = a.data or f"data/{slug(sym)}_H4.csv"
+        meta_p = Path(f"data/{slug(sym)}_meta.json")
+        meta = json.loads(meta_p.read_text()) if meta_p.exists() and not a.data else None
+        df = load_csv(path)
+        c = symbol_cfg(cfg, meta, df)
+        if a.spread is not None:
+            c.costs.spread = a.spread
+            df = df.drop(columns=[x for x in ("spread",) if x in df.columns])
+        if a.fee is not None:
+            c.costs.fee_pct = a.fee
+        c.starting_equity = cfg.starting_equity * sc.weight
+        print(f"\n######## {sym}  weight {sc.weight:.0%}  {len(df)} bars  {df.index[0]} .. {df.index[-1]}")
+        print(f"costs: spread {c.costs.spread} fee {c.costs.fee_pct} slippage {c.costs.slippage} "
+              f"funding L/S {c.costs.swap_long_annual:+.4f}/{c.costs.swap_short_annual:+.4f}  "
+              f"contract {c.contract.size}/{c.contract.min_lot}/{c.contract.lot_step}")
+        if "SYNTHETIC" in str(path).upper():
+            print("!!! SYNTHETIC DATA — pipeline check only, numbers are meaningless !!!")
 
-    wf = None
-    if a.walk_forward:
-        bpy = cfg.bars_per_year
-        train_bars, test_bars = 2 * bpy, bpy // 2
-        if len(df) < train_bars + 2 * test_bars:
-            test_bars = max(bpy // 4, 60)
-            train_bars = max(bpy // 2, len(df) - 3 * test_bars)
-            print(f"!!! short history ({len(df) / bpy:.1f} y): walk-forward with train={train_bars} / test={test_bars} bars "
-                  f"— low statistical confidence")
-        if len(df) < train_bars + test_bars:
-            raise SystemExit("not enough history for any walk-forward window")
-        wf = walk_forward(df, cfg, train_bars=train_bars, test_bars=test_bars)
-        print_metrics("Walk-forward OUT-OF-SAMPLE (stitched)", wf.metrics)
-        print("\n  windows:")
-        for w in wf.windows:
-            print(f"   {w['test_start'][:10]}..{w['test_end'][:10]} lb={w['params']['lookbacks']} tv={w['params']['target_vol']} thr={w['params'].get('rebalance_threshold')}"
-                  f" | train SR {w['train_sharpe']} -> test SR {w['test_sharpe']} ret {w['test_return']:+.3f} "
-                  f"mdd {w['test_maxdd']:.3f} trades {w['test_trades']}")
-        report["walk_forward"] = {"metrics": wf.metrics, "windows": wf.windows}
-        wf.equity.to_csv(out / "equity_walkforward.csv")
+        res = run_backtest(df, c)
+        print_metrics(f"{sym} in-sample, fixed params {res.params}", res.metrics)
+        entry = {"data": path, "history_source": (meta or {}).get("history_source"), "costs": c.costs.__dict__,
+                 "params": res.params, "in_sample": res.metrics}
+        res.equity.to_csv(out / f"equity_insample_{slug(sym)}.csv")
+        res.trades.to_csv(out / f"trades_insample_{slug(sym)}.csv", index=False)
+        is_curves[sym] = res.equity
+
+        if a.walk_forward:
+            tr, te = wf_windows(c, len(df))
+            wf = walk_forward(df, c, train_bars=tr, test_bars=te)
+            print_metrics(f"{sym} walk-forward OUT-OF-SAMPLE", wf.metrics)
+            print("  windows:")
+            for w in wf.windows:
+                print(f"   {w['test_start'][:10]}..{w['test_end'][:10]} lb={w['params']['lookbacks']} tv={w['params']['target_vol']} "
+                      f"thr={w['params'].get('rebalance_threshold')} | train SR {w['train_sharpe']} -> test SR {w['test_sharpe']} "
+                      f"ret {w['test_return']:+.3f} mdd {w['test_maxdd']:.3f} trades {w['test_trades']}")
+            entry["walk_forward"] = {"metrics": wf.metrics, "windows": wf.windows}
+            wf.equity.to_csv(out / f"equity_walkforward_{slug(sym)}.csv")
+            wf_curves[sym] = wf.equity
+        report["symbols"][sym] = entry
+
+    # ---- weighted portfolio: sum of sleeve equities on the common time axis (OOS if available)
+    curves = wf_curves or is_curves
+    if len(curves) > 1:
+        aligned = pd.concat(curves, axis=1).ffill().dropna()
+        port = aligned.sum(axis=1)
+        port.name = "portfolio"
+        pm = summarize(port, cfg.bars_per_year, cfg.bars_per_day,
+                       trades=sum(((report["symbols"][s].get("walk_forward") or {}).get("metrics") or report["symbols"][s]["in_sample"])["trades"]
+                                  for s in curves))
+        print_metrics("PORTFOLIO " + ("walk-forward OOS" if wf_curves else "in-sample") + " (weighted sleeves)", pm)
+        report["portfolio"] = {"metrics": pm, "kind": "walk_forward" if wf_curves else "in_sample"}
+        port.to_csv(out / "equity_portfolio.csv")
+        curves = {**{s: aligned[s] for s in aligned.columns}, "portfolio": port}
+        boot_src = port
+    else:
+        boot_src = next(iter(curves.values()))
+        only = next(iter(report["symbols"].values()))
+        report["portfolio"] = {"metrics": (only.get("walk_forward") or {}).get("metrics") or only["in_sample"],
+                               "kind": "walk_forward" if wf_curves else "in_sample"}
 
     if a.bootstrap:
-        src = wf.equity if wf is not None else res.equity
-        bs = block_bootstrap(src.pct_change().dropna().to_numpy(), horizon=cfg.bars_per_year)
-        print_metrics("Block bootstrap, 1-year horizon (from " + ("OOS" if wf else "in-sample") + " bar returns)", bs)
+        bs = block_bootstrap(boot_src.pct_change().dropna().to_numpy(), horizon=cfg.bars_per_year)
+        print_metrics("Block bootstrap, 1-year horizon (portfolio bar returns)", bs)
         report["bootstrap_1y"] = bs
 
     (out / "report.json").write_text(json.dumps(report, indent=1, default=str))
-    plot(res, wf, out / "backtest.png")
-    print(f"\nwritten: {out}/report.json, equity_*.csv, trades_insample.csv, backtest.png")
+    plot(curves, out / "backtest.png")
+    print(f"\nwritten: {out}/report.json, equity_*.csv, trades_insample_*.csv, backtest.png")

@@ -43,7 +43,9 @@ class RiskManager:
             return False, "daily_loss"
         return True, ""
 
-    def spread_ok(self, spread: float) -> bool:
+    def spread_ok(self, spread: float, price: float | None = None) -> bool:
+        if self.cfg.max_spread_pct > 0 and price:
+            return spread <= self.cfg.max_spread_pct * price
         return spread <= self.cfg.max_spread
 
     def record_bridge_failure(self) -> bool:

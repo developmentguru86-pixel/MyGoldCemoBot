@@ -43,13 +43,15 @@ class CostCfg:
     swap_short_annual: float = 0.01
     commission_per_lot: float = 0.0 # USD per lot per side
     fee_pct: float = 0.0            # exchange taker fee per side, fraction of notional (0.00055 = 0.055%)
+    slippage_pct: float = 0.0       # if > 0, per-side slippage as fraction of price (overrides absolute `slippage` per symbol)
 
 
 @dataclass
 class RiskCfg:
     daily_loss_limit: float = 0.03   # flatten + no new trades until next day
     max_drawdown_halt: float = 0.20  # flatten + permanent halt (manual reset)
-    max_spread: float = 0.80         # USD/oz; skip new entries above this
+    max_spread: float = 0.80         # absolute (price units); skip new entries above this
+    max_spread_pct: float = 0.0      # if > 0, relative spread guard (fraction of price) — use for multi-symbol
     max_bridge_failures: int = 3     # consecutive failures -> halt
     poll_seconds: int = 30
 
@@ -60,6 +62,12 @@ class BridgeCfg:
     timeout: float = 10.0
     deviation_points: int = 30
     magic: int = 20260912
+
+
+@dataclass
+class SymbolCfg:
+    weight: float = 1.0                       # share of the (virtual) account allocated to this symbol
+    history_sources: list[str] = field(default_factory=list)  # "exchange:SYMBOL" public proxies for backtest history
 
 
 @dataclass
@@ -99,11 +107,23 @@ class Config:
     bridge: BridgeCfg = field(default_factory=BridgeCfg)
     telegram: TelegramCfg = field(default_factory=TelegramCfg)
     exchange: ExchangeCfg = field(default_factory=ExchangeCfg)
+    symbols: dict[str, SymbolCfg] = field(default_factory=dict)   # portfolio; empty => just `symbol`
     paths: dict[str, str] = field(default_factory=dict)
 
     @property
     def bars_per_year(self) -> int:
         return self.bars_per_day * self.trading_days_per_year
+
+    def portfolio(self) -> dict[str, "SymbolCfg"]:
+        """Ordered symbol -> SymbolCfg. Falls back to the single `symbol` with weight 1."""
+        if self.symbols:
+            return dict(self.symbols)
+        return {self.symbol: SymbolCfg(1.0, list(self.exchange.history_sources))}
+
+    def with_costs(self, **overrides: Any) -> "Config":
+        d = asdict(self)
+        d["costs"].update(overrides)
+        return Config.from_dict(d)
 
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "Config":
@@ -118,6 +138,7 @@ class Config:
             bridge=BridgeCfg(**(d.pop("bridge", {}) or {})),
             telegram=TelegramCfg(**(d.pop("telegram", {}) or {})),
             exchange=ExchangeCfg(**(d.pop("exchange", {}) or {})),
+            symbols={k: SymbolCfg(**(v or {})) for k, v in (d.pop("symbols", {}) or {}).items()},
             **d,
         )
 

@@ -42,36 +42,38 @@ def action_trade(cfg: Config, mode: str, allow_real: bool) -> int:
         return 0
     processed = trader.poll()
     if not processed:
-        logging.info("no new closed bar since %s", trader.last_bar)
+        logging.info("no new closed bar for any symbol (%s)", trader.last_bar)
         return 0
-    r = last_journal_row(journal) or {}
-    act = r.get("action")
-    if act == "trade":
-        notify.send(cfg, f"📈 TRADE {str(r['bar_time'])[:16]}\n{cfg.symbol} {r['price']:.2f}\n"
-                         f"{r['current_lots']:+.4f} → {r['target_lots']:+.4f} (Ziel {r['target_exposure']:+.2f}x)\n"
-                         f"Equity {r['equity']:,.2f}  Grund: {r['reason'] if isinstance(r.get('reason'), str) else 'signal'}")
-    elif act == "skip" and r.get("reason") != "market_closed":
-        notify.send(cfg, f"⏸ übersprungen {str(r['bar_time'])[:16]}: {r.get('reason')}")
-    elif act == "skip":
-        logging.info("market closed at %s — target %s not sent, retried at the next bar", r.get("bar_time"), r.get("target_lots"))
+    for r in trader.last_rows:
+        sym = str(r["symbol"]).split("/")[0]
+        act = r.get("action")
+        if act == "trade":
+            notify.send(cfg, f"📈 TRADE {sym} {str(r['bar_time'])[:16]}\nKurs {r['price']:,.2f}\n"
+                             f"{r['current_lots']:+.4f} → {r['target_lots']:+.4f} (Ziel {r['target_exposure']:+.2f}x)\n"
+                             f"Konto {r['equity']:,.2f}  Grund: {r['reason'] if r.get('reason') else 'signal'}")
+        elif act == "skip" and r.get("reason") != "market_closed":
+            notify.send(cfg, f"⏸ {sym} übersprungen {str(r['bar_time'])[:16]}: {r.get('reason')}")
+        elif act == "skip":
+            logging.info("%s market closed at %s — target %s not sent", sym, r.get("bar_time"), r.get("target_lots"))
     if trader.rm.state.halted:
-        notify.send(cfg, f"🛑 KILL-SWITCH ausgelöst: {trader.rm.state.halted_reason}. Position glattgestellt, "
+        notify.send(cfg, f"🛑 KILL-SWITCH ausgelöst: {trader.rm.state.halted_reason}. Positionen glattgestellt, "
                          "Bot pausiert bis action=reset_halt.")
     if datetime.now(timezone.utc).hour < 4:   # the 00:xx UTC run doubles as daily report
-        notify.send(cfg, "📊 Tagesbericht\n" + status_text(cfg, mode, n=3))
+        notify.send(cfg, "📊 Tagesbericht\n" + status_text(cfg, mode, n=4))
     return 0
 
 
 def action_flatten(cfg: Config, mode: str) -> int:
     state, _ = paths_for(cfg, mode)
     br = make_broker(cfg, mode)
-    res = br.close_all(cfg.symbol)
+    res = {sym: br.close_all(sym) for sym in cfg.portfolio()}
     p = Path(state)
     st = json.loads(p.read_text()) if p.exists() else {}
     if st.get("risk"):
         st["risk"].update(halted=True, halted_reason="manual_flatten")
         p.write_text(json.dumps(st, indent=1))
-    notify.send(cfg, f"Glattgestellt: net {res.get('net_lots')} ok={res.get('ok')}. Bot pausiert bis reset_halt.")
+    notify.send(cfg, "Glattgestellt: " + ", ".join(f"{k.split('/')[0]} net {v.get('net_lots')} ok={v.get('ok')}" for k, v in res.items())
+                + ". Bot pausiert bis reset_halt.")
     return 0
 
 

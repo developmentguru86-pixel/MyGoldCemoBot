@@ -50,12 +50,13 @@ jobs:
           from goldbot.config import Config
           cfg = Config.load("config.yaml")
           r = json.load(open("reports/report.json"))
-          m = (r.get("walk_forward") or {}).get("metrics") or r["in_sample"]
-          kind = "Walk-Forward OOS" if r.get("walk_forward") else "In-sample"
+          pm = r["portfolio"]["metrics"]; kind = "Walk-Forward OOS" if r["portfolio"]["kind"] == "walk_forward" else "In-sample"
           bs = r.get("bootstrap_1y") or {}
-          txt = (f"Backtest {cfg.symbol} ({r['in_sample']['years']} J. Daten)\n{kind}: CAGR {m['cagr']:+.1%}  Sharpe {m['sharpe']}  "
-                 f"MaxDD {m['max_drawdown']:.1%}  PSR {m.get('psr_gt_0')}  Trades {m['trades']}\n"
-                 f"Kosten {m['total_cost']} + Funding {m['total_swap']}  P&L/Tag {m.get('pnl_per_trading_day')}")
+          txt = f"Backtest Portfolio ({kind}, {pm.get('years')} J.)\nCAGR {pm['cagr']:+.1%}  Sharpe {pm['sharpe']}  MaxDD {pm['max_drawdown']:.1%}  PSR {pm.get('psr_gt_0')}\n"
+          for sym, e in r["symbols"].items():
+              m = (e.get("walk_forward") or {}).get("metrics") or e["in_sample"]
+              txt += (f"{sym.split('/')[0]} ({r['weights'][sym]:.0%}): CAGR {m['cagr']:+.1%} Sharpe {m['sharpe']} MaxDD {m['max_drawdown']:.1%} "
+                      f"Trades {m['trades']} Kosten {m['total_cost']}  [{e.get('history_source')}]\n")
           if bs:
               txt += f"\nBootstrap 1J: p05/p50/p95 {bs['return_p05']:+.1%}/{bs['return_p50']:+.1%}/{bs['return_p95']:+.1%}, P(Verlust) {bs['prob_loss']:.0%}"
           notify.send_photo(cfg, "reports/backtest.png", txt)
@@ -71,5 +72,5 @@ jobs:
           git config user.name goldbot
           git config user.email goldbot@users.noreply.github.com
           git add config.yaml
-          for f in reports/report.json reports/summary.txt reports/backtest.png reports/fetch.log; do [ -f "$f" ] && git add -f "$f"; done; true
+          for f in reports/report.json reports/summary.txt reports/backtest.png reports/fetch.log data/*_meta.json; do [ -f "$f" ] && git add -f "$f"; done; true
           git diff --cached --quiet || (git commit -m "backtest report + config synced from exchange" && git push)

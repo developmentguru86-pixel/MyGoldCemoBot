@@ -1,9 +1,10 @@
-"""Pull OHLCV history from the exchange (public endpoints) and optionally sync config.yaml
-with the market's contract size / lot step / taker fee / spread / funding."""
+"""Pull OHLCV history for every portfolio symbol (venue first, then longer public proxies of the same
+underlying) into data/<slug>_H4.csv, plus data/<slug>_meta.json with the venue's contract, spread,
+fee and funding — the backtest reads those per symbol."""
 from __future__ import annotations
 
 import argparse
-import re
+import json
 import sys
 import time
 from pathlib import Path
@@ -16,72 +17,61 @@ from goldbot.config import Config  # noqa: E402
 from goldbot.data import save_csv  # noqa: E402
 
 
-def setv(text: str, key: str, val) -> str:
-    return re.sub(rf"^(\s*{key}:\s*)[-\d.eE+]+", lambda m: f"{m.group(1)}{val}", text, count=1, flags=re.M)
+def slug(symbol: str) -> str:
+    return symbol.split("/")[0].lower()
+
+
+def fetch_symbol(br: CcxtBroker, cfg: Config, sym: str, sources: list[str], years: float) -> tuple:
+    now = int(time.time() * 1000)
+    since = now - int(years * 365.25 * 86400 * 1000)
+    df = br.get_bars_range(sym, cfg.timeframe, since, now)
+    if df.empty:
+        raise SystemExit(f"no OHLCV returned for {sym}")
+    print(f"{sym}: {len(df)} bars ({len(df) / cfg.bars_per_year:.2f} y) from {cfg.exchange.id}")
+    best, best_name = df, sym
+    tf = TF.get(cfg.timeframe.upper(), cfg.timeframe)
+    for cand in sources:
+        ex_id, alt_sym = cand.split(":", 1)
+        try:
+            ex = getattr(ccxt, ex_id)({"enableRateLimit": True, "timeout": 30000})
+            ex.load_markets()
+            if alt_sym not in ex.markets:
+                print(f"  {cand}: not listed"); continue
+            alt = rows_to_df(fetch_ohlcv_range(ex, alt_sym, tf, since, now))
+            print(f"  {cand}: {len(alt)} bars ({len(alt) / cfg.bars_per_year:.2f} y)")
+            if len(alt) > len(best) * 1.2:
+                best, best_name = alt, cand
+        except Exception as e:  # noqa: BLE001
+            print(f"  {cand}: failed {type(e).__name__}: {str(e)[:90]}")
+    if best_name != sym:
+        print(f"  using {best_name} as price history ({len(best)} bars); costs modelled from {sym}")
+        df = best
+    return df.iloc[:-1], best_name  # drop forming bar
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="config.yaml")
     ap.add_argument("--years", type=float, default=6.0)
-    ap.add_argument("--out", default=None)
-    ap.add_argument("--update-config", action="store_true")
+    ap.add_argument("--update-config", action="store_true", help="kept for compatibility; meta json is authoritative")
     a = ap.parse_args()
     cfg = Config.load(a.config)
     br = CcxtBroker(cfg)
-    info = br.get_symbol_info(cfg.symbol)
-    print("market:", info)
-    now = int(time.time() * 1000)
-    since = now - int(a.years * 365.25 * 86400 * 1000)
-    df = br.get_bars_range(cfg.symbol, cfg.timeframe, since, now)
-    if df.empty:
-        raise SystemExit("no OHLCV returned — check symbol (ccxt unified, e.g. XAU/USDT:USDT)")
-    print(f"{cfg.symbol}: {len(df)} bars ({len(df) / cfg.bars_per_year:.2f} y)")
-    # longer price history of the same underlying from any reachable public venue
-    candidates = ([f"{cfg.exchange.id}:{cfg.exchange.history_symbol}"] if cfg.exchange.history_symbol else []) \
-        + list(cfg.exchange.history_sources)
-    best, best_name = df, cfg.symbol
-    tf = TF.get(cfg.timeframe.upper(), cfg.timeframe)
-    for cand in candidates:
-        ex_id, sym = cand.split(":", 1)
-        try:
-            ex = getattr(ccxt, ex_id)({"enableRateLimit": True, "timeout": 30000})
-            ex.load_markets()
-            if sym not in ex.markets:
-                print(f"  {cand}: not listed"); continue
-            alt = rows_to_df(fetch_ohlcv_range(ex, sym, tf, since, now))
-            print(f"  {cand}: {len(alt)} bars ({len(alt) / cfg.bars_per_year:.2f} y)")
-            if len(alt) > len(best) * 1.2:
-                best, best_name = alt, cand
-        except Exception as e:  # noqa: BLE001
-            print(f"  {cand}: failed {type(e).__name__}: {str(e)[:90]}")
-    if best_name != cfg.symbol:
-        print(f"using {best_name} as price history ({len(best)} bars); costs still modelled from {cfg.symbol}")
-        df = best.iloc[:-1] if len(best) and best.index[-1] > df.index[-1] else best
-    df = df.iloc[:-1]  # drop forming bar
-    out = a.out or cfg.paths.get("data", "data/history.csv")
-    Path(out).parent.mkdir(parents=True, exist_ok=True)
-    save_csv(df, out)
-    yrs = len(df) / cfg.bars_per_year
-    print(f"wrote {len(df)} bars ({yrs:.2f} years) to {out}: {df.index[0]} .. {df.index[-1]}")
-    if yrs < 2.5:
-        print(f"!!! only {yrs:.1f} years of history for {cfg.symbol} — walk-forward will use shorter windows, low confidence")
-
-    if a.update_config:
-        q = br.get_quote(cfg.symbol)
-        fee = br.taker_fee(cfg.symbol)
-        fund = br.funding_annual(cfg.symbol)
-        txt = open(a.config, encoding="utf-8").read()
-        txt = setv(txt, "size", info.contract_size)
-        txt = setv(txt, "min_lot", info.min_lot)
-        txt = setv(txt, "lot_step", info.lot_step)
-        txt = setv(txt, "max_lot", info.max_lot)
-        txt = setv(txt, "spread", round(q.spread, 4))
-        if fee is not None:
-            txt = setv(txt, "fee_pct", fee)
-        if fund is not None:
-            txt = setv(txt, "swap_long_annual", round(-fund, 5))
-            txt = setv(txt, "swap_short_annual", round(fund, 5))
-        open(a.config, "w", encoding="utf-8").write(txt)
-        print(f"config.yaml updated: contract {info.contract_size}/{info.min_lot}/{info.lot_step}, "
-              f"spread {q.spread:.4f}, taker fee {fee}, funding annualised {fund}")
+    Path("data").mkdir(exist_ok=True)
+    for sym, sc in cfg.portfolio().items():
+        info = br.get_symbol_info(sym)
+        df, src = fetch_symbol(br, cfg, sym, sc.history_sources, a.years)
+        q = br.get_quote(sym)
+        meta = {
+            "symbol": sym, "history_source": src, "bars": len(df), "years": round(len(df) / cfg.bars_per_year, 2),
+            "first": str(df.index[0]), "last": str(df.index[-1]),
+            "contract_size": info.contract_size, "min_lot": info.min_lot, "lot_step": info.lot_step, "max_lot": info.max_lot,
+            "spread": round(q.spread, 6), "price": round(q.mid, 4),
+            "fee_pct": br.taker_fee(sym), "funding_annual": br.funding_annual(sym),
+        }
+        save_csv(df, f"data/{slug(sym)}_H4.csv")
+        Path(f"data/{slug(sym)}_meta.json").write_text(json.dumps(meta, indent=1))
+        print(f"  -> data/{slug(sym)}_H4.csv ({meta['years']} y), spread {meta['spread']} fee {meta['fee_pct']} "
+              f"funding {meta['funding_annual']} contract {info.contract_size}/{info.min_lot}/{info.lot_step}")
+        if meta["years"] < 2.5:
+            print(f"  !!! only {meta['years']} years for {sym} — low statistical confidence")

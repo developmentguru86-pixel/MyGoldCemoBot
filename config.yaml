@@ -21,18 +21,31 @@ contract:                    # wird von fetch_history_ccxt --update-config geset
   lot_step: 0.001
   max_lot: 1000000000.0
 
-strategy:
-  lookbacks: [30, 90, 180]   # H4-Bars ≈ 5 / 15 / 30 Tage
+strategy:                    # Live-Parameter = die vom Walk-Forward/Purged-CV am häufigsten gewählte Variante
+  lookbacks: [60, 180, 360]  # H4-Bars ≈ 10 / 30 / 60 Tage
   vol_span: 60
-  target_vol: 0.12
+  target_vol: 0.10
   max_leverage: 3.0
   rebalance_threshold: 0.15
   vol_floor: 0.05
+  entry_min_signal: 1.0      # Einstieg nur, wenn alle Lookbacks einig sind; Ausstieg erst bei Umkehr (Hysterese)
+  exit_min_signal: 0.0
+  z_min: 0.0
+  min_hold_bars: 6           # kein Flip innerhalb von 24 h
+  direction: both
+  regime:
+    er_window: 60            # Efficiency Ratio über 10 Tage: Range-Regime -> flat
+    er_min: 0.25
+    vol_pct_window: 500      # Vol-Perzentil über ~3 Monate
+    vol_pct_max: 0.9         # über dem 90. Perzentil: halbe Größe
+    high_vol_scale: 0.5
   kelly:
     enabled: true
     fraction: 0.5
     window: 300
     min_mult: 0.25
+    cost_aware: true         # Kelly-mu abzüglich geschätztem Kosten-Drag (Turnover x Kosten) x Sicherheitsfaktor
+    cost_margin: 1.5
 
 costs:
   spread: 1.17                # USDT je Einheit, Fallback; wird vom Ticker gesetzt

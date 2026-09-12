@@ -153,6 +153,10 @@ if __name__ == "__main__":
             rc = action_reset(cfg, mode)
     except Exception as e:  # noqa: BLE001
         logging.exception("run failed")
-        notify.send(cfg, f"⚠️ goldbot Lauf fehlgeschlagen: {type(e).__name__}: {str(e)[:300]}")
-        rc = 1
+        if "unfunded" in str(e):
+            notify.send(cfg, "⏳ Konto hat 0 Guthaben – Bot wartet. Auf testnet.phemex.com unter Assets Test-USDT anfordern.")
+            rc = 0
+        else:
+            notify.send(cfg, f"⚠️ goldbot Lauf fehlgeschlagen: {type(e).__name__}: {str(e)[:300]}")
+            rc = 1
     sys.exit(rc)

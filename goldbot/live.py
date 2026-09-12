@@ -92,7 +92,10 @@ class LiveTrader:
         if self.mode == "live" and acct.trade_mode == 2 and not self.allow_real:
             raise RuntimeError("REAL-MONEY account detected. Refusing to trade. "
                                "Pass --allow-real-account only after the walk-forward gates in README are met.")
-        if self.start_equity is None:
+        if acct.equity < 1.0:
+            raise RuntimeError(f"account equity is {acct.equity:.2f} {acct.currency} — unfunded. "
+                               "Testnet: claim test USDT in the Assets page, then rerun.")
+        if self.start_equity is None or self.start_equity <= 0:
             self.start_equity = acct.equity
         if self.rm is None or self.rm.state.hwm > 10 * max(self.cfg.equity_cap, 1):
             eq0 = self.cfg.equity_cap if self.cfg.equity_cap > 0 else acct.equity
@@ -128,16 +131,20 @@ class LiveTrader:
         cur_lots = self.broker.get_position(cfg.symbol)
 
         # demo environments reset periodically: equity jumps while flat -> re-baseline the virtual account
-        if (self.last_actual_equity and cur_lots == 0.0
-                and abs(acct.equity - self.last_actual_equity) > 0.5 * self.last_actual_equity):
+        if self.start_equity is not None and self.start_equity <= 0 and acct.equity > 0:
+            self.start_equity = acct.equity
+        if (self.last_actual_equity is not None and cur_lots == 0.0
+                and abs(acct.equity - self.last_actual_equity) > 0.5 * max(self.last_actual_equity, 1.0)):
             log.warning("account reset detected (%.0f -> %.0f): re-baselining", self.last_actual_equity, acct.equity)
             self.start_equity = acct.equity
             halted, why = self.rm.state.halted, self.rm.state.halted_reason
             self.rm = RiskManager(cfg.risk, cfg.equity_cap or acct.equity, bars.index[-1])
             self.rm.state.halted, self.rm.state.halted_reason = halted, why
         self.last_actual_equity = acct.equity
-        if (self.last_actual_equity and cur_lots == 0.0
-                and abs(acct.equity - self.last_actual_equity) > 0.5 * self.last_actual_equity):
+        if self.start_equity is not None and self.start_equity <= 0 and acct.equity > 0:
+            self.start_equity = acct.equity
+        if (self.last_actual_equity is not None and cur_lots == 0.0
+                and abs(acct.equity - self.last_actual_equity) > 0.5 * max(self.last_actual_equity, 1.0)):
             log.warning("account equity jumped %.0f -> %.0f while flat: demo reset? re-baselining",
                         self.last_actual_equity, acct.equity)
             self.start_equity = acct.equity

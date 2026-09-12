@@ -1,5 +1,5 @@
 {
- "data": "data/XAU_H4.csv",
+ "data": "data/PAXG_H4.csv",
  "params": {
   "lookbacks": [
    30,
@@ -13,44 +13,44 @@
   "bars": 12917,
   "years": 5.9,
   "start_equity": 5000.0,
-  "end_equity": 3999.89,
-  "total_return": -0.2,
-  "cagr": -0.0371,
-  "ann_vol": 0.0215,
-  "sharpe": -1.747,
-  "sortino": -0.957,
-  "max_drawdown": -0.2007,
+  "end_equity": 3995.23,
+  "total_return": -0.201,
+  "cagr": -0.0373,
+  "ann_vol": 0.0213,
+  "sharpe": -1.776,
+  "sortino": -0.939,
+  "max_drawdown": -0.2016,
   "calmar": -0.185,
   "psr_gt_0": 0.0,
-  "trades": 418,
-  "total_cost": 459.3,
-  "total_swap": 0.0,
-  "pnl_per_trading_day": -0.46,
+  "trades": 392,
+  "total_cost": 486.24,
+  "total_swap": -0.23,
+  "pnl_per_trading_day": -0.47,
   "worst_bar": -0.0077,
   "best_bar": 0.007,
-  "time_in_market": 0.255,
-  "avg_abs_lots": 492.0234,
-  "halted_at": "2022-04-11 08:00:00+00:00"
+  "time_in_market": 0.23,
+  "avg_abs_lots": 0.5137,
+  "halted_at": "2022-02-12 04:00:00+00:00"
  },
  "walk_forward": {
   "metrics": {
    "bars": 7658,
    "years": 3.5,
    "start_equity": 5000.0,
-   "end_equity": 6161.45,
-   "total_return": 0.2323,
-   "cagr": 0.0616,
-   "ann_vol": 0.081,
-   "sharpe": 0.778,
-   "sortino": 0.864,
-   "max_drawdown": -0.0876,
-   "calmar": 0.702,
-   "psr_gt_0": 0.927,
-   "trades": 718,
-   "total_cost": 756.12,
-   "total_swap": 0.0,
-   "pnl_per_trading_day": 0.91,
-   "worst_bar": -0.019,
+   "end_equity": 5856.93,
+   "total_return": 0.1714,
+   "cagr": 0.0463,
+   "ann_vol": 0.0757,
+   "sharpe": 0.636,
+   "sortino": 0.707,
+   "max_drawdown": -0.0888,
+   "calmar": 0.521,
+   "psr_gt_0": 0.882,
+   "trades": 706,
+   "total_cost": 793.77,
+   "total_swap": -34.81,
+   "pnl_per_trading_day": 0.67,
+   "worst_bar": -0.0206,
    "best_bar": 0.0262
   },
   "windows": [
@@ -65,10 +65,10 @@
      ],
      "target_vol": 0.08
     },
-    "train_sharpe": -1.558,
-    "test_sharpe": -0.323,
-    "test_return": -0.0085,
-    "test_maxdd": -0.0432,
+    "train_sharpe": -1.662,
+    "test_sharpe": -0.363,
+    "test_return": -0.0095,
+    "test_maxdd": -0.0441,
     "test_trades": 68,
     "halted_at": null
    },
@@ -83,10 +83,10 @@
      ],
      "target_vol": 0.12
     },
-    "train_sharpe": -0.564,
-    "test_sharpe": -0.444,
-    "test_return": -0.0175,
-    "test_maxdd": -0.0717,
+    "train_sharpe": -0.627,
+    "test_sharpe": -0.566,
+    "test_return": -0.022,
+    "test_maxdd": -0.0753,
     "test_trades": 150,
     "halted_at": null
    },
@@ -101,10 +101,10 @@
      ],
      "target_vol": 0.12
     },
-    "train_sharpe": -0.274,
-    "test_sharpe": 1.128,
-    "test_return": 0.05,
-    "test_maxdd": -0.0653,
+    "train_sharpe": -0.366,
+    "test_sharpe": 1.097,
+    "test_return": 0.0486,
+    "test_maxdd": -0.0666,
     "test_trades": 130,
     "halted_at": null
    },
@@ -119,11 +119,11 @@
      ],
      "target_vol": 0.12
     },
-    "train_sharpe": 0.209,
-    "test_sharpe": -0.28,
-    "test_return": -0.0144,
-    "test_maxdd": -0.0768,
-    "test_trades": 118,
+    "train_sharpe": 0.126,
+    "test_sharpe": -0.314,
+    "test_return": -0.0159,
+    "test_maxdd": -0.0783,
+    "test_trades": 123,
     "halted_at": null
    },
    {
@@ -137,10 +137,10 @@
      ],
      "target_vol": 0.12
     },
-    "train_sharpe": 0.206,
-    "test_sharpe": 0.634,
-    "test_return": 0.0244,
-    "test_maxdd": -0.0876,
+    "train_sharpe": 0.13,
+    "test_sharpe": 0.619,
+    "test_return": 0.0238,
+    "test_maxdd": -0.0888,
     "test_trades": 101,
     "halted_at": null
    },
@@ -155,10 +155,10 @@
      ],
      "target_vol": 0.08
     },
-    "train_sharpe": 0.352,
-    "test_sharpe": 2.293,
-    "test_return": 0.0635,
-    "test_maxdd": -0.0573,
+    "train_sharpe": 0.314,
+    "test_sharpe": 2.3,
+    "test_return": 0.0637,
+    "test_maxdd": -0.0576,
     "test_trades": 77,
     "halted_at": null
    },
@@ -171,13 +171,13 @@
       180,
       360
      ],
-     "target_vol": 0.12
+     "target_vol": 0.08
     },
-    "train_sharpe": 0.94,
-    "test_sharpe": 2.131,
-    "test_return": 0.122,
-    "test_maxdd": -0.0492,
-    "test_trades": 74,
+    "train_sharpe": 0.911,
+    "test_sharpe": 1.861,
+    "test_return": 0.076,
+    "test_maxdd": -0.0363,
+    "test_trades": 57,
     "halted_at": null
    }
   ]
@@ -186,13 +186,13 @@
   "horizon_bars": 2190,
   "sims": 2000,
   "block": 20,
-  "return_p05": -0.0759,
-  "return_p50": 0.0643,
-  "return_p95": 0.2262,
-  "maxdd_p05": -0.1384,
-  "maxdd_p50": -0.0718,
-  "maxdd_p95": -0.0391,
-  "prob_loss": 0.257,
-  "prob_dd_gt_20pct": 0.002
+  "return_p05": -0.0779,
+  "return_p50": 0.0457,
+  "return_p95": 0.195,
+  "maxdd_p05": -0.1302,
+  "maxdd_p50": -0.0691,
+  "maxdd_p95": -0.0372,
+  "prob_loss": 0.292,
+  "prob_dd_gt_20pct": 0.001
  }
 }

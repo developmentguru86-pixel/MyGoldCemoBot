@@ -317,20 +317,23 @@ def dynamic_portfolio(sleeves: dict[str, "WalkForwardResult"], cfg: Config, star
         q = {}
         for k, v in sleeves.items():
             done = [w["test_sharpe"] for w in v.windows if pd.Timestamp(w["test_end"]) < t]
-            q[k] = max(0.0, shrink * float(np.mean(done))) if done else None
+            # shrink the trailing mean towards zero by 1/sqrt(n): one good window proves little
+            q[k] = max(0.0, float(np.mean(done)) * (1 - shrink / np.sqrt(len(done)))) if done else None
         if all(x is None for x in q.values()):
-            w = {k: 1.0 / len(q) for k in q}
+            w = {k: 1.0 / len(q) for k in q}          # nothing evaluated yet: start equal-weight
         else:
             raw = {k: (x if x is not None else 0.0) + floor for k, x in q.items()}
             tot = sum(raw.values())
-            w = {k: (x / tot if tot > 0 else 1.0 / len(raw)) for k, x in raw.items()}
-            w = _cap_weights(w, cap)
+            if tot <= 0:
+                w = {k: 0.0 for k in raw}              # nothing proven: stay in cash, do not spread bets on hope
+            else:
+                w = _cap_weights({k: x / tot for k, x in raw.items()}, cap)
         mask = (rets.index >= t) & (rets.index < t_end)
         for k in w:
             weights.loc[mask, k] = w[k]
         history.append({"from": str(t), **{k: round(x, 3) for k, x in w.items()}})
-    port_ret = (weights * rets).sum(axis=1)
-    port_ret = port_ret[(weights.sum(axis=1) > 0)]
+    port_ret = (weights * rets).sum(axis=1)           # cash periods contribute 0
+    port_ret = port_ret[rets.index >= starts[0]] if starts else port_ret
     equity = start_equity * (1.0 + port_ret).cumprod()
     equity.name = "portfolio"
     return equity, {k: round(float(weights[k].iloc[-1]), 3) for k in weights.columns}, history

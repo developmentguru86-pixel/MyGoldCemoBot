@@ -100,9 +100,9 @@ class CcxtBroker(Broker):
         try:
             params = {"marginMode": "cross"} if self.is_okx else {}
             self.ex.set_leverage(self.cfg.exchange.leverage, symbol, params=params)
-        except Exception as e:  # noqa: BLE001 — "leverage not modified" is normal
+        except Exception as e:  # noqa: BLE001 — not fatal: venue default leverage applies, max_leverage caps sizing anyway
             if "not modified" not in str(e).lower() and "110043" not in str(e):
-                raise
+                log.warning("set_leverage failed (continuing): %s", str(e)[:120])
         self._lev_set = True
 
     # ---- Broker interface
@@ -134,9 +134,13 @@ class CcxtBroker(Broker):
 
     def get_symbol_info(self, symbol: str) -> SymbolInfo:
         m = self._m(symbol)
-        return SymbolInfo(float(m.get("contractSize") or 1.0), float(m["limits"]["amount"]["min"]),
-                          float(m["precision"]["amount"]), float(m["limits"]["amount"].get("max") or 1e9), 
-                          float(m["precision"]["price"]), None, None)
+        lim = (m.get("limits") or {}).get("amount") or {}
+        step = (m.get("precision") or {}).get("amount")
+        min_lot = lim.get("min") or step or 0.001
+        step = step or min_lot
+        return SymbolInfo(float(m.get("contractSize") or 1.0), float(min_lot), float(step),
+                          float(lim.get("max") or 1e9), float((m.get("precision") or {}).get("price") or 0.01),
+                          None, None)
 
     def get_quote(self, symbol: str) -> Quote:
         t = self.pub.fetch_ticker(symbol)

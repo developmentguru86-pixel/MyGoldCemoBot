@@ -1,0 +1,3 @@
+⚠️ broker offline: krakenfutures fetchBalance has no account for flex
+Letzte Bar -
+Noch kein Journal – erste Entscheidung am nächsten H4-Bar-Schluss.

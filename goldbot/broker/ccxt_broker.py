@@ -111,7 +111,28 @@ class CcxtBroker(Broker):
         return {"ok": True, "exchange": self.ex.id, "demo": self.cfg.exchange.demo,
                 "server_time": pd.Timestamp(t, unit="ms", tz="UTC").isoformat()}
 
+    def _kraken_accounts_equity(self) -> tuple[float | None, str]:
+        """Kraken Futures: read /accounts directly; works for flex (multi-collateral) and single-collateral demo setups."""
+        raw = self.ex.privateGetAccounts()
+        accts = raw.get("accounts") or {}
+        summary = {k: sorted(v.keys())[:8] for k, v in accts.items() if isinstance(v, dict)}
+        for name, a in accts.items():
+            if not isinstance(a, dict):
+                continue
+            for key in ("portfolioValue", "balanceValue", "marginEquity"):
+                if a.get(key) is not None:
+                    return float(a[key]), f"{name}.{key}"
+            aux = a.get("auxiliary") or {}
+            for key in ("pv", "af", "usd"):
+                if aux.get(key) is not None:
+                    return float(aux[key]), f"{name}.auxiliary.{key}"
+        raise RuntimeError(f"no equity field in kraken accounts: {summary}")
+
     def get_account(self) -> Account:
+        if self.ex.id == "krakenfutures":
+            eq, src = self._kraken_accounts_equity()
+            log.info("kraken equity from %s", src)
+            return Account(eq, eq, "USD", eq, 0 if self.cfg.exchange.demo else 2)
         bal = self.ex.fetch_balance()
         equity = None
         for getter in (lambda b: b["info"]["data"][0]["totalEq"],                 # okx unified

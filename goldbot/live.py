@@ -15,7 +15,7 @@ from pathlib import Path
 import pandas as pd
 
 from .backtest import should_trade
-from .broker.base import Broker
+from .broker.base import Broker, MarketClosed
 from .config import Config
 from .risk import RiskManager
 from .sizing import exposure_to_lots, lots_to_exposure
@@ -171,8 +171,15 @@ class LiveTrader:
             elif self.dry_run:
                 row.update(action="dry_run", result=f"would set {cur_lots} -> {tgt_lots}")
             else:
-                res = self.broker.set_target_position(cfg.symbol, tgt_lots, comment=f"goldbot {bar_time[:16]}")
-                row.update(action="trade", result=json.dumps(res)[:200])
+                try:
+                    res = self.broker.set_target_position(cfg.symbol, tgt_lots, comment=f"goldbot {bar_time[:16]}")
+                    row.update(action="trade", result=json.dumps(res)[:200])
+                except MarketClosed as e:
+                    row.update(action="skip", reason="market_closed", result=str(e)[:120])
+                except Exception as e:  # noqa: BLE001
+                    row.update(action="error", result=f"{type(e).__name__}: {str(e)[:150]}")
+                    self._journal(row)
+                    raise
         log.info("%s", {k: row[k] for k in ("bar_time", "price", "equity", "signal", "target_exposure",
                                              "current_lots", "target_lots", "action", "reason")})
         self._journal(row)

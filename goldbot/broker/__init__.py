@@ -1,4 +1,4 @@
-from .base import Account, Broker, Quote, SymbolInfo
+from .base import Account, Broker, MarketClosed, Quote, SymbolInfo
 from .mt5_http import MT5HttpBroker
 from .paper import PaperBroker
 
@@ -7,4 +7,4 @@ try:
 except ImportError:  # ccxt not installed
     CcxtBroker = None  # type: ignore
 
-__all__ = ["Account", "Broker", "Quote", "SymbolInfo", "MT5HttpBroker", "PaperBroker", "CcxtBroker"]
+__all__ = ["Account", "Broker", "MarketClosed", "Quote", "SymbolInfo", "MT5HttpBroker", "PaperBroker", "CcxtBroker"]

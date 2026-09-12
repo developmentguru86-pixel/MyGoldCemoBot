@@ -12,7 +12,7 @@ log = logging.getLogger("ccxt_broker")
 
 from ..config import Config
 from ..data import from_records
-from .base import Account, Broker, Quote, SymbolInfo
+from .base import Account, Broker, MarketClosed, Quote, SymbolInfo
 
 TF = {"M1": "1m", "M5": "5m", "M15": "15m", "M30": "30m", "H1": "1h", "H4": "4h", "D1": "1d"}
 
@@ -241,7 +241,14 @@ class CcxtBroker(Broker):
         params = {"reduceOnly": True} if reduce_only else {}
         if self.is_okx:
             params["tdMode"] = "cross"
-        o = self.ex.create_order(symbol, "market", side, amt, params=params)
+        try:
+            o = self.ex.create_order(symbol, "market", side, amt, params=params)
+        except Exception as e:  # noqa: BLE001
+            msg = str(e)
+            if any(k in msg for k in ("TE_SEQ_TURN_OFF", "20005", "market is closed", "Market closed", "trading is not open",
+                                      "51000", "not in trading", "51009", "instrument is suspended", "TRADING_SUSPENDED")):
+                raise MarketClosed(msg[:160]) from e
+            raise
         return {"id": o.get("id"), "side": side, "amount": amt, "reduce_only": reduce_only,
                 "avg": o.get("average"), "status": o.get("status")}
 

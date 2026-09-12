@@ -7,6 +7,10 @@ from dataclasses import dataclass
 import pandas as pd
 
 
+class MarketClosed(Exception):
+    """Venue refuses orders because the underlying market is closed (e.g. gold perps on weekends)."""
+
+
 @dataclass
 class Quote:
     bid: float

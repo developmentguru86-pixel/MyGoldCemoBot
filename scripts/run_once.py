@@ -50,8 +50,10 @@ def action_trade(cfg: Config, mode: str, allow_real: bool) -> int:
         notify.send(cfg, f"📈 TRADE {str(r['bar_time'])[:16]}\n{cfg.symbol} {r['price']:.2f}\n"
                          f"{r['current_lots']:+.4f} → {r['target_lots']:+.4f} (Ziel {r['target_exposure']:+.2f}x)\n"
                          f"Equity {r['equity']:,.2f}  Grund: {r['reason'] if isinstance(r.get('reason'), str) else 'signal'}")
-    elif act == "skip":
+    elif act == "skip" and r.get("reason") != "market_closed":
         notify.send(cfg, f"⏸ übersprungen {str(r['bar_time'])[:16]}: {r.get('reason')}")
+    elif act == "skip":
+        logging.info("market closed at %s — target %s not sent, retried at the next bar", r.get("bar_time"), r.get("target_lots"))
     if trader.rm.state.halted:
         notify.send(cfg, f"🛑 KILL-SWITCH ausgelöst: {trader.rm.state.halted_reason}. Position glattgestellt, "
                          "Bot pausiert bis action=reset_halt.")

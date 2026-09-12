@@ -76,7 +76,7 @@ class CcxtBroker(Broker):
         # market data always from the public production endpoints (same prices, no auth needed)
         self.pub = getattr(ccxt, ex_cfg.id)({"enableRateLimit": True, "options": {"defaultType": "swap"}})
         self._markets = None
-        self._lev_set = False
+        self._lev_set: set = set()
         self.account_debug = ""
 
     # ---- helpers
@@ -90,11 +90,11 @@ class CcxtBroker(Broker):
         return self._markets[symbol]
 
     def _ensure_leverage(self, symbol: str) -> None:
-        if self._lev_set or not self.cfg.exchange.leverage:
+        if symbol in self._lev_set or not self.cfg.exchange.leverage:
             return
-        if self.is_okx:
+        if self.is_okx or self.ex.id == "phemex":
             try:
-                self.ex.set_position_mode(False, symbol)  # net (one-way) mode
+                self.ex.set_position_mode(False, symbol)  # net / one-way mode
             except Exception as e:  # noqa: BLE001 — fails harmlessly if already net mode or positions open
                 if "59000" not in str(e) and "already" not in str(e).lower():
                     log.warning("set_position_mode: %s", str(e)[:120])
@@ -104,7 +104,7 @@ class CcxtBroker(Broker):
         except Exception as e:  # noqa: BLE001 — not fatal: venue default leverage applies, max_leverage caps sizing anyway
             if "not modified" not in str(e).lower() and "110043" not in str(e):
                 log.warning("set_leverage failed (continuing): %s", str(e)[:120])
-        self._lev_set = True
+        self._lev_set.add(symbol)
 
     # ---- Broker interface
     def health(self) -> dict:
@@ -245,6 +245,11 @@ class CcxtBroker(Broker):
             o = self.ex.create_order(symbol, "market", side, amt, params=params)
         except Exception as e:  # noqa: BLE001
             msg = str(e)
+            if "TE_ERR_INCONSISTENT_POS_MODE" in msg or "20004" in msg:
+                log.warning("%s is in hedge mode; retrying order with hedged=True", symbol)
+                o = self.ex.create_order(symbol, "market", side, amt, params={**params, "hedged": True})
+                return {"id": o.get("id"), "side": side, "amount": amt, "reduce_only": reduce_only,
+                        "avg": o.get("average"), "status": o.get("status"), "hedged": True}
             if any(k in msg for k in ("TE_SEQ_TURN_OFF", "20005", "market is closed", "Market closed", "trading is not open",
                                       "51000", "not in trading", "51009", "instrument is suspended", "TRADING_SUSPENDED")):
                 raise MarketClosed(msg[:160]) from e

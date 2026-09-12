@@ -123,7 +123,8 @@ class CcxtBroker(Broker):
             except Exception as e:  # noqa: BLE001
                 last = e
         if bal is None:
-            raise RuntimeError(f"kraken fetch_balance failed: {str(last)[:120]}")
+            raw = str(getattr(self.ex, "last_http_response", ""))[:400]
+            raise RuntimeError(f"kraken fetch_balance failed: {str(last)[:100]} | raw: {raw}")
         accts = (bal.get("info") or {}).get("accounts") or {}
         summary = {k: (sorted(v.keys())[:10] if isinstance(v, dict) else type(v).__name__) for k, v in accts.items()}
         self.account_debug = f"kraken accounts: {summary}"[:300]

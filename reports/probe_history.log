@@ -1,0 +1,16 @@
+XAU/USDT:USDT: type=swap contractSize=0.001 created=1744192800563
+  A forward since=6y               0 bars
+  B backward until                   1440 bars  2026-01-15 .. 2026-09-12
+  C ccxt paginate=True               3129 bars  2025-04-09 .. 2026-09-12
+PAXG/USDT: type=spot contractSize=None created=1760511600000
+  A forward since=6y               0 bars
+  B backward until                   1440 bars  2026-01-15 .. 2026-09-12
+  C ccxt paginate=True               1996 bars  2025-10-15 .. 2026-09-12
+XAU/USD:USD: type=swap contractSize=1.0 created=1785931369000
+  A forward since=6y               0 bars
+  B backward until                    100 bars  2026-08-27 .. 2026-09-12
+  C ccxt paginate=True                230 bars  2026-08-05 .. 2026-09-12
+PAXG/USD:USD: type=swap contractSize=1.0 created=1692190809000
+  A forward since=6y               0 bars
+  B backward until                    100 bars  2026-08-27 .. 2026-09-12
+  C ccxt paginate=True               6739 bars  2023-08-16 .. 2026-09-12

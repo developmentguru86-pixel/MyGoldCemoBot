@@ -19,9 +19,16 @@ jobs:
           cache: pip
       - run: pip install -r requirements.txt
       - name: history + config sync
-        run: python scripts/fetch_history_ccxt.py --years "${{ github.event.inputs.years || '6' }}" --update-config
+        shell: bash
+        run: |
+          mkdir -p reports
+          set -o pipefail
+          python scripts/fetch_history_ccxt.py --years "${{ github.event.inputs.years || '6' }}" --update-config 2>&1 | tee reports/fetch.log
       - name: backtest + walk-forward + bootstrap
-        run: python scripts/run_backtest.py --walk-forward --bootstrap | tee reports/summary.txt
+        shell: bash
+        run: |
+          set -o pipefail
+          python scripts/run_backtest.py --walk-forward --bootstrap 2>&1 | tee reports/summary.txt
       - name: send to Telegram
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
@@ -55,5 +62,5 @@ jobs:
           git config user.name goldbot
           git config user.email goldbot@users.noreply.github.com
           git add config.yaml
-          git add -f reports/report.json reports/summary.txt reports/backtest.png 2>/dev/null || true
+          for f in reports/report.json reports/summary.txt reports/backtest.png reports/fetch.log; do [ -f "$f" ] && git add -f "$f"; done; true
           git diff --cached --quiet || (git commit -m "backtest report + config synced from exchange" && git push)

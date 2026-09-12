@@ -108,6 +108,22 @@ class CcxtBroker(Broker):
             if nxt <= cursor:
                 break
             cursor = nxt
+        if not out:  # `since` predates the listing on some venues -> page backwards from now
+            end = until_ms
+            for _ in range(60):
+                rows = self.pub.fetch_ohlcv(symbol, tf, limit=1000, params={"until": end})
+                if not rows:
+                    break
+                out = rows + out
+                first = rows[0][0]
+                if first <= since_ms or len(rows) < 2:
+                    break
+                end = first - 1
+            seen, dedup = set(), []
+            for r in out:
+                if r[0] not in seen:
+                    seen.add(r[0]); dedup.append(r)
+            out = sorted(dedup)
         recs = [{"time": pd.Timestamp(r[0], unit="ms", tz="UTC").isoformat(), "open": r[1], "high": r[2],
                  "low": r[3], "close": r[4], "tick_volume": r[5]} for r in out if r[0] <= until_ms]
         return from_records(recs) if recs else pd.DataFrame()

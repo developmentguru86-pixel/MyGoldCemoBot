@@ -1,0 +1,16 @@
+2026-09-12T20:18:14.867138+00:00
+Traceback (most recent call last):
+  File "/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/scripts/run_once.py", line 140, in <module>
+    rc = action_trade(cfg, mode, a.allow_real_account)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/scripts/run_once.py", line 38, in action_trade
+    trader.preflight()
+  File "/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/goldbot/live.py", line 80, in preflight
+    h = self.broker.health()
+        ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/goldbot/broker/ccxt_broker.py", line 111, in health
+    t = self.ex.fetch_time()
+        ^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/ccxt/base/exchange.py", line 3490, in fetch_time
+    raise NotSupported(self.id + ' fetchTime() is not supported yet')
+ccxt.base.errors.NotSupported: phemex fetchTime() is not supported yet

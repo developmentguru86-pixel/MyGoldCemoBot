@@ -1,0 +1,34 @@
+name: probe_kraken
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - shell: bash
+        run: |
+          mkdir -p reports
+          {
+          for u in "https://demo-futures.kraken.com/derivatives/api/v3/instruments" \
+                   "https://demo-futures.kraken.com/derivatives/api/v3/accounts" \
+                   "https://demo-futures.kraken.com/api/v3/instruments" \
+                   "https://futures.kraken.com/derivatives/api/v3/instruments" \
+                   "https://demo-futures.kraken.com/derivatives/api/v3/tickers"; do
+            echo "== $u"
+            curl -s -o /tmp/body -w "http %{http_code} type %{content_type} redirect->%{redirect_url}\n" -A "Mozilla/5.0" "$u"
+            head -c 300 /tmp/body | tr '\n' ' '; echo
+            echo "-- with Accept: application/json"
+            curl -s -o /tmp/body -w "http %{http_code} type %{content_type}\n" -H "Accept: application/json" "$u"
+            head -c 200 /tmp/body | tr '\n' ' '; echo
+          done
+          } 2>&1 | tee reports/probe_kraken.log
+      - if: always()
+        run: |
+          git config user.name goldbot
+          git config user.email goldbot@users.noreply.github.com
+          git add -f reports/probe_kraken.log
+          git diff --cached --quiet || (git commit -m "kraken demo probe" && git push)

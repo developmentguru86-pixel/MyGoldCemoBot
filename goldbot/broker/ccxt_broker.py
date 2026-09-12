@@ -212,6 +212,11 @@ class CcxtBroker(Broker):
             limit = next(v for v in (5, 10, 50, 100, 500, 1000) if v >= min(count, 1000))
         rows = self.pub.fetch_ohlcv(symbol, tf, limit=limit)
         rows = rows[-count:]
+        if len(rows) < count:
+            venue = rows_to_df(rows) if rows else pd.DataFrame()
+            filled = self._backfill(symbol, timeframe, venue, count)
+            if filled is not None and len(filled) >= count:
+                return filled.iloc[-count:]
         if len(rows) < count:  # venue caps the per-call limit -> paginate over a time range
             ms = self.pub.parse_timeframe(tf) * 1000
             now = self.pub.milliseconds()
@@ -220,6 +225,41 @@ class CcxtBroker(Broker):
         recs = [{"time": pd.Timestamp(r[0], unit="ms", tz="UTC").isoformat(), "open": r[1], "high": r[2],
                  "low": r[3], "close": r[4], "tick_volume": r[5]} for r in rows]
         return from_records(recs)
+
+    def _backfill(self, symbol: str, timeframe: str, venue: pd.DataFrame, count: int) -> pd.DataFrame | None:
+        """The venue listed the contract recently: prepend older bars of the same underlying from the
+        configured public history source, ratio-adjusted so the seam has no jump."""
+        sources = (self.cfg.symbols.get(symbol).history_sources if symbol in self.cfg.symbols else []) or []
+        tf = TF.get(timeframe.upper(), timeframe)
+        ms = self.pub.parse_timeframe(tf) * 1000
+        now = self.pub.milliseconds()
+        since = now - int(count * ms * 1.4)
+        for cand in sources:
+            ex_id, alt = cand.split(":", 1)
+            try:
+                ex = getattr(ccxt, ex_id)({"enableRateLimit": True, "timeout": 30000})
+                ex.load_markets()
+                if alt not in ex.markets:
+                    continue
+                proxy = rows_to_df(fetch_ohlcv_range(ex, alt, tf, since, now))
+                if proxy.empty:
+                    continue
+                if venue.empty:
+                    return proxy
+                seam = venue.index[0]
+                older = proxy[proxy.index < seam]
+                if older.empty:
+                    return proxy if len(proxy) > len(venue) else venue
+                ref = proxy["close"].reindex([seam], method="nearest").iloc[0]
+                ratio = float(venue["close"].iloc[0]) / float(ref) if ref else 1.0
+                older = older.copy()
+                for col in ("open", "high", "low", "close"):
+                    older[col] = older[col] * ratio
+                log.info("%s: backfilled %d bars from %s (ratio %.4f)", symbol, len(older), cand, ratio)
+                return pd.concat([older, venue])
+            except Exception as e:  # noqa: BLE001
+                log.warning("backfill from %s failed: %s", cand, str(e)[:100])
+        return None
 
     def get_bars_range(self, symbol: str, timeframe: str, since_ms: int, until_ms: int) -> pd.DataFrame:
         tf = TF.get(timeframe.upper(), timeframe)

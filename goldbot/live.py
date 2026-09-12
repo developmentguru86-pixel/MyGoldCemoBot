@@ -35,6 +35,7 @@ class LiveTrader:
         self.state_path, self.journal_path = Path(state_path), Path(journal_path)
         self.last_bar: str | None = None
         self.rm: RiskManager | None = None
+        self.last_actual_equity: float | None = None
         self._load_state()
 
     # ---- persistence
@@ -44,6 +45,7 @@ class LiveTrader:
             self.last_bar = d.get("last_bar")
             self.start_equity = d.get("start_equity")
             self.last_actual_equity = d.get("last_actual_equity")
+            self.last_actual_equity = d.get("last_actual_equity")
             if d.get("risk"):
                 self.rm = RiskManager.from_dict(self.cfg.risk, d["risk"])
 
@@ -52,6 +54,7 @@ class LiveTrader:
         self.state_path.write_text(json.dumps({
             "last_bar": self.last_bar,
             "start_equity": self.start_equity,
+            "last_actual_equity": self.last_actual_equity,
             "last_actual_equity": self.last_actual_equity,
             "risk": self.rm.to_dict() if self.rm else None,
             "mode": self.mode,
@@ -132,6 +135,13 @@ class LiveTrader:
             halted, why = self.rm.state.halted, self.rm.state.halted_reason
             self.rm = RiskManager(cfg.risk, cfg.equity_cap or acct.equity, bars.index[-1])
             self.rm.state.halted, self.rm.state.halted_reason = halted, why
+        self.last_actual_equity = acct.equity
+        if (self.last_actual_equity and cur_lots == 0.0
+                and abs(acct.equity - self.last_actual_equity) > 0.5 * self.last_actual_equity):
+            log.warning("account equity jumped %.0f -> %.0f while flat: demo reset? re-baselining",
+                        self.last_actual_equity, acct.equity)
+            self.start_equity = acct.equity
+            self.rm = RiskManager(cfg.risk, cfg.equity_cap or acct.equity, bars.index[-1])
         self.last_actual_equity = acct.equity
         equity = acct.equity
         if cfg.equity_cap > 0 and self.start_equity is not None:

@@ -92,6 +92,26 @@ def action_chat_id(cfg: Config) -> int:
     return 0
 
 
+def action_chat_id(cfg: Config) -> int:
+    """Discover the Telegram chat id of whoever messaged the bot; written to logs/telegram_chat.txt."""
+    import os, requests
+    token = cfg.telegram.token or os.environ.get("TELEGRAM_TOKEN", "")
+    r = requests.get(f"https://api.telegram.org/bot{token}/getUpdates", timeout=20).json()
+    seen = {}
+    for u in r.get("result", []):
+        m = u.get("message") or u.get("edited_message") or {}
+        c = m.get("chat") or {}
+        if c.get("id"):
+            seen[c["id"]] = f"{c.get('first_name', '')} {c.get('last_name', '')} @{c.get('username', '')} '{(m.get('text') or '')[:30]}'"
+    out = "\n".join(f"{cid}: {who}" for cid, who in seen.items()) or "no messages yet — write to the bot first"
+    Path("logs/telegram_chat.txt").write_text(out + "\n")
+    print(out)
+    for cid in seen:
+        requests.post(f"https://api.telegram.org/bot{token}/sendMessage",
+                      json={"chat_id": cid, "text": f"goldbot verbunden. Deine Chat-ID: {cid}"}, timeout=15)
+    return 0
+
+
 def action_reset(cfg: Config, mode: str) -> int:
     state, _ = paths_for(cfg, mode)
     p = Path(state)
@@ -122,6 +142,8 @@ if __name__ == "__main__":
             notify.send(cfg, status_text(cfg, mode)); rc = 0
         elif a.action == "flatten":
             rc = action_flatten(cfg, mode)
+        elif a.action == "chat_id":
+            rc = action_chat_id(cfg)
         elif a.action == "chat_id":
             rc = action_chat_id(cfg)
         else:

@@ -28,6 +28,8 @@ def public_exchange(ex_id: str):
     """One instance per venue so ccxt's rate limiter actually throttles across symbols."""
     if ex_id not in _EX:
         _EX[ex_id] = getattr(ccxt, ex_id)({"enableRateLimit": True, "timeout": 30000})
+        if ex_id == "bitfinex":
+            _EX[ex_id].rateLimit = max(_EX[ex_id].rateLimit, 2200)   # candles endpoint: ~30 req/min sustained
         _EX[ex_id].load_markets()
     return _EX[ex_id]
 

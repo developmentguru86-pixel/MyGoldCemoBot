@@ -134,7 +134,9 @@ if __name__ == "__main__":
         res.trades.to_csv(out / f"trades_insample_{slug(sym)}.csv", index=False)
         is_curves[sym] = res.equity
 
-        if a.walk_forward:
+        if a.walk_forward and len(df) < c.bars_per_year // 2 + 2 * max(c.bars_per_year // 4, 60):
+            print(f"!!! {sym}: only {len(df) / c.bars_per_year:.2f} years — too short for any walk-forward window, skipped")
+        elif a.walk_forward:
             tr, te = wf_windows(c, len(df))
             wf = walk_forward(df, c, grid=grid, train_bars=tr, test_bars=te)
             print_metrics(f"{sym} walk-forward OUT-OF-SAMPLE", wf.metrics)

@@ -1,11 +1,8 @@
-market: SymbolInfo(contract_size=0.001, min_lot=1.0, lot_step=1.0, max_lot=100000000.0, point=0.1, swap_long=None, swap_short=None)
-XAU/USDT:USDT: 1440 bars (0.66 y)
-  okx:PAXG/USDT: 1440 bars (0.66 y)
-  bitfinex:XAUT/USDT: 12919 bars (5.90 y)
-  bitfinex:XAUT/USD: 12471 bars (5.69 y)
-  coinbase:PAXG/USD: failed ExchangeError: coinbase {"error":"unknown","error_details":"parsing field \"granularity\": \"4h\" is not 
-  mexc:PAXG/USDT: not listed
-  kucoin:PAXG/USDT: 1000 bars (0.46 y)
-using bitfinex:XAUT/USDT as price history (12919 bars); costs still modelled from XAU/USDT:USDT
-wrote 12918 bars (5.90 years) to data/XAU_H4.csv: 2020-09-12 08:00:00+00:00 .. 2026-09-12 12:00:00+00:00
-config.yaml updated: contract 0.001/1.0/1.0, spread 0.1000, taker fee 0.0005, funding annualised 0.0
+Traceback (most recent call last):
+  File "/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/scripts/fetch_history_ccxt.py", line 32, in <module>
+    info = br.get_symbol_info(cfg.symbol)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/goldbot/broker/ccxt_broker.py", line 137, in get_symbol_info
+    return SymbolInfo(float(m.get("contractSize") or 1.0), float(m["limits"]["amount"]["min"]),
+                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: float() argument must be a string or a real number, not 'NoneType'

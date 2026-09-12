@@ -2,179 +2,179 @@
   aligned = pd.concat(curves, axis=1).ffill()
 
 ######## XAU/USDT:USDT  weight 50%  12918 bars  2020-09-12 16:00:00+00:00 .. 2026-09-12 16:00:00+00:00
-costs: spread 0.64 fee 0.001 slippage 0.19824 funding L/S -0.0272/+0.0272  contract 1.0/0.001/0.001
+costs: spread 0.1 fee 0.0005 slippage 0.19824 funding L/S -0.0295/+0.0295  contract 1.0/0.001/0.001
 
 == XAU/USDT:USDT in-sample, fixed params {'lookbacks': [30, 90, 180], 'target_vol': 0.12, 'vol_span': 60} ==
   bars                   12917
   years                  5.9
   start_equity           2500.0
-  end_equity             1999.31
+  end_equity             1999.25
   total_return           -0.2003
   cagr                   -0.0372
-  ann_vol                0.018
-  sharpe                 -2.097
-  sortino                -1.584
+  ann_vol                0.023
+  sharpe                 -1.634
+  sortino                -1.222
   max_drawdown           -0.2003
   calmar                 -0.186
   psr_gt_0               0.0
-  trades                 574
-  total_cost             317.47
-  total_swap             -0.22
+  trades                 691
+  total_cost             227.93
+  total_swap             -3.2
   pnl_per_trading_day    -0.23
-  worst_bar              -0.0061
-  best_bar               0.0046
-  time_in_market         0.468
-  avg_abs_lots           0.1526
-  halted_at              2023-08-02 00:00:00+00:00
+  worst_bar              -0.0087
+  best_bar               0.0078
+  time_in_market         0.491
+  avg_abs_lots           0.1893
+  halted_at              2023-09-21 04:00:00+00:00
 
 == XAU/USDT:USDT walk-forward OUT-OF-SAMPLE ==
   bars                   7658
   years                  3.5
   start_equity           2500.0
-  end_equity             2675.0
-  total_return           0.07
-  cagr                   0.0195
-  ann_vol                0.0476
-  sharpe                 0.43
-  sortino                0.31
-  max_drawdown           -0.1169
-  calmar                 0.167
-  psr_gt_0               0.788
-  trades                 370
-  total_cost             299.67
-  total_swap             23.5
-  pnl_per_trading_day    0.14
-  worst_bar              -0.0207
-  best_bar               0.0149
+  end_equity             2696.19
+  total_return           0.0785
+  cagr                   0.0218
+  ann_vol                0.0472
+  sharpe                 0.481
+  sortino                0.367
+  max_drawdown           -0.094
+  calmar                 0.232
+  psr_gt_0               0.818
+  trades                 413
+  total_cost             188.39
+  total_swap             22.28
+  pnl_per_trading_day    0.15
+  worst_bar              -0.0134
+  best_bar               0.0262
   windows:
-   2022-09-26..2023-04-03 lb=[60, 180, 360] tv=0.12 thr=0.15 entry=1.0 er=on | train SR -1.064 -> test SR 0.204 ret +0.004 mdd -0.020 trades 43
-   2023-04-03..2023-10-11 lb=[60, 180, 360] tv=0.08 thr=0.15 entry=1.0 er=on | train SR -0.447 -> test SR -1.141 ret -0.006 mdd -0.011 trades 48
-   2023-10-12..2024-04-11 lb=[90, 270, 540] tv=0.08 thr=0.15 entry=1.0 er=on | train SR -0.38 -> test SR -1.779 ret -0.024 mdd -0.028 trades 60
-   2024-04-11..2024-10-11 lb=[60, 180, 360] tv=0.12 thr=0.15 entry=1.0 er=on | train SR 0.119 -> test SR -1.746 ret -0.032 mdd -0.038 trades 60
-   2024-10-11..2025-04-14 lb=[60, 180, 360] tv=0.12 thr=0.15 entry=1.0 er=on | train SR -0.114 -> test SR -2.472 ret -0.016 mdd -0.020 trades 56
-   2025-04-15..2025-10-18 lb=[90, 270, 540] tv=0.12 thr=0.15 entry=1.0 er=off | train SR -0.158 -> test SR 2.201 ret +0.089 mdd -0.079 trades 55
-   2025-10-18..2026-04-20 lb=[60, 180, 360] tv=0.08 thr=0.15 entry=1.0 er=off | train SR 0.692 -> test SR 1.588 ret +0.060 mdd -0.037 trades 48
-  XAU/USDT:USDT long-only walk-forward: CAGR +3.0% Sharpe 0.682 MaxDD -8.3% trades 328 cost 240.2
-  XAU/USDT:USDT short-only walk-forward: CAGR -0.1% Sharpe -0.047 MaxDD -2.4% trades 84 cost 66.71
+   2022-09-26..2023-04-03 lb=[90, 270, 540] tv=0.08 thr=0.15 entry=1.0 er=on | train SR -0.657 -> test SR 0.794 ret +0.011 mdd -0.012 trades 53
+   2023-04-03..2023-10-11 lb=[90, 270, 540] tv=0.12 thr=0.15 entry=1.0 er=on | train SR -0.089 -> test SR -0.748 ret -0.011 mdd -0.027 trades 47
+   2023-10-12..2024-04-11 lb=[90, 270, 540] tv=0.12 thr=0.15 entry=0.0 er=on | train SR 0.295 -> test SR 0.366 ret +0.011 mdd -0.033 trades 76
+   2024-04-11..2024-10-11 lb=[60, 180, 360] tv=0.08 thr=0.15 entry=1.0 er=on | train SR 0.904 -> test SR -1.287 ret -0.017 mdd -0.026 trades 66
+   2024-10-11..2025-04-14 lb=[60, 180, 360] tv=0.08 thr=0.15 entry=1.0 er=on | train SR 0.62 -> test SR -3.447 ret -0.035 mdd -0.039 trades 76
+   2025-04-15..2025-10-18 lb=[60, 180, 360] tv=0.08 thr=0.15 entry=1.0 er=off | train SR 0.56 -> test SR 2.372 ret +0.064 mdd -0.056 trades 61
+   2025-10-18..2026-04-20 lb=[90, 270, 540] tv=0.08 thr=0.15 entry=1.0 er=off | train SR 1.225 -> test SR 1.516 ret +0.059 mdd -0.037 trades 34
+  XAU/USDT:USDT long-only walk-forward: CAGR +4.9% Sharpe 0.894 MaxDD -8.4% trades 378 cost 190.37
+  XAU/USDT:USDT short-only walk-forward: CAGR +0.3% Sharpe 0.177 MaxDD -3.3% trades 102 cost 58.78
 
 == XAU/USDT:USDT purged 6-fold CV (embargo 1100 bars) ==
   folds                  6
   embargo_bars           1100
-  mean_oos_sharpe        -0.84
-  median_oos_sharpe      -0.72
-  positive_folds         1
-  worst_fold_sharpe      -3.256
-  total_oos_trades       613
-   fold 0 2020-09-12..2021-09-12 lb=[90, 270, 540] tv=0.08 thr=0.15 entry=1.0 er=off | train SR 0.44 -> test SR -3.256 ret -0.093 trades 106
-   fold 1 2021-09-12..2022-09-13 lb=[90, 270, 540] tv=0.08 thr=0.15 entry=1.0 er=off | train SR 0.078 -> test SR -1.06 ret -0.032 trades 66
-   fold 2 2022-09-13..2023-09-23 lb=[90, 270, 540] tv=0.12 thr=0.15 entry=1.0 er=on | train SR -0.215 -> test SR -0.337 ret -0.010 trades 96
-   fold 3 2023-09-23..2024-09-16 lb=[90, 270, 540] tv=0.12 thr=0.15 entry=1.0 er=on | train SR 0.092 -> test SR -1.117 ret -0.045 trades 109
-   fold 4 2024-09-16..2025-09-17 lb=[60, 180, 360] tv=0.12 thr=0.15 entry=0.0 er=on | train SR -0.569 -> test SR -0.38 ret -0.014 trades 115
-   fold 5 2025-09-17..2026-09-12 lb=[60, 180, 360] tv=0.12 thr=0.15 entry=1.0 er=on | train SR -0.439 -> test SR 1.109 ret +0.072 trades 121
+  mean_oos_sharpe        -0.398
+  median_oos_sharpe      -0.685
+  positive_folds         2
+  worst_fold_sharpe      -1.912
+  total_oos_trades       604
+   fold 0 2020-09-12..2021-09-12 lb=[60, 180, 360] tv=0.12 thr=0.15 entry=1.0 er=on | train SR 0.735 -> test SR -1.912 ret -0.022 trades 38
+   fold 1 2021-09-12..2022-09-13 lb=[90, 270, 540] tv=0.08 thr=0.15 entry=0.0 er=on | train SR 0.379 -> test SR -0.673 ret -0.015 trades 102
+   fold 2 2022-09-13..2023-09-23 lb=[30, 90, 180] tv=0.08 thr=0.15 entry=1.0 er=on | train SR 0.116 -> test SR -1.179 ret -0.019 trades 108
+   fold 3 2023-09-23..2024-09-16 lb=[90, 270, 540] tv=0.12 thr=0.15 entry=1.0 er=on | train SR 0.444 -> test SR 0.407 ret +0.021 trades 98
+   fold 4 2024-09-16..2025-09-17 lb=[60, 180, 360] tv=0.12 thr=0.15 entry=1.0 er=on | train SR -0.024 -> test SR -0.698 ret -0.030 trades 140
+   fold 5 2025-09-17..2026-09-12 lb=[60, 180, 360] tv=0.12 thr=0.15 entry=1.0 er=on | train SR -0.044 -> test SR 1.666 ret +0.112 trades 118
 
 ######## BTC/USDT:USDT  weight 50%  13144 bars  2020-09-12 12:00:00+00:00 .. 2026-09-12 16:00:00+00:00
-costs: spread 0.1 fee 0.001 slippage 4.932 funding L/S -0.0726/+0.0726  contract 1.0/0.001/0.001
+costs: spread 0.1 fee 0.0005 slippage 4.932 funding L/S -0.0800/+0.0800  contract 1.0/0.001/0.001
 
 == BTC/USDT:USDT in-sample, fixed params {'lookbacks': [30, 90, 180], 'target_vol': 0.12, 'vol_span': 60} ==
   bars                   13143
   years                  6.0
   start_equity           2500.0
-  end_equity             2934.54
-  total_return           0.1738
-  cagr                   0.0271
-  ann_vol                0.0727
-  sharpe                 0.404
-  sortino                0.475
-  max_drawdown           -0.1636
-  calmar                 0.165
-  psr_gt_0               0.839
-  trades                 1121
-  total_cost             525.61
-  total_swap             25.66
-  pnl_per_trading_day    0.2
-  worst_bar              -0.0257
-  best_bar               0.023
-  time_in_market         0.985
-  avg_abs_lots           0.008
+  end_equity             3055.56
+  total_return           0.2222
+  cagr                   0.034
+  ann_vol                0.0787
+  sharpe                 0.464
+  sortino                0.551
+  max_drawdown           -0.1434
+  calmar                 0.237
+  psr_gt_0               0.872
+  trades                 1165
+  total_cost             349.04
+  total_swap             32.85
+  pnl_per_trading_day    0.25
+  worst_bar              -0.028
+  best_bar               0.0209
+  time_in_market         0.987
+  avg_abs_lots           0.0092
   halted_at              None
 
 == BTC/USDT:USDT walk-forward OUT-OF-SAMPLE ==
   bars                   8752
   years                  4.0
   start_equity           2500.0
-  end_equity             2491.56
-  total_return           -0.0034
-  cagr                   -0.0008
-  ann_vol                0.041
-  sharpe                 -0.0
-  sortino                -0.0
-  max_drawdown           -0.1054
-  calmar                 -0.008
-  psr_gt_0               0.5
-  trades                 341
-  total_cost             103.76
-  total_swap             12.8
-  pnl_per_trading_day    -0.01
-  worst_bar              -0.0236
-  best_bar               0.019
+  end_equity             2737.19
+  total_return           0.0949
+  cagr                   0.0229
+  ann_vol                0.046
+  sharpe                 0.516
+  sortino                0.387
+  max_drawdown           -0.0589
+  calmar                 0.389
+  psr_gt_0               0.851
+  trades                 359
+  total_cost             80.33
+  total_swap             8.05
+  pnl_per_trading_day    0.16
+  worst_bar              -0.023
+  best_bar               0.0227
   windows:
-   2022-09-12..2023-03-14 lb=[90, 270, 540] tv=0.08 thr=0.15 entry=1.0 er=off | train SR 2.111 -> test SR -0.632 ret -0.012 mdd -0.024 trades 22
-   2023-03-14..2023-09-12 lb=[60, 180, 360] tv=0.08 thr=0.15 entry=1.0 er=on | train SR 1.2 -> test SR -0.98 ret -0.007 mdd -0.011 trades 33
-   2023-09-13..2024-03-13 lb=[60, 180, 360] tv=0.12 thr=0.15 entry=1.0 er=on | train SR 1.231 -> test SR 2.737 ret +0.106 mdd -0.030 trades 40
-   2024-03-13..2024-09-11 lb=[60, 180, 360] tv=0.08 thr=0.15 entry=1.0 er=off | train SR 2.059 -> test SR -2.447 ret -0.053 mdd -0.053 trades 57
-   2024-09-12..2025-03-13 lb=[30, 90, 180] tv=0.08 thr=0.15 entry=0.0 er=on | train SR 1.773 -> test SR -0.422 ret -0.002 mdd -0.007 trades 50
-   2025-03-13..2025-09-11 lb=[60, 180, 360] tv=0.08 thr=0.15 entry=1.0 er=off | train SR 1.215 -> test SR -1.135 ret -0.026 mdd -0.026 trades 60
-   2025-09-12..2026-03-13 lb=[60, 180, 360] tv=0.12 thr=0.15 entry=0.0 er=on | train SR 1.063 -> test SR -1.579 ret -0.013 mdd -0.019 trades 45
-   2026-03-13..2026-09-12 lb=[90, 270, 540] tv=0.12 thr=0.15 entry=1.0 er=on | train SR -0.144 -> test SR 0.537 ret +0.011 mdd -0.025 trades 34
-  BTC/USDT:USDT long-only walk-forward: CAGR +1.4% Sharpe 0.387 MaxDD -5.8% trades 234 cost 69.48
-  BTC/USDT:USDT short-only walk-forward: CAGR -0.0% Sharpe 0.012 MaxDD -3.7% trades 143 cost 46.24
+   2022-09-12..2023-03-14 lb=[90, 270, 540] tv=0.08 thr=0.15 entry=1.0 er=off | train SR 2.131 -> test SR -0.083 ret -0.002 mdd -0.023 trades 24
+   2023-03-14..2023-09-12 lb=[60, 180, 360] tv=0.08 thr=0.15 entry=1.0 er=on | train SR 1.388 -> test SR -1.123 ret -0.009 mdd -0.013 trades 41
+   2023-09-13..2024-03-13 lb=[60, 180, 360] tv=0.12 thr=0.15 entry=1.0 er=on | train SR 1.451 -> test SR 3.177 ret +0.133 mdd -0.029 trades 38
+   2024-03-13..2024-09-11 lb=[60, 180, 360] tv=0.12 thr=0.15 entry=1.0 er=on | train SR 2.166 -> test SR -1.823 ret -0.019 mdd -0.025 trades 51
+   2024-09-12..2025-03-13 lb=[60, 180, 360] tv=0.12 thr=0.15 entry=1.0 er=on | train SR 1.841 -> test SR 0.422 ret +0.007 mdd -0.013 trades 39
+   2025-03-13..2025-09-11 lb=[60, 180, 360] tv=0.12 thr=0.15 entry=0.0 er=on | train SR 1.353 -> test SR -1.031 ret -0.013 mdd -0.024 trades 46
+   2025-09-12..2026-03-13 lb=[60, 180, 360] tv=0.12 thr=0.15 entry=0.0 er=on | train SR 1.146 -> test SR -0.086 ret -0.002 mdd -0.025 trades 48
+   2026-03-13..2026-09-12 lb=[90, 270, 540] tv=0.12 thr=0.15 entry=0.0 er=off | train SR 0.029 -> test SR 0.136 ret +0.004 mdd -0.033 trades 72
+  BTC/USDT:USDT long-only walk-forward: CAGR +1.8% Sharpe 0.498 MaxDD -5.2% trades 238 cost 42.01
+  BTC/USDT:USDT short-only walk-forward: CAGR +0.6% Sharpe 0.278 MaxDD -2.4% trades 127 cost 21.65
 
 == BTC/USDT:USDT purged 6-fold CV (embargo 1100 bars) ==
   folds                  6
   embargo_bars           1100
-  mean_oos_sharpe        -0.208
-  median_oos_sharpe      -0.209
-  positive_folds         2
-  worst_fold_sharpe      -1.886
-  total_oos_trades       502
-   fold 0 2020-09-12..2021-09-12 lb=[60, 180, 360] tv=0.12 thr=0.15 entry=0.0 er=on | train SR 1.053 -> test SR 0.046 ret +0.001 trades 109
-   fold 1 2021-09-12..2022-09-12 lb=[90, 270, 540] tv=0.08 thr=0.15 entry=0.0 er=off | train SR 1.149 -> test SR -1.886 ret -0.053 trades 116
-   fold 2 2022-09-13..2023-09-13 lb=[90, 270, 540] tv=0.08 thr=0.15 entry=1.0 er=off | train SR 0.757 -> test SR -0.552 ret -0.019 trades 39
-   fold 3 2023-09-13..2024-09-12 lb=[90, 270, 540] tv=0.08 thr=0.15 entry=0.0 er=off | train SR 0.99 -> test SR 1.563 ret +0.095 trades 89
-   fold 4 2024-09-12..2025-09-12 lb=[90, 270, 540] tv=0.08 thr=0.15 entry=1.0 er=off | train SR 1.646 -> test SR -0.205 ret -0.010 trades 85
-   fold 5 2025-09-12..2026-09-12 lb=[90, 270, 540] tv=0.08 thr=0.15 entry=1.0 er=off | train SR 1.509 -> test SR -0.214 ret -0.010 trades 64
+  mean_oos_sharpe        -0.073
+  median_oos_sharpe      0.015
+  positive_folds         3
+  worst_fold_sharpe      -1.613
+  total_oos_trades       516
+   fold 0 2020-09-12..2021-09-12 lb=[60, 180, 360] tv=0.12 thr=0.15 entry=1.0 er=on | train SR 1.22 -> test SR 0.253 ret +0.011 trades 107
+   fold 1 2021-09-12..2022-09-12 lb=[90, 270, 540] tv=0.08 thr=0.15 entry=1.0 er=off | train SR 1.258 -> test SR -0.796 ret -0.029 trades 43
+   fold 2 2022-09-13..2023-09-13 lb=[90, 270, 540] tv=0.08 thr=0.15 entry=1.0 er=off | train SR 0.765 -> test SR -0.146 ret -0.006 trades 39
+   fold 3 2023-09-13..2024-09-12 lb=[90, 270, 540] tv=0.08 thr=0.15 entry=1.0 er=off | train SR 1.141 -> test SR 1.687 ret +0.113 trades 47
+   fold 4 2024-09-12..2025-09-12 lb=[30, 90, 180] tv=0.08 thr=0.15 entry=1.0 er=off | train SR 1.703 -> test SR -1.613 ret -0.061 trades 218
+   fold 5 2025-09-12..2026-09-12 lb=[90, 270, 540] tv=0.08 thr=0.15 entry=1.0 er=off | train SR 1.578 -> test SR 0.177 ret +0.007 trades 62
 
 == PORTFOLIO walk-forward OOS (weighted sleeves) ==
   bars                   8759
   years                  4.0
   start_equity           5000.0
-  end_equity             5166.56
-  total_return           0.0333
-  cagr                   0.0082
-  ann_vol                0.0304
-  sharpe                 0.285
-  sortino                0.252
-  max_drawdown           -0.0813
-  calmar                 0.101
-  psr_gt_0               0.715
-  trades                 711
+  end_equity             5433.38
+  total_return           0.0867
+  cagr                   0.021
+  ann_vol                0.0314
+  sharpe                 0.677
+  sortino                0.647
+  max_drawdown           -0.0536
+  calmar                 0.392
+  psr_gt_0               0.914
+  trades                 772
   total_cost             0.0
   total_swap             0.0
-  pnl_per_trading_day    0.11
-  worst_bar              -0.0123
-  best_bar               0.0095
+  pnl_per_trading_day    0.3
+  worst_bar              -0.0119
+  best_bar               0.0127
 
 == Block bootstrap, 1-year horizon (portfolio bar returns) ==
   horizon_bars           2190
   sims                   2000
   block                  20
-  return_p05             -0.0394
-  return_p50             0.0068
-  return_p95             0.0635
-  maxdd_p05              -0.0579
-  maxdd_p50              -0.0299
-  maxdd_p95              -0.0161
-  prob_loss              0.411
+  return_p05             -0.029
+  return_p50             0.0193
+  return_p95             0.0779
+  maxdd_p05              -0.0501
+  maxdd_p50              -0.0259
+  maxdd_p95              -0.0148
+  prob_loss              0.27
   prob_dd_gt_20pct       0.0
 
 written: reports/report.json, equity_*.csv, trades_insample_*.csv, backtest.png

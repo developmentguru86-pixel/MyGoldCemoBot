@@ -1,8 +1,8 @@
 XAU/USDT:USDT: 1000 bars (0.46 y) from phemex
   bitfinex:XAUT/USDT: 12919 bars (5.90 y)
   using bitfinex:XAUT/USDT as price history (12919 bars); costs modelled from XAU/USDT:USDT
-  -> data/xau_H4.csv (5.9 y), spread 0.64 fee 0.001 funding 0.02718885 contract 1.0/0.001/0.001
+  -> data/xau_H4.csv (5.9 y), spread 0.64 fee 0.001 funding 0.02948835 contract 1.0/0.001/0.001
 BTC/USDT:USDT: 4452 bars (2.03 y) from phemex
   bitfinex:BTC/USDT: 13145 bars (6.00 y)
   using bitfinex:BTC/USDT as price history (13145 bars); costs modelled from BTC/USDT:USDT
-  -> data/btc_H4.csv (6.0 y), spread 0.1 fee 0.001 funding 0.07258755000000001 contract 1.0/0.001/0.001
+  -> data/btc_H4.csv (6.0 y), spread 0.1 fee 0.001 funding 0.07996785 contract 1.0/0.001/0.001

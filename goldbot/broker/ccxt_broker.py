@@ -114,6 +114,9 @@ class CcxtBroker(Broker):
     def _kraken_accounts_equity(self) -> tuple[float | None, str]:
         """Kraken Futures: read /accounts directly; works for flex (multi-collateral) and single-collateral demo setups."""
         raw = self.ex.privateGetAccounts()
+        if isinstance(raw, str):
+            import json
+            raw = json.loads(raw)
         accts = raw.get("accounts") or {}
         summary = {k: sorted(v.keys())[:8] for k, v in accts.items() if isinstance(v, dict)}
         for name, a in accts.items():

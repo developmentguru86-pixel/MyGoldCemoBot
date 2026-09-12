@@ -24,7 +24,10 @@ def status_text(cfg: Config, mode: str = "live", n: int = 5) -> str:
         pos = br.get_position(cfg.symbol)
         q = br.get_quote(cfg.symbol)
     except Exception as e:  # noqa: BLE001
-        lines.append(f"⚠️ broker offline: {str(e)[:80]}")
+        import traceback
+        tb = traceback.format_exc().strip().splitlines()
+        lines.append(f"⚠️ broker offline: {type(e).__name__}: {str(e)[:120]}")
+        lines.append("   " + " | ".join(l.strip() for l in tb[-4:-1])[:400])
         acct = pos = q = None
 
     if acct:

@@ -5,6 +5,12 @@ on:
       years:
         description: "years of history"
         default: "6"
+      spread:
+        description: "override spread (USDT/unit), empty = from venue"
+        default: ""
+      fee:
+        description: "override taker fee fraction, empty = from venue"
+        default: ""
 permissions:
   contents: write
 jobs:
@@ -28,7 +34,10 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          python scripts/run_backtest.py --walk-forward --bootstrap 2>&1 | tee reports/summary.txt
+          EXTRA=""
+          [ -n "${{ github.event.inputs.spread }}" ] && EXTRA="$EXTRA --spread ${{ github.event.inputs.spread }}"
+          [ -n "${{ github.event.inputs.fee }}" ] && EXTRA="$EXTRA --fee ${{ github.event.inputs.fee }}"
+          python scripts/run_backtest.py --walk-forward --bootstrap $EXTRA 2>&1 | tee reports/summary.txt
       - name: send to Telegram
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}

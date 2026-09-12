@@ -46,12 +46,21 @@ if __name__ == "__main__":
     ap.add_argument("--walk-forward", action="store_true")
     ap.add_argument("--bootstrap", action="store_true")
     ap.add_argument("--out", default=None)
+    ap.add_argument("--spread", type=float, default=None, help="override costs.spread (venue sensitivity)")
+    ap.add_argument("--fee", type=float, default=None, help="override costs.fee_pct")
     a = ap.parse_args()
 
     cfg = Config.load(a.config)
+    if a.spread is not None:
+        cfg.costs.spread = a.spread
+    if a.fee is not None:
+        cfg.costs.fee_pct = a.fee
+    print(f"costs: spread {cfg.costs.spread} fee {cfg.costs.fee_pct} slippage {cfg.costs.slippage}")
     data_path = a.data or cfg.paths.get("data")
     out = Path(a.out or cfg.paths.get("reports", "reports")); out.mkdir(parents=True, exist_ok=True)
     df = load_csv(data_path)
+    if a.spread is not None and "spread" in df.columns:
+        df = df.drop(columns=["spread"])
     print(f"data: {data_path}  {len(df)} bars  {df.index[0]} .. {df.index[-1]}")
     if "SYNTHETIC" in str(data_path).upper():
         print("!!! SYNTHETIC DATA — pipeline check only, numbers are meaningless !!!")

@@ -1,0 +1,13 @@
+account 9,999.30 USDT | virtual 5,000 | scale 8.0 | max_lev 8.0
+XAU  w=0.2 sleeve=1,000 px=4,349.85 cs=1.0 min=0.001 step=0.001 | exp 0.05 -> 0.011 lots = 48 USDT
+XAU  w=0.2 sleeve=1,000 px=4,349.85 cs=1.0 min=0.001 step=0.001 | exp 0.15 -> 0.034 lots = 148 USDT
+XAU  w=0.2 sleeve=1,000 px=4,349.85 cs=1.0 min=0.001 step=0.001 | exp 0.50 -> 0.115 lots = 500 USDT
+XAU  w=0.2 sleeve=1,000 px=4,349.85 cs=1.0 min=0.001 step=0.001 | exp 1.00 -> 0.23 lots = 1,000 USDT
+BTC  w=0.4 sleeve=2,000 px=77,366.15 cs=1.0 min=0.001 step=0.001 | exp 0.05 -> 0.001 lots = 77 USDT
+BTC  w=0.4 sleeve=2,000 px=77,366.15 cs=1.0 min=0.001 step=0.001 | exp 0.15 -> 0.004 lots = 309 USDT
+BTC  w=0.4 sleeve=2,000 px=77,366.15 cs=1.0 min=0.001 step=0.001 | exp 0.50 -> 0.013 lots = 1,006 USDT
+BTC  w=0.4 sleeve=2,000 px=77,366.15 cs=1.0 min=0.001 step=0.001 | exp 1.00 -> 0.026 lots = 2,012 USDT
+ETH  w=0.4 sleeve=2,000 px=2,511.02 cs=1.0 min=0.01 step=0.01 | exp 0.05 -> 0.04 lots = 100 USDT
+ETH  w=0.4 sleeve=2,000 px=2,511.02 cs=1.0 min=0.01 step=0.01 | exp 0.15 -> 0.12 lots = 301 USDT
+ETH  w=0.4 sleeve=2,000 px=2,511.02 cs=1.0 min=0.01 step=0.01 | exp 0.50 -> 0.4 lots = 1,004 USDT
+ETH  w=0.4 sleeve=2,000 px=2,511.02 cs=1.0 min=0.01 step=0.01 | exp 1.00 -> 0.8 lots = 2,009 USDT

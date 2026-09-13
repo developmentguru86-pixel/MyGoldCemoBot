@@ -29,6 +29,9 @@ on:
       history:
         description: "venue (6y crypto-venue data) | long (decades of daily data from stooq/yahoo; D1 only)"
         default: "venue"
+      extra:
+        description: "extra run_backtest flags, e.g. --unscaled --no-funding --weights XAU=0,BTC=0.6,ETH=0.4"
+        default: ""
 concurrency:
   group: backtest
   cancel-in-progress: false
@@ -65,7 +68,7 @@ jobs:
           [ "${{ github.event.inputs.cv || 'yes' }}" = "yes" ] && EXTRA="$EXTRA --purged-cv --directions"
           [ "${{ github.event.inputs.meta || 'yes' }}" = "yes" ] && EXTRA="$EXTRA --meta --meta-pooled"
           [ "${{ github.event.inputs.transfer || 'no' }}" = "yes" ] && EXTRA="$EXTRA --meta-transfer H4"
-          EXTRA="$EXTRA --history ${{ github.event.inputs.history || 'venue' }}"
+          EXTRA="$EXTRA --history ${{ github.event.inputs.history || 'venue' }} ${{ github.event.inputs.extra }}"
           [ -n "${{ github.event.inputs.spread }}" ] && EXTRA="$EXTRA --spread ${{ github.event.inputs.spread }}"
           [ -n "${{ github.event.inputs.fee }}" ] && EXTRA="$EXTRA --fee ${{ github.event.inputs.fee }}"
           python scripts/run_backtest.py --walk-forward --bootstrap $EXTRA 2>&1 | tee reports/summary.txt

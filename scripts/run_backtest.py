@@ -95,6 +95,9 @@ if __name__ == "__main__":
     ap.add_argument("--meta", action="store_true", help="meta-labeling purged CV on the long-only primary (and both)")
     ap.add_argument("--meta-pooled", action="store_true", help="one meta-model across all portfolio symbols (asset one-hot)")
     ap.add_argument("--meta-transfer", default=None, help="train the meta-model on this finer timeframe's entries (e.g. H4), apply to the run timeframe")
+    ap.add_argument("--weights", default=None, help='research portfolio weights, e.g. "XAU=0,BTC=0.6,ETH=0.4"')
+    ap.add_argument("--no-funding", action="store_true", help="ignore venue funding in costs (edge before financing)")
+    ap.add_argument("--unscaled", action="store_true", help="exposure_scale 1.0 for research (scaling is a portfolio decision)")
     ap.add_argument("--history", choices=["venue", "long"], default="venue",
                     help="long = data/<slug>_<TF>_long.csv (decades of daily history from stooq/yahoo)")
     ap.add_argument("--selector", choices=["robust", "sharpe"], default="robust",
@@ -105,6 +108,13 @@ if __name__ == "__main__":
     a = ap.parse_args()
 
     cfg = Config.load(a.config)
+    if a.unscaled:
+        cfg = cfg.with_strategy(exposure_scale=1.0)
+    if a.weights:
+        wmap = {k.strip().upper(): float(v) for k, v in (kv.split("=") for kv in a.weights.split(","))}
+        for sym, sc in cfg.symbols.items():
+            if sym.split("/")[0].upper() in wmap:
+                sc.weight = wmap[sym.split("/")[0].upper()]
     BARS_PER_DAY = {"M1": 1440, "M5": 288, "M15": 96, "M30": 48, "H1": 24, "H4": 6, "D1": 1}
     if a.timeframe:
         cfg.timeframe = a.timeframe.upper()
@@ -140,6 +150,8 @@ if __name__ == "__main__":
         meta = json.loads(meta_p.read_text()) if meta_p.exists() and not a.data else None
         df = load_csv(path)
         c = symbol_cfg(cfg, meta, df)
+        if a.no_funding:
+            c.costs.swap_long_annual = 0.0; c.costs.swap_short_annual = 0.0
         # annualisation from the data itself (spot gold ~260 bars/year, crypto 365): Sharpe and windows depend on it
         yrs_span = (df.index[-1] - df.index[0]).days / 365.25
         if tfx == "D1" and yrs_span > 1:

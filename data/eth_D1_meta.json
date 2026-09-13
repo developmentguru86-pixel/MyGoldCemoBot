@@ -1,16 +1,16 @@
 {
  "symbol": "ETH/USDT:USDT",
  "history_source": "bitfinex:ETH/USDT",
- "bars": 2190,
+ "bars": 2191,
  "years": 6.0,
  "first": "2020-09-13 00:00:00+00:00",
- "last": "2026-09-11 00:00:00+00:00",
+ "last": "2026-09-12 00:00:00+00:00",
  "contract_size": 1.0,
  "min_lot": 0.01,
  "lot_step": 0.01,
  "max_lot": 1000000000.0,
  "spread": 0.01,
- "price": 2520.665,
+ "price": 2509.085,
  "fee_pct": 0.001,
- "funding_annual": 0.00872715
+ "funding_annual": -0.02541495
 }

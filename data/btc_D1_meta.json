@@ -1,16 +1,16 @@
 {
  "symbol": "BTC/USDT:USDT",
  "history_source": "bitfinex:BTC/USDT",
- "bars": 2190,
+ "bars": 2191,
  "years": 6.0,
  "first": "2020-09-13 00:00:00+00:00",
- "last": "2026-09-11 00:00:00+00:00",
+ "last": "2026-09-12 00:00:00+00:00",
  "contract_size": 1.0,
  "min_lot": 0.001,
  "lot_step": 0.001,
  "max_lot": 1000000000.0,
  "spread": 0.1,
- "price": 77175.65,
+ "price": 76984.95,
  "fee_pct": 0.001,
- "funding_annual": 0.0660723
+ "funding_annual": 0.037427100000000005
 }

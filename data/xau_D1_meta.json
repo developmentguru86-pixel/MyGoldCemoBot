@@ -9,8 +9,8 @@
  "min_lot": 0.001,
  "lot_step": 0.001,
  "max_lot": 1000000000.0,
- "spread": 0.6,
- "price": 4359.23,
+ "spread": 1.6,
+ "price": 4358.73,
  "fee_pct": 0.001,
- "funding_annual": 0.06398085
+ "funding_annual": 0.0669921
 }

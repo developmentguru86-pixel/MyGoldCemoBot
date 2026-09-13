@@ -1,24 +1,21 @@
 XAU/USDT:USDT: 226 bars (0.62 y) from phemex
   bitfinex:XAUT/USDT: 2192 bars (6.01 y)
   using bitfinex:XAUT/USDT as price history (2192 bars); costs modelled from XAU/USDT:USDT
-  -> data/xau_D1.csv (6.0 y), spread 0.6 fee 0.001 funding 0.06398085 contract 1.0/0.001/0.001
+  -> data/xau_D1.csv (6.0 y), spread 1.6 fee 0.001 funding 0.0669921 contract 1.0/0.001/0.001
 BTC/USDT:USDT: 1409 bars (3.86 y) from phemex
   bitfinex:BTC/USDT: 2192 bars (6.01 y)
   using bitfinex:BTC/USDT as price history (2192 bars); costs modelled from BTC/USDT:USDT
-  -> data/btc_D1.csv (6.0 y), spread 0.1 fee 0.001 funding 0.037427100000000005 contract 1.0/0.001/0.001
+  -> data/btc_D1.csv (6.0 y), spread 0.1 fee 0.001 funding 0.0330252 contract 1.0/0.001/0.001
 ETH/USDT:USDT: 1409 bars (3.86 y) from phemex
   bitfinex:ETH/USDT: 2192 bars (6.01 y)
   using bitfinex:ETH/USDT as price history (2192 bars); costs modelled from ETH/USDT:USDT
-  -> data/eth_D1.csv (6.0 y), spread 0.01 fee 0.001 funding -0.02541495 contract 1.0/0.01/0.01
-XAU/USDT:USDT: 1000 bars (0.46 y) from phemex
-  bitfinex:XAUT/USDT: 12921 bars (5.90 y)
-  using bitfinex:XAUT/USDT as price history (12921 bars); costs modelled from XAU/USDT:USDT
-  -> data/xau_H4.csv (5.9 y), spread 0.6 fee 0.001 funding 0.0593271 contract 1.0/0.001/0.001
-BTC/USDT:USDT: 4455 bars (2.03 y) from phemex
-  bitfinex:BTC/USDT: 13145 bars (6.00 y)
-  using bitfinex:BTC/USDT as price history (13145 bars); costs modelled from BTC/USDT:USDT
-  -> data/btc_H4.csv (6.0 y), spread 0.1 fee 0.001 funding 0.02539305 contract 1.0/0.001/0.001
-ETH/USDT:USDT: 4455 bars (2.03 y) from phemex
-  bitfinex:ETH/USDT: 13144 bars (6.00 y)
-  using bitfinex:ETH/USDT as price history (13144 bars); costs modelled from ETH/USDT:USDT
-  -> data/eth_H4.csv (6.0 y), spread 0.01 fee 0.001 funding 0.03021105 contract 1.0/0.01/0.01
+  -> data/eth_D1.csv (6.0 y), spread 0.01 fee 0.001 funding 0.09047985 contract 1.0/0.01/0.01
+  stooq xauusd: http 200 / unexpected body: '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="robots" content="no'
+  yahoo GC=F: 6532 bars 2000-08-30 .. 2026-09-11
+XAU/USDT:USDT: wrote 6531 daily bars, 26.0 years (251 bars/year) -> data/xau_D1_long.csv
+  stooq btcusd: http 200 / unexpected body: '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="robots" content="no'
+  yahoo BTC-USD: 4380 bars 2014-09-17 .. 2026-09-13
+BTC/USDT:USDT: wrote 4380 daily bars, 12.0 years (365 bars/year) -> data/btc_D1_long.csv
+  stooq ethusd: http 200 / unexpected body: '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="robots" content="no'
+  yahoo ETH-USD: 3231 bars 2017-11-09 .. 2026-09-13
+ETH/USDT:USDT: wrote 3231 daily bars, 8.8 years (365 bars/year) -> data/eth_D1_long.csv

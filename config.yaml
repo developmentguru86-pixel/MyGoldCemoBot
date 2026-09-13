@@ -3,14 +3,14 @@
 venue: exchange
 symbol: XAU/USDT:USDT        # Primärsymbol (Fallback, wenn `symbols` leer)
 symbols:                     # Portfolio: Gewicht = Anteil des 5.000er-Kontos je Symbol; Kill-Switches wirken auf das Gesamtkonto
-  "XAU/USDT:USDT":           # Gewichte = Stand des OOS-Allokators (D1-Lauf 13.09.2026): XAU-long 60 / BTC-long 40 / ETH 0
-    weight: 0.6
+  "XAU/USDT:USDT":           # Gewichte aus der Gewichtungsstudie auf 26/12/8,8 J. OOS-Kurven (Mix "gold-light", bestes Sharpe/MaxDD)
+    weight: 0.2
     history_sources: ["bitfinex:XAUT/USDT", "bitfinex:XAUT/USD"]
   "BTC/USDT:USDT":
     weight: 0.4
     history_sources: ["bitfinex:BTC/USDT", "bitfinex:BTC/USD"]
-  "ETH/USDT:USDT":           # im Research, live 0 bis der Allokator OOS Gewicht vergibt
-    weight: 0.0
+  "ETH/USDT:USDT":           # aktiv: CV-Median 0,88 bei 4/6 Folds über 8,8 J. (bestand die Sleeve-Gates)
+    weight: 0.4
     history_sources: ["bitfinex:ETH/USDT", "bitfinex:ETH/USD"]
 timeframe: D1                # Tageskerzen: die Variante, die im Walk-Forward trägt (Gold 0,99 / Long-only 1,18)
 bars_per_day: 1
@@ -36,7 +36,7 @@ strategy:                    # Live = die auf D1 am häufigsten gewählte Varian
   z_min: 0.0
   min_hold_bars: 3           # kein Flip innerhalb von 3 Tagen
   direction: long            # Shorts: in jedem Fenster, jedem Asset negativ; der Allokator hat sie nie finanziert
-  exposure_scale: 3.0        # Portfolio-Vol-Ziel ~12 % (Backtest-Vol 4,1 % x 3): CAGR ~14 %, MaxDD ~-9 %, 1J-DD p05 ~-16 %. Demo. Echtgeld erst nach CV-Gates.
+  exposure_scale: 3.2        # Vol-Ziel ~10 % (Langhistorie-Vol 3,1 % x 3,2): CAGR ~9 %, MaxDD ~-15 %, P(Verlust) ~25 %. Demo. Echtgeld erst nach den Gates.
   confidence: false          # Confidence-Sizing: vom Selektor in 6/8 Fenstern verworfen
   regime:
     er_window: 0             # ER-Filter auf D1 vom Selektor nie gewählt

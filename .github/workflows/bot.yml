@@ -7,7 +7,7 @@ on:
       action:
         description: "trade | status | flatten | reset_halt"
         type: choice
-        options: [trade, status, flatten, reset_halt, chat_id]
+        options: [trade, status, flatten, reset_halt, chat_id, diag]
         default: status
 concurrency:
   group: goldbot

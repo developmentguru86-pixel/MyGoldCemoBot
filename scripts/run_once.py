@@ -77,6 +77,31 @@ def action_trade(cfg: Config, mode: str, allow_real: bool) -> int:
     return 0
 
 
+def action_diag(cfg: Config, mode: str) -> int:
+    """Print venue contract specs and the exact sizing arithmetic per symbol."""
+    from goldbot.sizing import exposure_to_lots
+    from goldbot.config import ContractCfg
+    br = make_broker(cfg, mode)
+    acct = br.get_account()
+    eq = cfg.equity_cap or acct.equity
+    lines = [f"account {acct.equity:,.2f} {acct.currency} | virtual {eq:,.0f} | scale {cfg.strategy.exposure_scale} | max_lev {cfg.strategy.max_leverage}"]
+    for sym, sc in cfg.portfolio().items():
+        i = br.get_symbol_info(sym)
+        q = br.get_quote(sym)
+        ct = ContractCfg(i.contract_size, i.min_lot, i.lot_step, i.max_lot)
+        sleeve = eq * sc.weight
+        for exp in (0.05, 0.15, 0.5, 1.0):
+            lots = exposure_to_lots(exp, sleeve, q.mid, ct, cfg.strategy.max_leverage)
+            notional = lots * i.contract_size * q.mid
+            lines.append(f"{sym.split('/')[0]:<4} w={sc.weight} sleeve={sleeve:,.0f} px={q.mid:,.2f} "
+                         f"cs={i.contract_size} min={i.min_lot} step={i.lot_step} | exp {exp:.2f} -> {lots} lots = {notional:,.0f} USDT")
+    txt = "\n".join(lines)
+    Path("logs/diag.txt").write_text(txt + "\n")
+    print(txt)
+    notify.send(cfg, "🔧 Diagnose\n" + txt[:3500])
+    return 0
+
+
 def action_flatten(cfg: Config, mode: str) -> int:
     state, _ = paths_for(cfg, mode)
     br = make_broker(cfg, mode)
@@ -145,7 +170,7 @@ def action_reset(cfg: Config, mode: str) -> int:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="config.yaml")
-    ap.add_argument("--action", choices=["trade", "status", "flatten", "reset_halt", "chat_id"], default="trade")
+    ap.add_argument("--action", choices=["trade", "status", "flatten", "reset_halt", "chat_id", "diag"], default="trade")
     ap.add_argument("--mode", choices=["paper", "live"], default=None)
     ap.add_argument("--allow-real-account", action="store_true")
     a = ap.parse_args()
@@ -165,8 +190,12 @@ if __name__ == "__main__":
             rc = action_flatten(cfg, mode)
         elif a.action == "chat_id":
             rc = action_chat_id(cfg)
+        elif a.action == "diag":
+            rc = action_diag(cfg, mode)
         elif a.action == "chat_id":
             rc = action_chat_id(cfg)
+        elif a.action == "diag":
+            rc = action_diag(cfg, mode)
         else:
             rc = action_reset(cfg, mode)
     except Exception as e:  # noqa: BLE001

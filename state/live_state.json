@@ -1,14 +1,14 @@
 {
  "last_bar": {
-  "XAU/USDT:USDT": "2026-09-11 00:00:00+00:00",
-  "BTC/USDT:USDT": "2026-09-11 00:00:00+00:00",
-  "ETH/USDT:USDT": "2026-09-11 00:00:00+00:00"
+  "XAU/USDT:USDT": "2026-09-12 00:00:00+00:00",
+  "BTC/USDT:USDT": "2026-09-12 00:00:00+00:00",
+  "ETH/USDT:USDT": "2026-09-12 00:00:00+00:00"
  },
  "start_equity": 9999.2961414,
  "last_actual_equity": 9999.2961414,
  "risk": {
   "hwm": 5000,
-  "day": "2026-09-11",
+  "day": "2026-09-12",
   "day_start_equity": 5000.0,
   "halted": false,
   "halted_reason": "",

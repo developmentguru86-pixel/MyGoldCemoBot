@@ -313,6 +313,39 @@ if __name__ == "__main__":
         # not a proven improvement (it is measured against the static one below)
         print(f"  static (config weights) Sharpe {report['portfolio']['metrics']['sharpe']} vs dynamic {dm['sharpe']}")
 
+    # ---- weighting study on the OOS sleeve curves (no refit: same returns, different mixes)
+    if len(curves) > 1:
+        sleeve_rets = pd.concat({k: v.pct_change() for k, v in (wf_curves or is_curves).items()}, axis=1).dropna(how="all").fillna(0.0)
+        corr = sleeve_rets.corr().round(2)
+        print("\n== SLEEVE CORRELATION (OOS returns) ==")
+        print(corr.to_string())
+        report["sleeve_correlation"] = {k: {kk: float(vv) for kk, vv in v.items()} for k, v in corr.to_dict().items()}
+        names = list(sleeve_rets.columns)
+        def mix(w: dict) -> dict:
+            ws = pd.Series({n: w.get(n.split("/")[0].upper(), 0.0) for n in names})
+            if ws.sum() <= 0:
+                return {}
+            ws = ws / ws.sum()
+            r_ = (sleeve_rets * ws).sum(axis=1)
+            eq = cfg.starting_equity * (1 + r_).cumprod()
+            m = summarize(eq, cfg.bars_per_year, cfg.bars_per_day)
+            b = block_bootstrap(r_.to_numpy(), horizon=cfg.bars_per_year, sims=1000)
+            return {"weights": {k: round(float(v), 2) for k, v in ws.items()}, "sharpe": m["sharpe"], "cagr": m["cagr"],
+                    "ann_vol": m["ann_vol"], "max_drawdown": m["max_drawdown"], "psr": m["psr_gt_0"], "prob_loss": b.get("prob_loss")}
+        cands = {"config": {n.split("/")[0].upper(): portfolio[n].weight for n in names},
+                 "equal": {n.split("/")[0].upper(): 1.0 for n in names},
+                 "no-gold": {"BTC": 0.5, "ETH": 0.5},
+                 "gold-light": {"XAU": 0.2, "BTC": 0.4, "ETH": 0.4},
+                 "btc-heavy": {"XAU": 0.1, "BTC": 0.6, "ETH": 0.3}}
+        print("\n== WEIGHTING STUDY (same OOS returns, different mixes) ==")
+        report["weighting_study"] = {}
+        for name, w in cands.items():
+            res = mix(w)
+            if res:
+                report["weighting_study"][name] = res
+                print(f"  {name:<12} {res['weights']} -> Sharpe {res['sharpe']}  CAGR {res['cagr']:+.1%}  vol {res['ann_vol']:.1%}  "
+                      f"MaxDD {res['max_drawdown']:.1%}  PSR {res['psr']}  P(loss) {res['prob_loss']}")
+
     if a.bootstrap:
         bs = block_bootstrap(boot_src.pct_change().dropna().to_numpy(), horizon=cfg.bars_per_year)
         print_metrics("Block bootstrap, 1-year horizon (static portfolio bar returns)", bs)

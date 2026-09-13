@@ -26,6 +26,9 @@ on:
       transfer:
         description: "meta-model trained on H4 entries, applied to the run timeframe: yes | no"
         default: "no"
+      history:
+        description: "venue (6y crypto-venue data) | long (decades of daily data from stooq/yahoo; D1 only)"
+        default: "venue"
 concurrency:
   group: backtest
   cancel-in-progress: false
@@ -41,13 +44,16 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-      - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt yfinance
       - name: history + config sync
         shell: bash
         run: |
           mkdir -p reports
           set -o pipefail
           python scripts/fetch_history_ccxt.py --years "${{ github.event.inputs.years || '6' }}" --timeframe "${{ github.event.inputs.timeframe || 'H4' }}" 2>&1 | tee reports/fetch.log
+          if [ "${{ github.event.inputs.history || 'venue' }}" = "long" ]; then
+            python scripts/fetch_long_history.py 2>&1 | tee -a reports/fetch.log
+          fi
           if [ "${{ github.event.inputs.transfer || 'no' }}" = "yes" ] && [ "${{ github.event.inputs.timeframe || 'H4' }}" != "H4" ]; then
             python scripts/fetch_history_ccxt.py --years "${{ github.event.inputs.years || '6' }}" --timeframe H4 2>&1 | tee -a reports/fetch.log
           fi
@@ -59,6 +65,7 @@ jobs:
           [ "${{ github.event.inputs.cv || 'yes' }}" = "yes" ] && EXTRA="$EXTRA --purged-cv --directions"
           [ "${{ github.event.inputs.meta || 'yes' }}" = "yes" ] && EXTRA="$EXTRA --meta --meta-pooled"
           [ "${{ github.event.inputs.transfer || 'no' }}" = "yes" ] && EXTRA="$EXTRA --meta-transfer H4"
+          EXTRA="$EXTRA --history ${{ github.event.inputs.history || 'venue' }}"
           [ -n "${{ github.event.inputs.spread }}" ] && EXTRA="$EXTRA --spread ${{ github.event.inputs.spread }}"
           [ -n "${{ github.event.inputs.fee }}" ] && EXTRA="$EXTRA --fee ${{ github.event.inputs.fee }}"
           python scripts/run_backtest.py --walk-forward --bootstrap $EXTRA 2>&1 | tee reports/summary.txt

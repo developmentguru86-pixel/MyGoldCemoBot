@@ -95,6 +95,8 @@ if __name__ == "__main__":
     ap.add_argument("--meta", action="store_true", help="meta-labeling purged CV on the long-only primary (and both)")
     ap.add_argument("--meta-pooled", action="store_true", help="one meta-model across all portfolio symbols (asset one-hot)")
     ap.add_argument("--meta-transfer", default=None, help="train the meta-model on this finer timeframe's entries (e.g. H4), apply to the run timeframe")
+    ap.add_argument("--history", choices=["venue", "long"], default="venue",
+                    help="long = data/<slug>_<TF>_long.csv (decades of daily history from stooq/yahoo)")
     ap.add_argument("--selector", choices=["robust", "sharpe"], default="robust",
                     help="parameter selection inside training windows: robust (median segment Sharpe minus penalties) or plain Sharpe")
     ap.add_argument("--out", default=None)
@@ -128,10 +130,21 @@ if __name__ == "__main__":
     pooled_dfs: dict = {}; pooled_cfgs: dict = {}
     for sym, sc in portfolio.items():
         path = a.data or f"data/{slug(sym)}_{tfx}.csv"
+        if a.history == "long" and not a.data:
+            lp = Path(f"data/{slug(sym)}_{tfx}_long.csv")
+            if lp.exists():
+                path = str(lp)
+            else:
+                print(f"  {sym}: no long history file, using venue data")
         meta_p = Path(f"data/{slug(sym)}_{tfx}_meta.json")
         meta = json.loads(meta_p.read_text()) if meta_p.exists() and not a.data else None
         df = load_csv(path)
         c = symbol_cfg(cfg, meta, df)
+        # annualisation from the data itself (spot gold ~260 bars/year, crypto 365): Sharpe and windows depend on it
+        yrs_span = (df.index[-1] - df.index[0]).days / 365.25
+        if tfx == "D1" and yrs_span > 1:
+            c.trading_days_per_year = int(round(len(df) / yrs_span))
+            c.bars_per_day = 1
         if a.spread is not None:
             c.costs.spread = a.spread
             df = df.drop(columns=[x for x in ("spread",) if x in df.columns])
@@ -139,7 +152,7 @@ if __name__ == "__main__":
             c.costs.fee_pct = a.fee
         c.starting_equity = cfg.starting_equity * (sc.weight if sc.weight > 0 else 1.0 / max(1, len(portfolio)))  # research sleeve capital; live weight may be 0
         pooled_dfs[sym] = df; pooled_cfgs[sym] = c.with_strategy(direction="long")
-        print(f"\n######## {sym}  weight {sc.weight:.0%}  {len(df)} bars  {df.index[0]} .. {df.index[-1]}")
+        print(f"\n######## {sym}  weight {sc.weight:.0%}  {len(df)} bars  {df.index[0]} .. {df.index[-1]}  ({c.bars_per_year} bars/year)")
         print(f"costs: spread {c.costs.spread} fee {c.costs.fee_pct} slippage {c.costs.slippage} "
               f"funding L/S {c.costs.swap_long_annual:+.4f}/{c.costs.swap_short_annual:+.4f}  "
               f"contract {c.contract.size}/{c.contract.min_lot}/{c.contract.lot_step}")

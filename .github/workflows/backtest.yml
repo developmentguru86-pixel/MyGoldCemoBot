@@ -23,6 +23,9 @@ on:
       meta:
         description: "meta-labeling CV: yes | no"
         default: "yes"
+      transfer:
+        description: "meta-model trained on H4 entries, applied to the run timeframe: yes | no"
+        default: "no"
 concurrency:
   group: backtest
   cancel-in-progress: false
@@ -45,6 +48,9 @@ jobs:
           mkdir -p reports
           set -o pipefail
           python scripts/fetch_history_ccxt.py --years "${{ github.event.inputs.years || '6' }}" --timeframe "${{ github.event.inputs.timeframe || 'H4' }}" 2>&1 | tee reports/fetch.log
+          if [ "${{ github.event.inputs.transfer || 'no' }}" = "yes" ] && [ "${{ github.event.inputs.timeframe || 'H4' }}" != "H4" ]; then
+            python scripts/fetch_history_ccxt.py --years "${{ github.event.inputs.years || '6' }}" --timeframe H4 2>&1 | tee -a reports/fetch.log
+          fi
       - name: backtest + walk-forward + bootstrap
         shell: bash
         run: |
@@ -52,6 +58,7 @@ jobs:
           EXTRA="--timeframe ${{ github.event.inputs.timeframe || 'H4' }} --grid ${{ github.event.inputs.grid || 'full' }}"
           [ "${{ github.event.inputs.cv || 'yes' }}" = "yes" ] && EXTRA="$EXTRA --purged-cv --directions"
           [ "${{ github.event.inputs.meta || 'yes' }}" = "yes" ] && EXTRA="$EXTRA --meta --meta-pooled"
+          [ "${{ github.event.inputs.transfer || 'no' }}" = "yes" ] && EXTRA="$EXTRA --meta-transfer H4"
           [ -n "${{ github.event.inputs.spread }}" ] && EXTRA="$EXTRA --spread ${{ github.event.inputs.spread }}"
           [ -n "${{ github.event.inputs.fee }}" ] && EXTRA="$EXTRA --fee ${{ github.event.inputs.fee }}"
           python scripts/run_backtest.py --walk-forward --bootstrap $EXTRA 2>&1 | tee reports/summary.txt
@@ -76,6 +83,11 @@ jobs:
           mp = r.get("meta_pooled")
           if mp:
               txt += f"Gepooltes Meta-Modell: median CV-Sharpe {mp['pooled_primary_median_sharpe']} -> {mp['pooled_meta_median_sharpe']} (besser in {mp['pooled_meta_better']} Folds)\n"
+          mtr = r.get("meta_transfer")
+          if mtr:
+              txt += f"Transfer-Meta (H4->{r.get('timeframe','D1')}): median CV-Sharpe {mtr['pooled_primary_median_sharpe']} -> {mtr['pooled_meta_median_sharpe']} (besser in {mtr['pooled_meta_better']})\n"
+              for sym, ps in mtr["per_symbol"].items():
+                  txt += f"   {sym.split('/')[0]}: {ps['primary_median_sharpe']} -> {ps['meta_median_sharpe']}, Folds+ {ps['primary_positive_folds']} -> {ps['meta_positive_folds']}, akzeptiert {ps['accepted_share']:.0%}\n"
           pdn = (r.get("portfolio_dynamic") or {}).get("metrics")
           if pdn:
               txt += f"(dynamische Allokation zum Vergleich: Sharpe {pdn['sharpe']})\n"

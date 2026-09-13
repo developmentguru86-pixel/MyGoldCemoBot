@@ -294,3 +294,131 @@ def meta_cv_pooled(dfs: dict[str, pd.DataFrame], cfgs: dict[str, Config], k: int
     out["pooled_meta_median_sharpe"] = round(float(np.median(all_m)), 3) if all_m else None
     out["pooled_meta_better"] = f"{int(sum(m > p for m, p in zip(all_m, all_p)))}/{len(all_p)}"
     return out
+
+
+# ---------------------------------------------------------------- cross-timeframe transfer
+DAY_WINDOWS = {"z": (10, 30, 60), "vol_pct": 100, "er": 10, "ret": 5, "range": 50, "vol_chg": 20, "hurst": 100}
+
+
+def build_features_cal(df: pd.DataFrame, bars_per_day: int) -> pd.DataFrame:
+    """Features defined in CALENDAR days so that H4 and D1 rows live in the same space."""
+    close = df["close"]
+    d = lambda days: max(1, int(round(days * bars_per_day)))  # noqa: E731
+    ret = close.pct_change()
+    vol_bar = ret.ewm(span=d(10), min_periods=d(10)).std()
+    bpy = 365 * bars_per_day
+    out = pd.DataFrame(index=df.index)
+    zs = []
+    for i, days in enumerate(DAY_WINDOWS["z"]):
+        L = d(days)
+        z = ((close / close.shift(L) - 1.0) / (vol_bar * np.sqrt(L))).clip(-5, 5)
+        out[f"z{i}"] = z
+        zs.append(np.sign(z))
+    out["agree"] = pd.concat(zs, axis=1).mean(axis=1)
+    vol_ann = vol_bar * np.sqrt(bpy)
+    out["vol_ann"] = vol_ann
+    w = d(DAY_WINDOWS["vol_pct"])
+    out["vol_pct"] = vol_ann.rolling(w, min_periods=w // 2).rank(pct=True)
+    e = d(DAY_WINDOWS["er"])
+    out["er"] = ((close - close.shift(e)).abs() / close.diff().abs().rolling(e).sum().replace(0, np.nan)).fillna(0)
+    r5 = d(DAY_WINDOWS["ret"])
+    out["ret5d"] = (close / close.shift(r5) - 1.0) / (vol_bar * np.sqrt(r5))
+    rw = d(DAY_WINDOWS["range"])
+    hi, lo = close.rolling(rw).max(), close.rolling(rw).min()
+    out["range_pos"] = ((close - lo) / (hi - lo).replace(0, np.nan)).fillna(0.5)
+    vc = d(DAY_WINDOWS["vol_chg"])
+    out["vol_chg"] = (vol_bar / vol_bar.shift(vc) - 1.0).clip(-2, 2)
+    out["hurst"] = rolling_hurst(np.log(close.to_numpy(dtype=float)), window=d(DAY_WINDOWS["hurst"]))
+    return out.replace([np.inf, -np.inf], np.nan)
+
+
+def _events_cal(df: pd.DataFrame, cfg: Config, bars_per_day: int, h_days: int, barrier_k: float):
+    s = cfg.strategy
+    feats = compute_exposure(df, cfg)
+    expo = feats["exposure"]
+    close = df["close"].to_numpy(dtype=float)
+    vol_bar = df["close"].pct_change().ewm(span=s.vol_span, min_periods=s.vol_span).std().to_numpy(dtype=float)
+    h = max(1, int(round(h_days * bars_per_day)))
+    events = primary_events(expo)
+    sides = np.sign(expo.to_numpy(dtype=float)[events])
+    labels, widths = triple_barrier(close, vol_bar, events, sides, k=barrier_k, h=h)
+    X = build_features_cal(df, bars_per_day).to_numpy(dtype=float)[events]
+    price = close[events]
+    c = cfg.costs
+    cost_rt = 2 * ((c.spread / 2.0 + (price * c.slippage_pct if c.slippage_pct > 0 else c.slippage)) / price + c.fee_pct)
+    return expo, events, labels, widths, X, cost_rt, df.index[events], h
+
+
+def meta_transfer_cv(train: dict[str, tuple], test: dict[str, tuple], k: int = 6, h_days: int = 15,
+                     barrier_k: float = 1.0, premium: float = 0.0005, embargo_days: int = 200) -> dict:
+    """Secondary model trained on the fine timeframe's primary entries (many events), applied to the
+    coarse timeframe's entries (few events). Folds are calendar spans; for each fold the training set
+    excludes every fine-timeframe event within [fold start - embargo, fold end + embargo] — both
+    timeframes see the same price history, so the embargo is in days, not bars.
+    train/test: {sym: (df, cfg, bars_per_day)}."""
+    syms = list(test)
+    # pooled training design
+    Xs, ys, ts_, ss = [], [], [], []
+    tr_stats = {}
+    for i, sym in enumerate(syms):
+        if sym not in train:
+            continue
+        df, cfg, bpd = train[sym]
+        expo, ev, y, w, X, cr, ts, h = _events_cal(df, cfg, bpd, h_days, barrier_k)
+        ok = np.isfinite(w) & (ev + h < len(df))
+        onehot = np.zeros((ok.sum(), len(syms))); onehot[:, i] = 1.0
+        Xs.append(np.hstack([X[ok], onehot])); ys.append(y[ok]); ts_.append(ts[ok].to_numpy()); ss.append(np.full(ok.sum(), i))
+        tr_stats[sym] = {"train_events": int(ok.sum()), "base_rate": round(float(y[ok].mean()), 3) if ok.sum() else None}
+    X_tr = np.vstack(Xs); y_tr = np.concatenate(ys); t_tr = np.concatenate(ts_)
+    # test sets
+    te = {}
+    for i, sym in enumerate(syms):
+        df, cfg, bpd = test[sym]
+        expo, ev, y, w, X, cr, ts, h = _events_cal(df, cfg, bpd, h_days, barrier_k)
+        onehot = np.zeros((len(ev), len(syms))); onehot[:, i] = 1.0
+        te[sym] = (df, cfg, expo, ev, y, w, np.hstack([X, onehot]), cr, ts)
+    t0 = min(v[0].index[0] for v in test.values()); t1 = max(v[0].index[-1] for v in test.values())
+    edges = [t0 + (t1 - t0) * i / k for i in range(k + 1)]
+    emb = pd.Timedelta(days=embargo_days)
+    results = {sym: [] for sym in syms}
+    for fi in range(k):
+        a, b = edges[fi], edges[fi + 1]
+        m = (t_tr < a - emb) | (t_tr >= b + emb)
+        model = fit_model(X_tr[m], y_tr[m]) if m.sum() >= 60 else None
+        for sym in syms:
+            df, cfg, expo, ev, y, w, X, cr, ts = te[sym]
+            loc = (ts >= a) & (ts < b)
+            accept = np.ones(len(ev), dtype=bool)
+            p_te = None
+            if model is not None and loc.any():
+                p_te = model(X[loc])
+                thr = np.array([ev_threshold(ww, cc, premium) for ww, cc in zip(w[loc], cr[loc])])
+                accept[loc] = p_te >= thr
+            sl = df.index[(df.index >= a) & (df.index < b)]
+            if len(sl) < 30:
+                continue
+            ia, ib = df.index.get_loc(sl[0]), df.index.get_loc(sl[-1]) + 1
+            prim = simulate(df.iloc[ia:ib], expo.iloc[ia:ib], cfg).metrics
+            meta = simulate(df.iloc[ia:ib], apply_meta(expo, ev, accept).iloc[ia:ib], cfg).metrics
+            results[sym].append({"fold": fi, "test_start": str(a)[:10], "test_end": str(b)[:10], "events": int(loc.sum()),
+                                 "accepted": int(accept[loc].sum()), "train_events": int(m.sum()),
+                                 "mean_p": round(float(np.mean(p_te)), 3) if p_te is not None and len(p_te) else None,
+                                 "primary_sharpe": prim["sharpe"], "meta_sharpe": meta["sharpe"],
+                                 "primary_return": prim["total_return"], "meta_return": meta["total_return"],
+                                 "primary_maxdd": prim["max_drawdown"], "meta_maxdd": meta["max_drawdown"],
+                                 "primary_trades": prim["trades"], "meta_trades": meta["trades"]})
+    out = {"folds": k, "h_days": h_days, "embargo_days": embargo_days, "train": tr_stats,
+           "train_events_total": int(len(y_tr)), "per_symbol": {}}
+    all_p, all_m = [], []
+    for sym in syms:
+        fs = results[sym]; ps = [f["primary_sharpe"] for f in fs]; ms = [f["meta_sharpe"] for f in fs]
+        all_p += ps; all_m += ms
+        out["per_symbol"][sym] = {"folds": fs, "primary_median_sharpe": round(float(np.median(ps)), 3) if ps else None,
+                                  "meta_median_sharpe": round(float(np.median(ms)), 3) if ms else None,
+                                  "primary_positive_folds": int(sum(x > 0 for x in ps)), "meta_positive_folds": int(sum(x > 0 for x in ms)),
+                                  "meta_better_folds": int(sum(mm > pp for mm, pp in zip(ms, ps))), "n_folds": len(fs),
+                                  "accepted_share": round(float(sum(f["accepted"] for f in fs) / max(1, sum(f["events"] for f in fs))), 3)}
+    out["pooled_primary_median_sharpe"] = round(float(np.median(all_p)), 3) if all_p else None
+    out["pooled_meta_median_sharpe"] = round(float(np.median(all_m)), 3) if all_m else None
+    out["pooled_meta_better"] = f"{int(sum(mm > pp for mm, pp in zip(all_m, all_p)))}/{len(all_p)}"
+    return out

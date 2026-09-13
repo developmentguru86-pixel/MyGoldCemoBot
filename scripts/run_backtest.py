@@ -15,7 +15,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from goldbot.backtest import DAILY_OVERRIDES, ROBUST_W, daily_grid, default_grid, dynamic_portfolio, evaluate_gates, grid_label, purged_cv, run_backtest, walk_forward  # noqa: E402
-from goldbot.meta import meta_cv, meta_cv_pooled  # noqa: E402
+from goldbot.meta import meta_cv, meta_cv_pooled, meta_transfer_cv  # noqa: E402
 from goldbot.config import Config  # noqa: E402
 from goldbot.data import load_csv  # noqa: E402
 from goldbot.metrics import block_bootstrap, drawdown, summarize  # noqa: E402
@@ -94,6 +94,7 @@ if __name__ == "__main__":
     ap.add_argument("--grid", choices=["full", "small", "daily"], default="full")
     ap.add_argument("--meta", action="store_true", help="meta-labeling purged CV on the long-only primary (and both)")
     ap.add_argument("--meta-pooled", action="store_true", help="one meta-model across all portfolio symbols (asset one-hot)")
+    ap.add_argument("--meta-transfer", default=None, help="train the meta-model on this finer timeframe's entries (e.g. H4), apply to the run timeframe")
     ap.add_argument("--selector", choices=["robust", "sharpe"], default="robust",
                     help="parameter selection inside training windows: robust (median segment Sharpe minus penalties) or plain Sharpe")
     ap.add_argument("--out", default=None)
@@ -232,6 +233,41 @@ if __name__ == "__main__":
             for f in ps["folds"]:
                 print(f"     fold {f['fold']} {f['test_start']}..{f['test_end']} ev {f['events']} acc {f['accepted']} p̄ {f['mean_p']} | "
                       f"SR {f['primary_sharpe']} -> {f['meta_sharpe']} ret {f['primary_return']:+.3f} -> {f['meta_return']:+.3f} trades {f['primary_trades']} -> {f['meta_trades']}")
+
+    if a.meta_transfer and len(pooled_dfs) >= 1:
+        ftf = a.meta_transfer.upper()
+        fbpd = BARS_PER_DAY[ftf]
+        train_sets, test_sets = {}, {}
+        for sym in pooled_dfs:
+            fp = Path(f"data/{slug(sym)}_{ftf}.csv")
+            if not fp.exists():
+                print(f"  transfer: no {ftf} data for {sym}, skipped"); continue
+            fdf = load_csv(fp)
+            fmeta_p = Path(f"data/{slug(sym)}_{ftf}_meta.json")
+            fmeta = json.loads(fmeta_p.read_text()) if fmeta_p.exists() else None
+            fcfg = Config.load(a.config)
+            fcfg.timeframe, fcfg.bars_per_day = ftf, fbpd
+            # the training primary is FASTER (10/30/60 d) so it produces ~250 entries per asset instead of ~30:
+            # the secondary learns P(momentum entry works | market state) from the same calendar features
+            fcfg = symbol_cfg(fcfg, fmeta, fdf).with_strategy(
+                direction="long", lookbacks=[int(round(x * fbpd)) for x in (10, 30, 60)], vol_span=10 * fbpd,
+                min_hold_bars=1 * fbpd, entry_min_signal=1.0, kelly={"window": 50 * fbpd}, regime={"er_window": 0, "vol_pct_window": 100 * fbpd})
+            train_sets[sym] = (fdf, fcfg, fbpd)
+            test_sets[sym] = (pooled_dfs[sym], pooled_cfgs[sym], cfg.bars_per_day)
+        if train_sets:
+            mt = meta_transfer_cv(train_sets, test_sets, k=a.folds)
+            report["meta_transfer"] = mt
+            print(f"\n== TRANSFER META-LABELING: trained on {ftf} entries ({mt['train_events_total']} events), applied to {tfx} entries "
+                  f"(horizon {mt['h_days']} d, embargo {mt['embargo_days']} d) ==")
+            print("  train:", mt["train"])
+            print(f"  pooled median Sharpe primary {mt['pooled_primary_median_sharpe']} -> meta {mt['pooled_meta_median_sharpe']} | meta better {mt['pooled_meta_better']}")
+            for sym, ps in mt["per_symbol"].items():
+                print(f"  {sym.split('/')[0]}: median {ps['primary_median_sharpe']} -> {ps['meta_median_sharpe']} | pos {ps['primary_positive_folds']} -> {ps['meta_positive_folds']} "
+                      f"| better {ps['meta_better_folds']}/{ps['n_folds']} | accepted {ps['accepted_share']}")
+                for f in ps["folds"]:
+                    print(f"     fold {f['fold']} {f['test_start']} ev {f['events']} acc {f['accepted']} p̄ {f['mean_p']} train {f['train_events']} | "
+                          f"SR {f['primary_sharpe']} -> {f['meta_sharpe']} ret {f['primary_return']:+.3f} -> {f['meta_return']:+.3f} "
+                          f"mdd {f['primary_maxdd']:.3f} -> {f['meta_maxdd']:.3f} trades {f['primary_trades']} -> {f['meta_trades']}")
 
     # ---- dynamic allocation across long/short sleeves from trailing OOS quality (no look-ahead)
     if len(sleeves) >= 2:

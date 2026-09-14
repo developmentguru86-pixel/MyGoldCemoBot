@@ -75,6 +75,7 @@ if __name__ == "__main__":
     ap.add_argument("--config", default="config.yaml")
     ap.add_argument("--since", default="2005-01-01")
     ap.add_argument("--folds", type=int, default=6)
+    ap.add_argument("--spread-bps", type=float, default=2.0, help="assumed half-spread in bps of price (price-relative, not absolute)")
     a = ap.parse_args()
     cfg = Config.load(a.config)
     grid = daily_grid()
@@ -83,7 +84,7 @@ if __name__ == "__main__":
     ex = getattr(ccxt, cfg.exchange.id)({"enableRateLimit": True, "options": {"defaultType": "swap"}})
     markets = ex.load_markets()
     live_bases = {m.split("/")[0].upper() for m, v in markets.items() if v.get("swap") and v.get("active")}
-    print(f"venue {cfg.exchange.id}: {len(live_bases)} active perp bases\n")
+    print(f"venue {cfg.exchange.id}: {len(live_bases)} active perp bases | cost basis: {a.spread_bps} bps half-spread + 1 bp slippage + {cfg.costs.fee_pct:.2%} fee, price-relative\n")
 
     held = {s.split("/")[0].upper() for s in cfg.portfolio()}
     curves: dict[str, pd.Series] = {}
@@ -95,14 +96,22 @@ if __name__ == "__main__":
         if p.exists():
             df = pd.read_csv(p, parse_dates=["time"]).set_index("time")
             df.index = pd.to_datetime(df.index, utc=True)
-            wf = walk_forward(df, cfg.with_strategy(direction="long"), grid=grid,
-                              train_bars=3 * 365, test_bars=365)
+            ch = cfg.with_strategy(direction="long")
+            pxh = float(df["close"].median())
+            ch.costs.spread = pxh * a.spread_bps / 1e4
+            ch.costs.slippage = pxh * 1e-4
+            ch.costs.slippage_pct = 0.0
+            ch.costs.swap_long_annual = ch.costs.swap_short_annual = 0.0
+            ch.contract.size = 1.0; ch.contract.min_lot = 1e-6; ch.contract.lot_step = 1e-6
+            wf = walk_forward(df, ch, grid=grid, train_bars=3 * 365, test_bars=365)
             curves[base] = wf.equity.pct_change()
             print(f"[held] {base}: OOS Sharpe {wf.metrics['sharpe']}")
 
     for name, (st, yh, venue_base) in CANDIDATES.items():
-        df = stooq(st) or yahoo(yh)
-        src = "stooq" if stooq(st) is not None else "yahoo"
+        df = stooq(st)
+        src = "stooq"
+        if df is None or len(df) < 1500:
+            df, src = yahoo(yh), "yahoo"
         if df is None or len(df) < 1500:
             print(f"{name:<7} no usable history"); continue
         df = df[df.index >= pd.Timestamp(a.since, tz="UTC")]
@@ -112,6 +121,17 @@ if __name__ == "__main__":
         yrs = (df.index[-1] - df.index[0]).days / 365.25
         c = cfg.with_strategy(direction="long")
         c.trading_days_per_year = int(round(len(df) / yrs)); c.bars_per_day = 1
+        # costs must be PRICE-RELATIVE: the config's absolute spread (USDT) is calibrated for gold/BTC
+        # and would be 25% of the price on copper, 90% on EURUSD. Scale to the instrument.
+        px = float(df["close"].median())
+        c.costs.spread = px * a.spread_bps / 1e4
+        c.costs.slippage = px * 1e-4
+        c.costs.slippage_pct = 0.0
+        c.costs.swap_long_annual = 0.0
+        c.costs.swap_short_annual = 0.0
+        c.contract.size = 1.0
+        c.contract.min_lot = 1e-6
+        c.contract.lot_step = 1e-6
         try:
             wf = walk_forward(df, c, grid=grid, train_bars=3 * c.trading_days_per_year, test_bars=c.trading_days_per_year)
             cv = purged_cv(df, c, grid=grid, k=a.folds)

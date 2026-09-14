@@ -40,6 +40,16 @@ CANDIDATES = {
     "DOGE": ("dogeusd", "DOGE-USD", "DOGE"),
     "LTC": ("ltcusd", "LTC-USD", "LTC"),
     "LINK": ("linkusd", "LINK-USD", "LINK"),
+    "ADA": ("adausd", "ADA-USD", "ADA"),
+    "AVAX": ("avaxusd", "AVAX-USD", "AVAX"),
+    "DOT": ("dotusd", "DOT-USD", "DOT"),
+    "ATOM": ("atomusd", "ATOM-USD", "ATOM"),
+    "BNB": ("bnbusd", "BNB-USD", "BNB"),
+    "TRX": ("trxusd", "TRX-USD", "TRX"),
+    "BCH": ("bchusd", "BCH-USD", "BCH"),
+    "ETC": ("etcusd", "ETC-USD", "ETC"),
+    "FIL": ("filusd", "FIL-USD", "FIL"),
+    "NEAR": ("nearusd", "NEAR-USD", "NEAR"),
 }
 
 

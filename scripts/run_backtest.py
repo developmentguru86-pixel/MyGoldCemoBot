@@ -321,12 +321,13 @@ if __name__ == "__main__":
         print(corr.to_string())
         report["sleeve_correlation"] = {k: {kk: float(vv) for kk, vv in v.items()} for k, v in corr.to_dict().items()}
         names = list(sleeve_rets.columns)
-        def mix(w: dict) -> dict:
+        def mix(w: dict, rets: pd.DataFrame | None = None) -> dict:
+            rr = sleeve_rets if rets is None else rets
             ws = pd.Series({n: w.get(n.split("/")[0].upper(), 0.0) for n in names})
             if ws.sum() <= 0:
                 return {}
             ws = ws / ws.sum()
-            r_ = (sleeve_rets * ws).sum(axis=1)
+            r_ = (rr * ws).sum(axis=1)
             eq = cfg.starting_equity * (1 + r_).cumprod()
             m = summarize(eq, cfg.bars_per_year, cfg.bars_per_day)
             b = block_bootstrap(r_.to_numpy(), horizon=cfg.bars_per_year, sims=1000)
@@ -338,14 +339,26 @@ if __name__ == "__main__":
                  "gold-light": {"XAU": 0.1, "BTC": 0.25, "ETH": 0.25, "SOL": 0.2, "XRP": 0.2},
                  "cv-weighted": {"XAU": 0.1, "BTC": 0.25, "ETH": 0.25, "SOL": 0.25, "XRP": 0.15},
                  "old-3": {"XAU": 0.2, "BTC": 0.4, "ETH": 0.4}}
+        # the union window measures a portfolio that did not exist yet (SOL starts 2020): also report the
+        # common window where every sleeve is live. Short sample, but it is the actual portfolio.
+        first_common = max(v.dropna().index[0] for v in (wf_curves or is_curves).values())
+        common = sleeve_rets[sleeve_rets.index >= first_common]
+        print(f"\n== COMMON WINDOW (all sleeves live): {first_common.date()} .. {sleeve_rets.index[-1].date()} "
+              f"({len(common)} bars, {len(common)/cfg.bars_per_year:.1f}y) ==")
+        report["common_window"] = {"start": str(first_common), "bars": int(len(common))}
+
         print("\n== WEIGHTING STUDY (same OOS returns, different mixes) ==")
         report["weighting_study"] = {}
+        report["weighting_study_common"] = {}
         for name, w in cands.items():
             res = mix(w)
+            resc = mix(w, common)
             if res:
                 report["weighting_study"][name] = res
-                print(f"  {name:<12} {res['weights']} -> Sharpe {res['sharpe']}  CAGR {res['cagr']:+.1%}  vol {res['ann_vol']:.1%}  "
-                      f"MaxDD {res['max_drawdown']:.1%}  PSR {res['psr']}  P(loss) {res['prob_loss']}")
+                print(f"  {name:<12} -> voll: Sharpe {res['sharpe']:>6} CAGR {res['cagr']:>6.1%} MaxDD {res['max_drawdown']:>6.1%} P(loss) {res['prob_loss']:.0%}"
+                      + (f"   | common: Sharpe {resc['sharpe']:>6} CAGR {resc['cagr']:>6.1%} MaxDD {resc['max_drawdown']:>6.1%} P(loss) {resc['prob_loss']:.0%}" if resc else ""))
+            if resc:
+                report["weighting_study_common"][name] = resc
 
     if a.bootstrap:
         bs = block_bootstrap(boot_src.pct_change().dropna().to_numpy(), horizon=cfg.bars_per_year)

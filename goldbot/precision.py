@@ -214,3 +214,104 @@ def ruin_probabilities(trades: list[dict], cfg: EntryCfg, sims: int = 5000, hori
             "median_year": round(float(np.median(paths[:, -1]) - 1), 4),
             "p05_year": round(float(np.percentile(paths[:, -1], 5) - 1), 4),
             "p95_year": round(float(np.percentile(paths[:, -1], 95) - 1), 4)}
+
+
+# ---------------------------------------------------------------- multi-timeframe variant
+@dataclass
+class MTFCfg(EntryCfg):
+    htf: tuple = ("1h", "4h")      # timeframes the levels come from
+    htf_pivot_left: int = 8
+    htf_pivot_right: int = 4
+    use_pdh_pdl: bool = True       # previous day high/low
+    use_weekly: bool = True        # previous week high/low
+    level_max_age_days: float = 20.0
+    vol_confirm: float = 1.2       # entry bar volume must exceed this multiple of the rolling median
+    vol_window: int = 288          # ~1 day of 5m bars
+    min_rr: float = 2.0
+
+
+def htf_levels(df5: pd.DataFrame, cfg: MTFCfg) -> list[tuple[pd.Timestamp, float]]:
+    """Support levels as (known_from, price). `known_from` is when the level could first be used:
+    a pivot is only confirmed after `htf_pivot_right` higher-timeframe bars have closed."""
+    out: list[tuple[pd.Timestamp, float]] = []
+    agg = {"open": "first", "high": "max", "low": "min", "close": "last"}
+    for tf in cfg.htf:
+        h = df5.resample(tf, label="left", closed="left").agg(agg).dropna()
+        if len(h) < cfg.htf_pivot_left + cfg.htf_pivot_right + 2:
+            continue
+        low = h["low"].to_numpy(dtype=float)
+        for i in range(cfg.htf_pivot_left, len(h) - cfg.htf_pivot_right):
+            w = low[i - cfg.htf_pivot_left:i + cfg.htf_pivot_right + 1]
+            if low[i] == w.min() and (w == low[i]).sum() == 1:
+                known = h.index[i + cfg.htf_pivot_right] + pd.Timedelta(tf)
+                out.append((known, float(low[i])))
+    if cfg.use_pdh_pdl:
+        d = df5.resample("1D", label="left", closed="left").agg(agg).dropna()
+        for i in range(len(d) - 1):
+            out.append((d.index[i + 1], float(d["low"].iloc[i])))
+    if cfg.use_weekly:
+        w = df5.resample("1W", label="left", closed="left").agg(agg).dropna()
+        for i in range(len(w) - 1):
+            out.append((w.index[i + 1], float(w["low"].iloc[i])))
+    return sorted(out)
+
+
+def find_setups_mtf(df5: pd.DataFrame, cfg: MTFCfg, allowed: np.ndarray | None = None) -> list[dict]:
+    """5m sweep/reclaim/BOS at higher-timeframe support levels, with volume confirmation."""
+    idx = df5.index
+    o, h, l, c = (df5[x].to_numpy(dtype=float) for x in ("open", "high", "low", "close"))
+    vol = df5["tick_volume"].to_numpy(dtype=float) if "tick_volume" in df5.columns else np.ones(len(c))
+    vmed = pd.Series(vol).rolling(cfg.vol_window, min_periods=cfg.vol_window // 4).median().to_numpy()
+    levels = htf_levels(df5, cfg)
+    if not levels:
+        return []
+    lv_time = np.array([t.value for t, _ in levels])
+    lv_px = np.array([p for _, p in levels])
+    max_age = pd.Timedelta(days=cfg.level_max_age_days).value
+    n = len(c)
+    setups: list[dict] = []
+    t = cfg.vol_window
+    while t < n - 1:
+        if allowed is not None and not allowed[t]:
+            t += 1
+            continue
+        now = idx[t].value
+        m = (lv_time <= now) & (now - lv_time <= max_age) & (lv_px < c[t])
+        if not m.any():
+            t += 1
+            continue
+        cand = lv_px[m]
+        level = float(cand.max())                      # nearest support below price
+        if not (l[t] <= level and c[t] > level and l[t] >= level * (1 - 0.02)):
+            t += 1
+            continue
+        sweep_low = l[t]
+        reclaim = None
+        for k in range(t, min(n, t + cfg.sweep_max_bars + 1)):
+            if c[k] > level:
+                reclaim = k
+                break
+        if reclaim is None:
+            t += 1
+            continue
+        entry = None
+        for k in range(reclaim + 1, min(n, reclaim + cfg.bos_max_bars + 1)):
+            if c[k] > h[t:k].max():
+                if vmed[k] > 0 and vol[k] < cfg.vol_confirm * vmed[k]:
+                    continue                           # structure break without volume: ignore
+                entry = k
+                break
+            if l[k] < sweep_low:
+                break
+        if entry is None:
+            t += 1
+            continue
+        stop = sweep_low * (1 - cfg.stop_buffer)
+        risk_frac = (c[entry] - stop) / c[entry]
+        if not (cfg.min_stop_frac <= risk_frac <= cfg.max_stop_frac):
+            t += 1
+            continue
+        setups.append({"level": level, "sweep_idx": t, "reclaim_idx": reclaim, "entry_idx": entry,
+                       "entry": c[entry], "stop": stop, "risk_frac": risk_frac, "time": idx[entry]})
+        t = entry + 1
+    return setups

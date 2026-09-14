@@ -17,10 +17,10 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from goldbot.config import Config  # noqa: E402
 from goldbot.data import load_csv  # noqa: E402
-from goldbot.precision import EntryCfg, equity_curve, metrics, ruin_probabilities, run_asset  # noqa: E402
+from goldbot.precision import EntryCfg, MTFCfg, equity_curve, find_setups_mtf, metrics, resolve, ruin_probabilities, run_asset  # noqa: E402
 from goldbot.strategy import compute_exposure  # noqa: E402
 
-BPD = {"M15": 96, "H1": 24, "H4": 6, "D1": 1}
+BPD = {"5M": 288, "M15": 96, "H1": 24, "H4": 6, "D1": 1}
 
 
 def slug(s: str) -> str:
@@ -35,23 +35,31 @@ if __name__ == "__main__":
     ap.add_argument("--risk", type=float, default=0.025)
     ap.add_argument("--target-r", type=float, default=2.0)
     ap.add_argument("--no-layer1", action="store_true", help="entry engine alone, without the quant gate")
+    ap.add_argument("--mtf", action="store_true", help="5m entries at 1h/4h/PDH-PDL/weekly levels with volume confirmation")
+    ap.add_argument("--symbols", default=None, help="comma list, e.g. BTC/USDT:USDT,ETH/USDT:USDT")
     ap.add_argument("--out", default="reports")
     a = ap.parse_args()
 
     cfg = Config.load(a.config)
     tfx = a.timeframe.upper()
     cfg.timeframe, cfg.bars_per_day = tfx, BPD[tfx]
-    ecfg = EntryCfg(risk_per_trade=a.risk, target_r=a.target_r)
+    ecfg = MTFCfg(risk_per_trade=a.risk, target_r=a.target_r) if a.mtf else EntryCfg(risk_per_trade=a.risk, target_r=a.target_r)
+    if a.mtf:
+        ecfg.min_stop_frac, ecfg.max_stop_frac = 0.002, 0.02   # the 0.3-0.6% regime
+        ecfg.sweep_max_bars, ecfg.bos_max_bars, ecfg.time_stop_bars = 6, 24, 288
     if tfx == "D1":
         ecfg.pivot_left, ecfg.pivot_right, ecfg.level_window = 5, 3, 120
         ecfg.time_stop_bars, ecfg.bos_max_bars = 20, 5
 
     all_trades: list[dict] = []
     per_symbol = {}
-    for sym in cfg.portfolio():
+    symbols = [x.strip() for x in a.symbols.split(",")] if a.symbols else list(cfg.portfolio())
+    for sym in symbols:
         p = Path(f"data/{slug(sym)}_{tfx}.csv")
         if not p.exists():
             p = Path(f"data/{slug(sym)}_{tfx}_long.csv")
+        if not p.exists() and a.mtf:
+            p = Path(f"data/{slug(sym)}_5M.csv")
         if not p.exists():
             print(f"{sym}: no {tfx} data"); continue
         df = load_csv(p)
@@ -72,7 +80,18 @@ if __name__ == "__main__":
         if not a.no_layer1:
             expo = compute_exposure(df, c)["exposure"].to_numpy(dtype=float)
             allowed = expo > 0                                     # layer 1: long or flat
-        tr = run_asset(df, ecfg, allowed, cost_frac)
+        if a.mtf:
+            tr = []
+            for st in find_setups_mtf(df, ecfg, allowed):
+                x = resolve(df, st, ecfg)
+                x["r_net"] = x["r"] - cost_frac / st["risk_frac"]
+                tr.append(x)
+            if tr:
+                import numpy as _np
+                print(f"      Median-Stop {_np.median([t['risk_frac'] for t in tr])*100:.3f} % "
+                      f"-> Kosten {cost_frac*100:.3f} % = {_np.median([cost_frac/t['risk_frac'] for t in tr]):.2f}R pro Trade")
+        else:
+            tr = run_asset(df, ecfg, allowed, cost_frac)
         for t in tr:
             t["symbol"] = sym
         all_trades += tr

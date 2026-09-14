@@ -1,0 +1,71 @@
+name: precision_5m
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: "days of 5m history"
+        default: "540"
+      risk:
+        description: "risk per trade"
+        default: "0.02"
+      target_r:
+        default: "2.0"
+      layer1:
+        description: "quant direction gate: yes | no"
+        default: "yes"
+      cost_mult:
+        description: "cost multiplier for stress (1 = venue)"
+        default: "1"
+concurrency:
+  group: backtest
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11", cache: pip}
+      - run: pip install -r requirements.txt
+      - shell: bash
+        run: |
+          mkdir -p reports data
+          python scripts/fetch_5m.py --days "${{ github.event.inputs.days || '540' }}" 2>&1 | tee reports/fetch5m.log
+      - shell: bash
+        run: |
+          set -o pipefail
+          EXTRA=""
+          [ "${{ github.event.inputs.layer1 || 'yes' }}" = "no" ] && EXTRA="--no-layer1"
+          python scripts/run_precision.py --mtf --timeframe 5M --symbols "BTC/USDT:USDT,ETH/USDT:USDT" \
+            --risk "${{ github.event.inputs.risk || '0.02' }}" --target-r "${{ github.event.inputs.target_r || '2.0' }}" \
+            $EXTRA 2>&1 | tee reports/precision5m.log
+      - if: always()
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python - <<'PY' || true
+          import json, sys
+          sys.path.insert(0, ".")
+          from goldbot import notify
+          from goldbot.config import Config
+          cfg = Config.load("config.yaml")
+          r = json.load(open("reports/precision.json"))
+          m, ru = r["portfolio"], r["ruin"]
+          pos = sum(1 for f in r["folds"] if f["expectancy_R"] > 0)
+          notify.send(cfg, (f"5m Entry-Engine BTC/ETH (Layer1={'an' if r['layer1'] else 'aus'}, Risk {r['risk_per_trade']:.1%})\n"
+                 f"Trades {m['trades']} ({m['trades_per_year']}/Jahr = {m['trades_per_year']/365:.2f}/Tag)\n"
+                 f"Winrate {m['winrate']:.1%} | Avg Win {m['avg_win_R']}R | Avg Loss {m['avg_loss_R']}R\n"
+                 f"Expectancy {m['expectancy_R']}R | Profit Factor {m['profit_factor']}\n"
+                 f"Sharpe {m['sharpe']} | MaxDD {m['max_drawdown']:.1%} | Verlustserie {m['max_losing_streak']}\n"
+                 f"P(Verlust 1J) {ru['p_loss']:.0%} | P(DD>20%) {ru['p_dd_gt_20pct']:.0%} | P(DD>40%) {ru['p_dd_gt_40pct']:.0%}\n"
+                 f"EUR/Handelstag auf 5.000: {m['eur_per_trading_day']}\n"
+                 f"Positive Folds: {pos}/{len(r['folds'])}"))
+          PY
+          git config user.name goldbot
+          git config user.email goldbot@users.noreply.github.com
+          for f in reports/precision5m.log reports/precision.json reports/fetch5m.log; do [ -f "$f" ] && git add -f "$f"; done; true
+          git diff --cached --quiet || (git commit -m "5m precision engine results" && (git pull --rebase -X theirs origin main || true) && git push)

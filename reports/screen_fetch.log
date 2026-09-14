@@ -7,3 +7,9 @@ BTC/USDT:USDT: wrote 4381 daily bars, 12.0 years (365 bars/year) -> data/btc_D1_
   stooq ethusd: http 200 / unexpected body: '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="robots" content="no'
   yahoo ETH-USD: 3232 bars 2017-11-09 .. 2026-09-14
 ETH/USDT:USDT: wrote 3232 daily bars, 8.8 years (365 bars/year) -> data/eth_D1_long.csv
+  stooq solusd: http 200 / unexpected body: '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="robots" content="no'
+  yahoo SOL-USD: 2349 bars 2020-04-10 .. 2026-09-14
+SOL/USDT:USDT: wrote 2349 daily bars, 6.4 years (365 bars/year) -> data/sol_D1_long.csv
+  stooq xrpusd: http 200 / unexpected body: '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="robots" content="no'
+  yahoo XRP-USD: 3232 bars 2017-11-09 .. 2026-09-14
+XRP/USDT:USDT: wrote 3232 daily bars, 8.8 years (365 bars/year) -> data/xrp_D1_long.csv

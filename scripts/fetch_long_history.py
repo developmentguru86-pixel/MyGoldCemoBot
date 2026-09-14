@@ -19,6 +19,8 @@ SOURCES = {  # slug -> (stooq symbol, yahoo symbol)
     "xau": ("xauusd", "GC=F"),
     "btc": ("btcusd", "BTC-USD"),
     "eth": ("ethusd", "ETH-USD"),
+    "sol": ("solusd", "SOL-USD"),
+    "xrp": ("xrpusd", "XRP-USD"),
 }
 
 

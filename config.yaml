@@ -3,14 +3,21 @@
 venue: exchange
 symbol: XAU/USDT:USDT        # Primärsymbol (Fallback, wenn `symbols` leer)
 symbols:                     # Portfolio: Gewicht = Anteil des 5.000er-Kontos je Symbol; Kill-Switches wirken auf das Gesamtkonto
-  "XAU/USDT:USDT":           # Gewichte aus der Gewichtungsstudie auf 26/12/8,8 J. OOS-Kurven (Mix "gold-light", bestes Sharpe/MaxDD)
-    weight: 0.2
+  "XAU/USDT:USDT":           # Gewichte vorlaeufig gleichverteilt-ish; die Gewichtungsstudie ueber 5 Sleeves entscheidet
+    weight: 0.1
     history_sources: ["bitfinex:XAUT/USDT", "bitfinex:XAUT/USD"]
   "BTC/USDT:USDT":
-    weight: 0.4
+    weight: 0.25
     history_sources: ["bitfinex:BTC/USDT", "bitfinex:BTC/USD"]
   "ETH/USDT:USDT":           # aktiv: CV-Median 0,88 bei 4/6 Folds über 8,8 J. (bestand die Sleeve-Gates)
-    weight: 0.4
+    weight: 0.25
+    history_sources: ["bitfinex:ETH/USDT", "bitfinex:ETH/USD"]
+  "SOL/USDT:USDT":           # Screening 13.09.: CV-Median 1,02 (5/6), Korrelation 0,32 zu BTC
+    weight: 0.2
+    history_sources: ["bitfinex:SOL/USDT", "bitfinex:SOL/USD"]
+  "XRP/USDT:USDT":           # Screening 13.09.: CV-Median 0,68 (5/6), Korrelation 0,21 zu ETH
+    weight: 0.2
+    history_sources: ["bitfinex:XRP/USDT", "bitfinex:XRP/USD"]
     history_sources: ["bitfinex:ETH/USDT", "bitfinex:ETH/USD"]
 timeframe: D1                # Tageskerzen: die Variante, die im Walk-Forward trägt (Gold 0,99 / Long-only 1,18)
 bars_per_day: 1

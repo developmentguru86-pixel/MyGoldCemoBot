@@ -334,9 +334,10 @@ if __name__ == "__main__":
                     "ann_vol": m["ann_vol"], "max_drawdown": m["max_drawdown"], "psr": m["psr_gt_0"], "prob_loss": b.get("prob_loss")}
         cands = {"config": {n.split("/")[0].upper(): portfolio[n].weight for n in names},
                  "equal": {n.split("/")[0].upper(): 1.0 for n in names},
-                 "no-gold": {"BTC": 0.5, "ETH": 0.5},
-                 "gold-light": {"XAU": 0.2, "BTC": 0.4, "ETH": 0.4},
-                 "btc-heavy": {"XAU": 0.1, "BTC": 0.6, "ETH": 0.3}}
+                 "crypto-only": {"BTC": 1.0, "ETH": 1.0, "SOL": 1.0, "XRP": 1.0},
+                 "gold-light": {"XAU": 0.1, "BTC": 0.25, "ETH": 0.25, "SOL": 0.2, "XRP": 0.2},
+                 "cv-weighted": {"XAU": 0.1, "BTC": 0.25, "ETH": 0.25, "SOL": 0.25, "XRP": 0.15},
+                 "old-3": {"XAU": 0.2, "BTC": 0.4, "ETH": 0.4}}
         print("\n== WEIGHTING STUDY (same OOS returns, different mixes) ==")
         report["weighting_study"] = {}
         for name, w in cands.items():

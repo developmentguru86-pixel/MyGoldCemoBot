@@ -1,0 +1,39 @@
+      Median-Stop 0.483 % -> Kosten 0.221 % = 0.46R pro Trade
+BTC   155520 bars 2025-03-23..2026-09-14 | Trades 1247 (877.6/J) Winrate 0.348 Exp -0.447R PF 0.529
+      Median-Stop 0.724 % -> Kosten 0.268 % = 0.37R pro Trade
+ETH   155520 bars 2025-03-23..2026-09-14 | Trades 1284 (921.4/J) Winrate 0.339 Exp -0.384R PF 0.579
+
+Setups gesamt 2531, nach Concurrency-Cap (3) 2531
+
+================ ENTRY-ENGINE (Layer 1 + Layer 2) ================
+  trades                 2531
+  trades_per_year        1781.2
+  winrate                0.343
+  avg_win_R              1.5
+  avg_loss_R             -1.416
+  expectancy_R           -0.415
+  profit_factor          0.554
+  sharpe                 -12.471
+  max_drawdown           -1.0
+  max_losing_streak      41
+  end_equity             0.0
+  eur_per_trading_day    -9.63
+  eur_per_trade          -1.98
+  risk_per_trade         2.0%
+  target                 2.0R
+  horizon_trades         1781
+  p_loss                 1.0
+  p_dd_gt_20pct          1.0
+  p_dd_gt_40pct          1.0
+  median_year            -1.0
+  p05_year               -1.0
+  p95_year               -1.0
+
+  Folds (feste Regeln, daher jedes Fenster OOS):
+   2025-04-13..2025-07-09 Trades 1120 Winrate 0.38 Exp -0.308R PF 0.651
+   2025-07-09..2025-10-03 Trades 1073 Winrate 0.31 Exp -0.519R PF 0.467
+   2025-10-03..2025-12-29 Trades   73 Winrate 0.23 Exp -0.686R PF 0.344
+   2026-06-20..2026-09-14 Trades  264 Winrate 0.36 Exp -0.365R PF 0.601
+   -> 0/4 Fenster mit positivem Erwartungswert
+
+written: reports/precision.json

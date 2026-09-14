@@ -1,0 +1,4 @@
+  phemex BTC/USDT:USDT: 155520 bars
+BTC/USDT:USDT: 155520 5m bars, 539 Tage -> data/btc_5M.csv
+  phemex ETH/USDT:USDT: 155520 bars
+ETH/USDT:USDT: 155520 5m bars, 539 Tage -> data/eth_5M.csv

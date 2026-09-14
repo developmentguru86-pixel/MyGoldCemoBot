@@ -2,10 +2,12 @@
  "last_bar": {
   "XAU/USDT:USDT": "2026-09-13 00:00:00+00:00",
   "BTC/USDT:USDT": "2026-09-13 00:00:00+00:00",
-  "ETH/USDT:USDT": "2026-09-13 00:00:00+00:00"
+  "ETH/USDT:USDT": "2026-09-13 00:00:00+00:00",
+  "SOL/USDT:USDT": "2026-09-13 00:00:00+00:00",
+  "XRP/USDT:USDT": "2026-09-13 00:00:00+00:00"
  },
  "start_equity": 9999.2961414,
- "last_actual_equity": 9999.2961414,
+ "last_actual_equity": 9998.95203546,
  "risk": {
   "hwm": 5000,
   "day": "2026-09-13",
@@ -19,7 +21,9 @@
  "symbols": [
   "XAU/USDT:USDT",
   "BTC/USDT:USDT",
-  "ETH/USDT:USDT"
+  "ETH/USDT:USDT",
+  "SOL/USDT:USDT",
+  "XRP/USDT:USDT"
  ],
  "book": {
   "XAU/USDT:USDT": {
@@ -39,6 +43,18 @@
    "avg": 2471.125,
    "realized": 0.0,
    "fees": 0.27182375000000003
+  },
+  "SOL/USDT:USDT": {
+   "lots": 2.91,
+   "avg": 101.655,
+   "realized": 0.0,
+   "fees": 0.29581605
+  },
+  "XRP/USDT:USDT": {
+   "lots": 0.0,
+   "avg": 0.0,
+   "realized": 0.0,
+   "fees": 0.0
   }
  }
 }

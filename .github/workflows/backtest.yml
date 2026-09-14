@@ -104,6 +104,9 @@ jobs:
           ws = r.get("weighting_study") or {}
           for nm, v in ws.items():
               txt += f"Mix {nm}: Sharpe {v['sharpe']}, CAGR {v['cagr']:+.1%}, MaxDD {v['max_drawdown']:.1%}, P(Verlust) {v['prob_loss']:.0%}\n"
+          cs = r.get("cost_stress") or {}
+          for mult, row in cs.items():
+              txt += f"Kosten {mult}x: " + ", ".join(f"{k.split('/')[0]} SR {v['sharpe']}" for k, v in row.items()) + "\n"
           vp = r.get("vol_target_projection") or {}
           for tv, v in vp.items():
               txt += f"Vol-Ziel {float(tv):.0%}: CAGR {v['cagr']:+.1%}, MaxDD {v['max_drawdown']:.1%}, P(Verlust) {v['prob_loss']:.0%}, ≈ {v['eur_per_day_on_5k']} USDT/Tag auf 5k\n"

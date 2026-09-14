@@ -97,6 +97,7 @@ if __name__ == "__main__":
     ap.add_argument("--meta-transfer", default=None, help="train the meta-model on this finer timeframe's entries (e.g. H4), apply to the run timeframe")
     ap.add_argument("--weights", default=None, help='research portfolio weights, e.g. "XAU=0,BTC=0.6,ETH=0.4"')
     ap.add_argument("--no-funding", action="store_true", help="ignore venue funding in costs (edge before financing)")
+    ap.add_argument("--cost-stress", default="", help="comma list of cost multipliers, e.g. 1.5,2 — a strategy that only works at perfect costs is rejected")
     ap.add_argument("--unscaled", action="store_true", help="exposure_scale 1.0 for research (scaling is a portfolio decision)")
     ap.add_argument("--history", choices=["venue", "long"], default="venue",
                     help="long = data/<slug>_<TF>_long.csv (decades of daily history from stooq/yahoo)")
@@ -138,6 +139,7 @@ if __name__ == "__main__":
     is_curves: dict[str, pd.Series] = {}
     sleeves: dict = {}   # "XAU-long", "XAU-short", ... -> WalkForwardResult (independent strategies)
     pooled_dfs: dict = {}; pooled_cfgs: dict = {}
+    stress_dfs: dict = {}; stress_cfgs: dict = {}
     for sym, sc in portfolio.items():
         path = a.data or f"data/{slug(sym)}_{tfx}.csv"
         if a.history == "long" and not a.data:
@@ -164,6 +166,7 @@ if __name__ == "__main__":
             c.costs.fee_pct = a.fee
         c.starting_equity = cfg.starting_equity * (sc.weight if sc.weight > 0 else 1.0 / max(1, len(portfolio)))  # research sleeve capital; live weight may be 0
         pooled_dfs[sym] = df; pooled_cfgs[sym] = c.with_strategy(direction="long")
+        stress_dfs[sym] = df; stress_cfgs[sym] = c
         print(f"\n######## {sym}  weight {sc.weight:.0%}  {len(df)} bars  {df.index[0]} .. {df.index[-1]}  ({c.bars_per_year} bars/year)")
         print(f"costs: spread {c.costs.spread} fee {c.costs.fee_pct} slippage {c.costs.slippage} "
               f"funding L/S {c.costs.swap_long_annual:+.4f}/{c.costs.swap_short_annual:+.4f}  "
@@ -378,6 +381,25 @@ if __name__ == "__main__":
                                                                           "eur_per_day_on_5k": round(m["cagr"] * cfg.starting_equity / 365, 2)}
                 print(f"  vol target {tv:.0%} (scale {k:.2f}x): CAGR {m['cagr']:+.1%}  MaxDD {m['max_drawdown']:.1%}  "
                       f"1y-DD p05 {b.get('maxdd_p05')}  P(loss) {b.get('prob_loss')}  ≈ {m['cagr'] * cfg.starting_equity / 365:.2f}/Tag auf {cfg.starting_equity:.0f}")
+
+    # ---- cost stress: rerun each sleeve's walk-forward with fees/spread/slippage multiplied
+    if a.cost_stress and wf_curves:
+        report["cost_stress"] = {}
+        print("\n== COST STRESS (walk-forward OOS at multiplied costs) ==")
+        for mult in [float(x) for x in a.cost_stress.split(",") if x.strip()]:
+            row = {}
+            for sym, sc in portfolio.items():
+                c2 = stress_cfgs[sym]
+                cc = c2.with_costs(spread=c2.costs.spread * mult, slippage=c2.costs.slippage * mult,
+                                   fee_pct=c2.costs.fee_pct * mult, slippage_pct=c2.costs.slippage_pct * mult)
+                dfx = stress_dfs[sym]
+                win = wf_windows(cc, len(dfx))
+                if not win:
+                    continue
+                w = walk_forward(dfx, cc, grid=grid, train_bars=win[0], test_bars=win[1], selector=a.selector)
+                row[sym] = {"sharpe": w.metrics["sharpe"], "cagr": w.metrics["cagr"], "cost": w.metrics["total_cost"]}
+            report["cost_stress"][str(mult)] = row
+            print(f"  {mult}x Kosten: " + "  ".join(f"{k.split('/')[0]} SR {v['sharpe']}" for k, v in row.items()))
 
     gates = evaluate_gates(report)
     if gates:

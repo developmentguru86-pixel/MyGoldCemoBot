@@ -1,0 +1,9 @@
+  stooq xauusd: http 200 / unexpected body: '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="robots" content="no'
+  yahoo GC=F: 6533 bars 2000-08-30 .. 2026-09-14
+XAU/USDT:USDT: wrote 6532 daily bars, 26.0 years (251 bars/year) -> data/xau_D1_long.csv
+  stooq btcusd: http 200 / unexpected body: '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="robots" content="no'
+  yahoo BTC-USD: 4381 bars 2014-09-17 .. 2026-09-14
+BTC/USDT:USDT: wrote 4381 daily bars, 12.0 years (365 bars/year) -> data/btc_D1_long.csv
+  stooq ethusd: http 200 / unexpected body: '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="robots" content="no'
+  yahoo ETH-USD: 3232 bars 2017-11-09 .. 2026-09-14
+ETH/USDT:USDT: wrote 3232 daily bars, 8.8 years (365 bars/year) -> data/eth_D1_long.csv

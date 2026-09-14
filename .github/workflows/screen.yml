@@ -1,0 +1,58 @@
+name: screen_sleeves
+on:
+  workflow_dispatch:
+    inputs:
+      since:
+        description: "history start"
+        default: "2005-01-01"
+concurrency:
+  group: backtest
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt yfinance
+      - name: long history for held sleeves
+        shell: bash
+        run: |
+          mkdir -p reports data
+          python scripts/fetch_long_history.py 2>&1 | tee reports/screen_fetch.log
+      - name: screen
+        shell: bash
+        run: |
+          set -o pipefail
+          python scripts/screen_sleeves.py --since "${{ github.event.inputs.since || '2005-01-01' }}" 2>&1 | tee reports/screen.log
+      - name: notify + commit
+        if: always()
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python - <<'PY' || true
+          import json, sys
+          sys.path.insert(0, ".")
+          from goldbot import notify
+          from goldbot.config import Config
+          cfg = Config.load("config.yaml")
+          rows = json.load(open("reports/sleeve_screen.json"))
+          keep = [r for r in rows if r["gate_pass"] and r["tradeable"] and r["max_corr"] < 0.35]
+          txt = "Sleeve-Screening\n"
+          for r in rows[:8]:
+              txt += (f"{'PASS' if r['gate_pass'] else 'fail'} {r['name']} ({r['years']}J, handelbar={'ja' if r['tradeable'] else 'nein'}): "
+                      f"CV {r['cv_median']} ({r['cv_pos']}/6), WF SR {r['wf_sharpe']}, max|Korr| {r['max_corr']}\n")
+          txt += f"\nQualifiziert: {', '.join(r['name'] for r in keep) or 'keines'}"
+          notify.send(cfg, txt)
+          PY
+          git config user.name goldbot
+          git config user.email goldbot@users.noreply.github.com
+          for f in reports/screen.log reports/sleeve_screen.json reports/screen_fetch.log; do [ -f "$f" ] && git add -f "$f"; done; true
+          git diff --cached --quiet || (git commit -m "sleeve screening" && (git pull --rebase -X theirs origin main || true) && git push)

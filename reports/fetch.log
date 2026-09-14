@@ -1,21 +1,35 @@
-XAU/USDT:USDT: 226 bars (0.62 y) from phemex
-  bitfinex:XAUT/USDT: 2191 bars (6.00 y)
-  using bitfinex:XAUT/USDT as price history (2191 bars); costs modelled from XAU/USDT:USDT
-  -> data/xau_D1.csv (6.0 y), spread 1.86 fee 0.001 funding 0.02486745 contract 1.0/0.001/0.001
-BTC/USDT:USDT: 1409 bars (3.86 y) from phemex
-  bitfinex:BTC/USDT: 2191 bars (6.00 y)
-  using bitfinex:BTC/USDT as price history (2191 bars); costs modelled from BTC/USDT:USDT
-  -> data/btc_D1.csv (6.0 y), spread 0.1 fee 0.001 funding 0.09608625000000001 contract 1.0/0.001/0.001
-ETH/USDT:USDT: 1409 bars (3.86 y) from phemex
-  bitfinex:ETH/USDT: 2191 bars (6.00 y)
-  using bitfinex:ETH/USDT as price history (2191 bars); costs modelled from ETH/USDT:USDT
-  -> data/eth_D1.csv (6.0 y), spread 0.01 fee 0.001 funding -0.09650234999999999 contract 1.0/0.01/0.01
+XAU/USDT:USDT: 227 bars (0.62 y) from phemex
+  bitfinex:XAUT/USDT: 2192 bars (6.01 y)
+  using bitfinex:XAUT/USDT as price history (2192 bars); costs modelled from XAU/USDT:USDT
+  -> data/xau_D1.csv (6.0 y), spread 1.92 fee 0.001 funding 0.1569354 contract 1.0/0.001/0.001
+BTC/USDT:USDT: 1410 bars (3.86 y) from phemex
+  bitfinex:BTC/USDT: 2192 bars (6.01 y)
+  using bitfinex:BTC/USDT as price history (2192 bars); costs modelled from BTC/USDT:USDT
+  -> data/btc_D1.csv (6.0 y), spread 0.1 fee 0.001 funding 0.10950000000000001 contract 1.0/0.001/0.001
+ETH/USDT:USDT: 1410 bars (3.86 y) from phemex
+  bitfinex:ETH/USDT: 2192 bars (6.01 y)
+  using bitfinex:ETH/USDT as price history (2192 bars); costs modelled from ETH/USDT:USDT
+  -> data/eth_D1.csv (6.0 y), spread 0.01 fee 0.001 funding 0.10950000000000001 contract 1.0/0.01/0.01
+SOL/USDT:USDT: 1410 bars (3.86 y) from phemex
+  bitfinex:SOL/USDT: 2028 bars (5.56 y)
+  using bitfinex:SOL/USDT as price history (2028 bars); costs modelled from SOL/USDT:USDT
+  -> data/sol_D1.csv (5.55 y), spread 0.06 fee 0.001 funding 0.10950000000000001 contract 1.0/0.01/0.01
+XRP/USDT:USDT: 1410 bars (3.86 y) from phemex
+  bitfinex:ETH/USDT: 2192 bars (6.01 y)
+  using bitfinex:ETH/USDT as price history (2192 bars); costs modelled from XRP/USDT:USDT
+  -> data/xrp_D1.csv (6.0 y), spread 0.0011 fee 0.001 funding 0.10950000000000001 contract 1.0/0.01/0.01
   stooq xauusd: http 200 / unexpected body: '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="robots" content="no'
-  yahoo GC=F: 6532 bars 2000-08-30 .. 2026-09-11
-XAU/USDT:USDT: wrote 6531 daily bars, 26.0 years (251 bars/year) -> data/xau_D1_long.csv
+  yahoo GC=F: 6533 bars 2000-08-30 .. 2026-09-14
+XAU/USDT:USDT: wrote 6532 daily bars, 26.0 years (251 bars/year) -> data/xau_D1_long.csv
   stooq btcusd: http 200 / unexpected body: '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="robots" content="no'
-  yahoo BTC-USD: 4380 bars 2014-09-17 .. 2026-09-13
-BTC/USDT:USDT: wrote 4380 daily bars, 12.0 years (365 bars/year) -> data/btc_D1_long.csv
+  yahoo BTC-USD: 4381 bars 2014-09-17 .. 2026-09-14
+BTC/USDT:USDT: wrote 4381 daily bars, 12.0 years (365 bars/year) -> data/btc_D1_long.csv
   stooq ethusd: http 200 / unexpected body: '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="robots" content="no'
-  yahoo ETH-USD: 3231 bars 2017-11-09 .. 2026-09-13
-ETH/USDT:USDT: wrote 3231 daily bars, 8.8 years (365 bars/year) -> data/eth_D1_long.csv
+  yahoo ETH-USD: 3232 bars 2017-11-09 .. 2026-09-14
+ETH/USDT:USDT: wrote 3232 daily bars, 8.8 years (365 bars/year) -> data/eth_D1_long.csv
+  stooq solusd: http 200 / unexpected body: '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="robots" content="no'
+  yahoo SOL-USD: 2349 bars 2020-04-10 .. 2026-09-14
+SOL/USDT:USDT: wrote 2349 daily bars, 6.4 years (365 bars/year) -> data/sol_D1_long.csv
+  stooq xrpusd: http 200 / unexpected body: '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="robots" content="no'
+  yahoo XRP-USD: 3232 bars 2017-11-09 .. 2026-09-14
+XRP/USDT:USDT: wrote 3232 daily bars, 8.8 years (365 bars/year) -> data/xrp_D1_long.csv

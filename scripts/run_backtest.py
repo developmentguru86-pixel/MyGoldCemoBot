@@ -341,6 +341,10 @@ if __name__ == "__main__":
                  "crypto-only": {"BTC": 1.0, "ETH": 1.0, "SOL": 1.0, "XRP": 1.0},
                  "gold-light": {"XAU": 0.1, "BTC": 0.25, "ETH": 0.25, "SOL": 0.2, "XRP": 0.2},
                  "cv-weighted": {"XAU": 0.1, "BTC": 0.25, "ETH": 0.25, "SOL": 0.25, "XRP": 0.15},
+                 "btc-30": {"XAU": 0.1, "BTC": 0.30, "ETH": 0.20, "SOL": 0.15, "XRP": 0.125, "TRX": 0.125},
+                 "btc-40": {"XAU": 0.1, "BTC": 0.40, "ETH": 0.20, "SOL": 0.10, "XRP": 0.10, "TRX": 0.10},
+                 "btc-50": {"XAU": 0.1, "BTC": 0.50, "ETH": 0.15, "SOL": 0.10, "XRP": 0.075, "TRX": 0.075},
+                 "no-gold-6": {"BTC": 0.30, "ETH": 0.20, "SOL": 0.20, "XRP": 0.15, "TRX": 0.15},
                  "old-3": {"XAU": 0.2, "BTC": 0.4, "ETH": 0.4}}
         # the union window measures a portfolio that did not exist yet (SOL starts 2020): also report the
         # common window where every sleeve is live. Short sample, but it is the actual portfolio.

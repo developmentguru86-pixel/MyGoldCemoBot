@@ -1,16 +1,16 @@
 {
  "symbol": "XRP/USDT:USDT",
- "history_source": "bitfinex:ETH/USDT",
- "bars": 2191,
- "years": 6.0,
- "first": "2020-09-14 00:00:00+00:00",
+ "history_source": "bitfinex:XRP/USDT",
+ "bars": 2096,
+ "years": 5.74,
+ "first": "2020-12-18 00:00:00+00:00",
  "last": "2026-09-13 00:00:00+00:00",
  "contract_size": 1.0,
  "min_lot": 0.01,
  "lot_step": 0.01,
  "max_lot": 1000000000.0,
- "spread": 0.0011,
- "price": 1.3982,
+ "spread": 0.0017,
+ "price": 1.4485,
  "fee_pct": 0.001,
  "funding_annual": 0.10950000000000001
 }

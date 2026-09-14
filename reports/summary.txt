@@ -1,119 +1,119 @@
 timeframe D1  bars/day 1  grid 32 combos  selector robust {'worst': 0.5, 'stab': 0.3, 'mdd': 2.0, 'turnover': 0.1}
 
 ######## XAU/USDT:USDT  weight 10%  6532 bars  2000-08-30 00:00:00+00:00 .. 2026-09-14 00:00:00+00:00  (251 bars/year)
-costs: spread 1.92 fee 0.001 slippage 0.125825 funding L/S +0.0000/+0.0000  contract 1.0/0.001/0.001
+costs: spread 0.9 fee 0.001 slippage 0.125825 funding L/S +0.0000/+0.0000  contract 1.0/0.001/0.001
 
 == XAU/USDT:USDT in-sample, fixed params {'lookbacks': [20, 60, 120], 'target_vol': 0.1, 'vol_span': 20} ==
   bars                   6531
   years                  26.02
   start_equity           500.0
-  end_equity             560.2
-  total_return           0.1204
-  cagr                   0.0044
-  ann_vol                0.057
-  sharpe                 0.105
-  sortino                0.088
-  max_drawdown           -0.2146
-  calmar                 0.02
-  psr_gt_0               0.704
-  trades                 671
-  total_cost             240.63
+  end_equity             785.79
+  total_return           0.5716
+  cagr                   0.0175
+  ann_vol                0.0588
+  sharpe                 0.325
+  sortino                0.279
+  max_drawdown           -0.1312
+  calmar                 0.134
+  psr_gt_0               0.95
+  trades                 677
+  total_cost             220.69
   total_swap             0.0
-  pnl_per_trading_day    0.01
-  worst_bar              -0.0478
-  best_bar               0.0366
+  pnl_per_trading_day    0.04
+  worst_bar              -0.0476
+  best_bar               0.0377
   time_in_market         0.536
-  avg_abs_lots           0.1661
+  avg_abs_lots           0.2123
   halted_at              None
 
 == XAU/USDT:USDT walk-forward OUT-OF-SAMPLE (both directions) ==
   bars                   5952
   years                  23.71
   start_equity           500.0
-  end_equity             574.43
-  total_return           0.1489
-  cagr                   0.0059
-  ann_vol                0.0543
-  sharpe                 0.135
-  sortino                0.105
-  max_drawdown           -0.176
-  calmar                 0.033
-  psr_gt_0               0.743
-  trades                 642
-  total_cost             208.3
+  end_equity             794.75
+  total_return           0.5895
+  cagr                   0.0197
+  ann_vol                0.0584
+  sharpe                 0.364
+  sortino                0.299
+  max_drawdown           -0.1476
+  calmar                 0.134
+  psr_gt_0               0.959
+  trades                 676
+  total_cost             223.49
   total_swap             0.0
-  pnl_per_trading_day    0.01
-  worst_bar              -0.0476
-  best_bar               0.0343
+  pnl_per_trading_day    0.05
+  worst_bar              -0.0544
+  best_bar               0.0369
   dsr                    0.0
   selector               robust
   n_trials               32
   windows:
-   2002-09-09..2003-03-10 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -1.485 -> test SR 0.553 ret +0.015 mdd -0.046 trades 12
-   2003-03-11..2003-09-05 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -0.953 -> test SR 0.253 ret +0.006 mdd -0.035 trades 18
-   2003-09-08..2004-03-10 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -0.703 -> test SR -1.163 ret -0.049 mdd -0.056 trades 20
-   2004-03-11..2004-09-08 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=on | train SR -0.652 -> test SR -1.903 ret -0.003 mdd -0.004 trades 8
-   2004-09-09..2005-03-10 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -1.824 -> test SR -0.618 ret -0.017 mdd -0.042 trades 9
-   2005-03-11..2005-09-12 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -1.949 -> test SR -2.481 ret -0.028 mdd -0.032 trades 13
-   2005-09-13..2006-03-14 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -2.551 -> test SR 1.261 ret +0.043 mdd -0.037 trades 11
-   2006-03-15..2006-09-11 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -2.319 -> test SR 1.514 ret +0.063 mdd -0.057 trades 15
-   2006-09-12..2007-03-13 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -1.251 -> test SR -0.17 ret -0.001 mdd -0.011 trades 9
-   2007-03-14..2007-09-10 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -0.67 -> test SR -1.407 ret -0.029 mdd -0.050 trades 24
-   2007-09-11..2008-03-10 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -0.489 -> test SR 1.005 ret +0.045 mdd -0.040 trades 17
-   2008-03-11..2008-09-05 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -0.217 -> test SR -1.012 ret -0.033 mdd -0.046 trades 10
-   2008-09-08..2009-03-06 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -0.595 -> test SR 0.777 ret +0.008 mdd -0.011 trades 11
-   2009-03-09..2009-09-02 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -0.292 -> test SR -0.553 ret -0.011 mdd -0.025 trades 12
-   2009-09-03..2010-03-05 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR -0.008 -> test SR -1.074 ret -0.027 mdd -0.036 trades 28
-   2010-03-08..2010-09-01 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -0.582 -> test SR -0.628 ret -0.015 mdd -0.038 trades 21
-   2010-09-02..2011-03-02 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=on | train SR -0.775 -> test SR 0.429 ret +0.010 mdd -0.029 trades 13
-   2011-03-03..2011-08-29 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 0.444 -> test SR 2.246 ret +0.125 mdd -0.049 trades 20
-   2011-08-30..2012-02-28 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 1.706 -> test SR -1.515 ret -0.038 mdd -0.051 trades 13
-   2012-02-29..2012-08-24 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 0.029 -> test SR -1.735 ret -0.007 mdd -0.007 trades 12
-   2012-08-27..2013-02-27 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 0.21 -> test SR -2.336 ret -0.026 mdd -0.029 trades 10
-   2013-02-28..2013-08-26 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR -0.024 -> test SR 0.0 ret +0.000 mdd 0.000 trades 0
-   2013-08-27..2014-02-25 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=on | train SR -0.087 -> test SR 0.0 ret +0.000 mdd 0.000 trades 0
-   2014-02-26..2014-08-22 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR 0.021 -> test SR -1.201 ret -0.023 mdd -0.026 trades 14
-   2014-08-25..2015-02-23 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -1.414 -> test SR -0.772 ret -0.003 mdd -0.007 trades 6
-   2015-02-24..2015-08-20 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -1.209 -> test SR -2.238 ret -0.001 mdd -0.001 trades 2
-   2015-08-21..2016-02-19 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -1.288 -> test SR 1.535 ret +0.034 mdd -0.015 trades 12
-   2016-02-22..2016-08-17 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -1.609 -> test SR -0.211 ret -0.007 mdd -0.044 trades 17
-   2016-08-18..2017-02-17 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=on | train SR -0.261 -> test SR -0.606 ret -0.001 mdd -0.003 trades 10
-   2017-02-21..2017-08-17 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR 0.651 -> test SR -1.954 ret -0.031 mdd -0.039 trades 9
-   2017-08-18..2018-02-16 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR -1.06 -> test SR 0.519 ret +0.011 mdd -0.021 trades 12
-   2018-02-20..2018-08-16 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR -1.327 -> test SR -1.299 ret -0.002 mdd -0.002 trades 2
-   2018-08-17..2019-02-15 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR -0.942 -> test SR -0.805 ret -0.015 mdd -0.024 trades 19
-   2019-02-19..2019-08-15 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=on | train SR -1.975 -> test SR 1.816 ret +0.029 mdd -0.006 trades 17
-   2019-08-16..2020-02-13 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR -0.278 -> test SR 1.911 ret +0.062 mdd -0.019 trades 9
-   2020-02-14..2020-08-12 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR 0.824 -> test SR 0.402 ret +0.016 mdd -0.066 trades 18
-   2020-08-13..2021-02-10 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 1.324 -> test SR -1.904 ret -0.062 mdd -0.074 trades 18
-   2021-02-11..2021-08-10 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=on | train SR 0.795 -> test SR -1.479 ret -0.013 mdd -0.014 trades 9
-   2021-08-11..2022-02-07 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR -0.683 -> test SR 0.0 ret +0.000 mdd 0.000 trades 0
-   2022-02-08..2022-08-08 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=on | train SR -0.748 -> test SR -0.015 ret -0.000 mdd -0.006 trades 6
-   2022-08-09..2023-02-06 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=on | train SR -0.861 -> test SR -2.068 ret -0.018 mdd -0.024 trades 12
-   2023-02-07..2023-08-07 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -0.658 -> test SR -0.723 ret -0.006 mdd -0.010 trades 3
-   2023-08-08..2024-02-05 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -0.849 -> test SR -1.754 ret -0.034 mdd -0.040 trades 24
-   2024-02-06..2024-08-05 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -0.608 -> test SR 0.587 ret +0.025 mdd -0.072 trades 34
-   2024-08-06..2025-02-03 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -0.235 -> test SR 1.356 ret +0.058 mdd -0.067 trades 25
-   2025-02-04..2025-08-01 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -0.184 -> test SR 0.149 ret +0.004 mdd -0.056 trades 29
-   2025-08-04..2026-01-30 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 0.283 -> test SR 2.521 ret +0.163 mdd -0.048 trades 22
-   2026-02-02..2026-07-31 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 1.37 -> test SR -1.616 ret -0.038 mdd -0.050 trades 7
-  XAU/USDT:USDT long-only walk-forward: CAGR +0.6% Sharpe 0.135 DSR 0.0 MaxDD -17.6% trades 642 cost 208.3
-  XAU/USDT:USDT short-only walk-forward: CAGR -1.1% Sharpe -0.645 DSR 0.0 MaxDD -23.8% trades 313 cost 48.68
+   2002-09-09..2003-03-10 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -0.681 -> test SR -0.881 ret -0.028 mdd -0.042 trades 29
+   2003-03-11..2003-09-05 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -0.125 -> test SR 0.929 ret +0.027 mdd -0.034 trades 17
+   2003-09-08..2004-03-10 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 0.082 -> test SR -1.609 ret -0.064 mdd -0.071 trades 24
+   2004-03-11..2004-09-08 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -0.593 -> test SR -1.808 ret -0.017 mdd -0.022 trades 8
+   2004-09-09..2005-03-10 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -1.649 -> test SR 0.13 ret +0.003 mdd -0.043 trades 5
+   2005-03-11..2005-09-12 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -1.589 -> test SR -1.139 ret -0.019 mdd -0.035 trades 12
+   2005-09-13..2006-03-14 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -2.252 -> test SR 1.492 ret +0.054 mdd -0.037 trades 17
+   2006-03-15..2006-09-11 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -2.367 -> test SR 1.718 ret +0.070 mdd -0.055 trades 11
+   2006-09-12..2007-03-13 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -1.009 -> test SR -0.084 ret -0.001 mdd -0.011 trades 9
+   2007-03-14..2007-09-10 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -0.578 -> test SR -0.208 ret -0.006 mdd -0.044 trades 20
+   2007-09-11..2008-03-10 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 0.072 -> test SR 3.62 ret +0.210 mdd -0.037 trades 8
+   2008-03-11..2008-09-05 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=on | train SR 0.028 -> test SR -1.145 ret -0.046 mdd -0.062 trades 4
+   2008-09-08..2009-03-06 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -0.56 -> test SR 0.818 ret +0.009 mdd -0.011 trades 11
+   2009-03-09..2009-09-02 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -0.426 -> test SR -0.432 ret -0.009 mdd -0.024 trades 12
+   2009-09-03..2010-03-05 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR 0.015 -> test SR -1.443 ret -0.041 mdd -0.055 trades 35
+   2010-03-08..2010-09-01 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -0.607 -> test SR -0.48 ret -0.012 mdd -0.039 trades 21
+   2010-09-02..2011-03-02 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -0.69 -> test SR 2.257 ret +0.079 mdd -0.034 trades 17
+   2011-03-03..2011-08-29 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 0.408 -> test SR 2.544 ret +0.145 mdd -0.048 trades 22
+   2011-08-30..2012-02-28 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 1.769 -> test SR -1.875 ret -0.045 mdd -0.051 trades 12
+   2012-02-29..2012-08-24 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 0.074 -> test SR -1.71 ret -0.007 mdd -0.007 trades 12
+   2012-08-27..2013-02-27 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR 0.463 -> test SR 1.004 ret +0.024 mdd -0.024 trades 12
+   2013-02-28..2013-08-26 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR 0.579 -> test SR 0.0 ret +0.000 mdd 0.000 trades 0
+   2013-08-27..2014-02-25 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=on | train SR 0.032 -> test SR 0.0 ret +0.000 mdd 0.000 trades 0
+   2014-02-26..2014-08-22 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR 0.033 -> test SR -1.158 ret -0.022 mdd -0.025 trades 15
+   2014-08-25..2015-02-23 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=on | train SR -1.255 -> test SR -1.921 ret -0.003 mdd -0.003 trades 4
+   2015-02-24..2015-08-20 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -0.913 -> test SR -2.204 ret -0.001 mdd -0.001 trades 2
+   2015-08-21..2016-02-19 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -0.989 -> test SR 1.602 ret +0.035 mdd -0.014 trades 12
+   2016-02-22..2016-08-17 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -1.3 -> test SR -0.093 ret -0.004 mdd -0.042 trades 17
+   2016-08-18..2017-02-17 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=on | train SR -0.368 -> test SR -0.547 ret -0.001 mdd -0.003 trades 10
+   2017-02-21..2017-08-17 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR 0.916 -> test SR -1.294 ret -0.022 mdd -0.034 trades 9
+   2017-08-18..2018-02-16 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR -0.508 -> test SR 0.11 ret +0.002 mdd -0.025 trades 17
+   2018-02-20..2018-08-16 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR -1.065 -> test SR -1.22 ret -0.002 mdd -0.002 trades 2
+   2018-08-17..2019-02-15 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR -0.939 -> test SR -0.899 ret -0.017 mdd -0.027 trades 19
+   2019-02-19..2019-08-15 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -1.291 -> test SR 2.088 ret +0.097 mdd -0.049 trades 22
+   2019-08-16..2020-02-13 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -0.451 -> test SR 0.072 ret +0.001 mdd -0.057 trades 24
+   2020-02-14..2020-08-12 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR 0.794 -> test SR 0.429 ret +0.017 mdd -0.065 trades 17
+   2020-08-13..2021-02-10 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=on | train SR 1.573 -> test SR -1.551 ret -0.027 mdd -0.033 trades 12
+   2021-02-11..2021-08-10 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=on | train SR 0.918 -> test SR -1.394 ret -0.012 mdd -0.014 trades 9
+   2021-08-11..2022-02-07 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=on | train SR -0.515 -> test SR -2.23 ret -0.002 mdd -0.002 trades 10
+   2022-02-08..2022-08-08 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=on | train SR -0.673 -> test SR 0.003 ret -0.000 mdd -0.006 trades 6
+   2022-08-09..2023-02-06 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR -0.729 -> test SR -2.09 ret -0.020 mdd -0.020 trades 11
+   2023-02-07..2023-08-07 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -0.611 -> test SR -0.706 ret -0.006 mdd -0.010 trades 3
+   2023-08-08..2024-02-05 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -0.816 -> test SR -1.732 ret -0.035 mdd -0.042 trades 20
+   2024-02-06..2024-08-05 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -0.418 -> test SR 0.784 ret +0.035 mdd -0.069 trades 32
+   2024-08-06..2025-02-03 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -0.044 -> test SR 1.323 ret +0.057 mdd -0.067 trades 26
+   2025-02-04..2025-08-01 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 0.01 -> test SR 0.179 ret +0.006 mdd -0.054 trades 29
+   2025-08-04..2026-01-30 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 0.416 -> test SR 2.607 ret +0.170 mdd -0.048 trades 23
+   2026-02-02..2026-07-31 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 1.456 -> test SR -1.76 ret -0.041 mdd -0.051 trades 7
+  XAU/USDT:USDT long-only walk-forward: CAGR +2.0% Sharpe 0.364 DSR 0.0 MaxDD -14.8% trades 676 cost 223.49
+  XAU/USDT:USDT short-only walk-forward: CAGR -0.8% Sharpe -0.414 DSR 0.0 MaxDD -17.0% trades 258 cost 36.9
 
 == XAU/USDT:USDT purged 6-fold CV (embargo 450 bars) ==
   folds                  6
   embargo_bars           450
-  mean_oos_sharpe        0.34
-  median_oos_sharpe      0.449
+  mean_oos_sharpe        0.224
+  median_oos_sharpe      0.429
   positive_folds         4
-  worst_fold_sharpe      -0.624
-  total_oos_trades       687
-   fold 0 2000-08-30..2005-01-12 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 0.289 -> test SR -0.624 ret -0.150 trades 127
-   fold 1 2005-01-13..2009-05-18 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -0.885 -> test SR 0.623 ret +0.170 trades 120
-   fold 2 2009-05-19..2013-09-16 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -0.536 -> test SR 0.885 ret +0.288 trades 108
-   fold 3 2013-09-17..2018-01-12 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -0.05 -> test SR -0.086 ret -0.016 trades 93
-   fold 4 2018-01-16..2022-05-12 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 0.469 -> test SR 0.274 ret +0.064 trades 130
-   fold 5 2022-05-13..2026-09-14 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -0.025 -> test SR 0.966 ret +0.366 trades 109
+  worst_fold_sharpe      -0.874
+  total_oos_trades       715
+   fold 0 2000-08-30..2005-01-12 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 0.302 -> test SR -0.361 ret -0.098 trades 138
+   fold 1 2005-01-13..2009-05-18 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -0.602 -> test SR 0.733 ret +0.216 trades 115
+   fold 2 2009-05-19..2013-09-16 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -0.128 -> test SR 0.571 ret +0.154 trades 147
+   fold 3 2013-09-17..2018-01-12 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 0.133 -> test SR -0.874 ret -0.109 trades 68
+   fold 4 2018-01-16..2022-05-12 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 0.509 -> test SR 0.287 ret +0.068 trades 134
+   fold 5 2022-05-13..2026-09-14 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 0.111 -> test SR 0.985 ret +0.377 trades 113
 
 ######## BTC/USDT:USDT  weight 25%  4381 bars  2014-09-17 00:00:00+00:00 .. 2026-09-14 00:00:00+00:00  (365 bars/year)
 costs: spread 0.1 fee 0.001 slippage 1.307525 funding L/S +0.0000/+0.0000  contract 1.0/0.001/0.001
@@ -122,17 +122,17 @@ costs: spread 0.1 fee 0.001 slippage 1.307525 funding L/S +0.0000/+0.0000  contr
   bars                   4380
   years                  12.0
   start_equity           1250.0
-  end_equity             3641.72
-  total_return           1.9134
+  end_equity             3641.48
+  total_return           1.9132
   cagr                   0.0932
   ann_vol                0.0712
   sharpe                 1.287
-  sortino                1.365
+  sortino                1.366
   max_drawdown           -0.0912
   calmar                 1.022
   psr_gt_0               1.0
-  trades                 171
-  total_cost             106.65
+  trades                 172
+  total_cost             106.89
   total_swap             0.0
   pnl_per_trading_day    0.55
   worst_bar              -0.0291
@@ -202,338 +202,431 @@ costs: spread 0.1 fee 0.001 slippage 1.307525 funding L/S +0.0000/+0.0000  contr
    fold 4 2022-09-15..2024-09-13 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 1.574 -> test SR 1.395 ret +0.189 trades 42
    fold 5 2024-09-14..2026-09-14 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR 1.356 -> test SR -0.114 ret -0.007 trades 54
 
-######## ETH/USDT:USDT  weight 25%  3232 bars  2017-11-09 00:00:00+00:00 .. 2026-09-14 00:00:00+00:00  (365 bars/year)
+######## ETH/USDT:USDT  weight 20%  3232 bars  2017-11-09 00:00:00+00:00 .. 2026-09-14 00:00:00+00:00  (365 bars/year)
 costs: spread 0.01 fee 0.001 slippage 0.177314 funding L/S +0.0000/+0.0000  contract 1.0/0.01/0.01
 
 == ETH/USDT:USDT in-sample, fixed params {'lookbacks': [20, 60, 120], 'target_vol': 0.1, 'vol_span': 20} ==
   bars                   3231
   years                  8.85
-  start_equity           1250.0
-  end_equity             2292.06
-  total_return           0.8336
-  cagr                   0.0709
-  ann_vol                0.0779
-  sharpe                 0.918
-  sortino                0.727
-  max_drawdown           -0.1377
-  calmar                 0.515
-  psr_gt_0               0.996
+  start_equity           1000.0
+  end_equity             1855.05
+  total_return           0.8551
+  cagr                   0.0723
+  ann_vol                0.0759
+  sharpe                 0.958
+  sortino                0.743
+  max_drawdown           -0.1383
+  calmar                 0.523
+  psr_gt_0               0.997
   trades                 69
-  total_cost             19.63
+  total_cost             14.7
   total_swap             0.0
-  pnl_per_trading_day    0.32
-  worst_bar              -0.0633
-  best_bar               0.0327
-  time_in_market         0.408
-  avg_abs_lots           0.2674
+  pnl_per_trading_day    0.26
+  worst_bar              -0.0635
+  best_bar               0.0339
+  time_in_market         0.407
+  avg_abs_lots           0.2129
   halted_at              None
 
 == ETH/USDT:USDT walk-forward OUT-OF-SAMPLE (both directions) ==
   bars                   2353
   years                  6.45
-  start_equity           1250.0
-  end_equity             1716.17
-  total_return           0.3729
-  cagr                   0.0504
-  ann_vol                0.0634
-  sharpe                 0.807
-  sortino                0.768
-  max_drawdown           -0.0982
-  calmar                 0.513
-  psr_gt_0               0.985
-  trades                 140
-  total_cost             22.39
+  start_equity           1000.0
+  end_equity             1343.68
+  total_return           0.3437
+  cagr                   0.0469
+  ann_vol                0.0617
+  sharpe                 0.773
+  sortino                0.693
+  max_drawdown           -0.1265
+  calmar                 0.371
+  psr_gt_0               0.98
+  trades                 168
+  total_cost             18.91
   total_swap             0.0
-  pnl_per_trading_day    0.2
-  worst_bar              -0.0293
-  best_bar               0.0544
+  pnl_per_trading_day    0.15
+  worst_bar              -0.0353
+  best_bar               0.0531
   dsr                    0.0
   selector               robust
   n_trials               32
   windows:
-   2019-11-09..2020-05-08 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=on | train SR 1.189 -> test SR -0.045 ret -0.002 mdd -0.047 trades 7
-   2020-05-09..2020-11-06 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR 0.398 -> test SR 1.104 ret +0.022 mdd -0.025 trades 17
-   2020-11-07..2021-05-07 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 0.929 -> test SR 3.873 ret +0.254 mdd -0.026 trades 2
-   2021-05-08..2021-11-05 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=on | train SR 1.606 -> test SR 0.717 ret +0.039 mdd -0.071 trades 16
-   2021-11-06..2022-05-06 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 1.762 -> test SR -1.109 ret -0.030 mdd -0.037 trades 2
-   2022-05-07..2022-11-04 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 1.759 -> test SR 0.677 ret +0.007 mdd -0.009 trades 1
-   2022-11-05..2023-05-05 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR 0.857 -> test SR -1.194 ret -0.016 mdd -0.020 trades 11
-   2023-05-06..2023-11-03 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 0.837 -> test SR -2.309 ret -0.041 mdd -0.044 trades 10
-   2023-11-04..2024-05-03 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -1.295 -> test SR 2.762 ret +0.136 mdd -0.031 trades 28
-   2024-05-04..2024-11-01 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -1.602 -> test SR -0.15 ret -0.002 mdd -0.017 trades 6
-   2024-11-02..2025-05-02 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -1.416 -> test SR -1.643 ret -0.023 mdd -0.030 trades 8
-   2025-05-03..2025-10-31 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -1.519 -> test SR 1.033 ret +0.025 mdd -0.028 trades 24
-   2025-11-01..2026-05-01 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -0.115 -> test SR -1.702 ret -0.012 mdd -0.012 trades 8
-  ETH/USDT:USDT long-only walk-forward: CAGR +5.0% Sharpe 0.807 DSR 0.0 MaxDD -9.8% trades 140 cost 22.39
-  ETH/USDT:USDT short-only walk-forward: CAGR -0.2% Sharpe -0.129 DSR 0.0 MaxDD -4.3% trades 91 cost 4.99
+   2019-11-09..2020-05-08 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=on | train SR 1.186 -> test SR 0.201 ret +0.005 mdd -0.040 trades 7
+   2020-05-09..2020-11-06 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=on | train SR 0.435 -> test SR 1.935 ret +0.063 mdd -0.025 trades 23
+   2020-11-07..2021-05-07 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 0.919 -> test SR 3.86 ret +0.245 mdd -0.025 trades 2
+   2021-05-08..2021-11-05 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=on | train SR 1.766 -> test SR -0.747 ret -0.037 mdd -0.098 trades 14
+   2021-11-06..2022-05-06 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=on | train SR 1.262 -> test SR -1.074 ret -0.029 mdd -0.044 trades 3
+   2022-05-07..2022-11-04 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=on | train SR 1.685 -> test SR -0.266 ret -0.001 mdd -0.002 trades 5
+   2022-11-05..2023-05-05 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR 0.651 -> test SR -1.182 ret -0.016 mdd -0.019 trades 11
+   2023-05-06..2023-11-03 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 0.708 -> test SR -2.319 ret -0.040 mdd -0.043 trades 9
+   2023-11-04..2024-05-03 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -1.329 -> test SR 2.664 ret +0.132 mdd -0.035 trades 28
+   2024-05-04..2024-11-01 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -1.629 -> test SR 0.073 ret +0.001 mdd -0.019 trades 14
+   2024-11-02..2025-05-02 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -1.288 -> test SR -0.863 ret -0.014 mdd -0.027 trades 12
+   2025-05-03..2025-10-31 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -1.187 -> test SR 0.934 ret +0.022 mdd -0.027 trades 26
+   2025-11-01..2026-05-01 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR 0.125 -> test SR 0.346 ret +0.002 mdd -0.007 trades 14
+  ETH/USDT:USDT long-only walk-forward: CAGR +4.7% Sharpe 0.773 DSR 0.0 MaxDD -12.7% trades 168 cost 18.91
+  ETH/USDT:USDT short-only walk-forward: CAGR -1.3% Sharpe -0.705 DSR 0.0 MaxDD -9.7% trades 106 cost 6.21
 
 == ETH/USDT:USDT purged 6-fold CV (embargo 450 bars) ==
   folds                  6
   embargo_bars           450
-  mean_oos_sharpe        0.566
-  median_oos_sharpe      0.665
-  positive_folds         3
-  worst_fold_sharpe      -0.748
-  total_oos_trades       123
-   fold 0 2017-11-09..2019-04-30 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 1.007 -> test SR -0.269 ret -0.016 trades 9
-   fold 1 2019-05-01..2020-10-20 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 0.494 -> test SR 1.333 ret +0.121 trades 21
-   fold 2 2020-10-21..2022-04-12 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 0.763 -> test SR 1.616 ret +0.296 trades 14
-   fold 3 2022-04-13..2023-10-02 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR 0.89 -> test SR -0.748 ret -0.034 trades 22
-   fold 4 2023-10-03..2025-03-24 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 1.642 -> test SR 1.464 ret +0.132 trades 30
-   fold 5 2025-03-25..2026-09-14 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 1.259 -> test SR -0.002 ret -0.000 trades 27
+  mean_oos_sharpe        0.558
+  median_oos_sharpe      0.685
+  positive_folds         4
+  worst_fold_sharpe      -0.754
+  total_oos_trades       149
+   fold 0 2017-11-09..2019-04-30 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 0.955 -> test SR -0.273 ret -0.016 trades 9
+   fold 1 2019-05-01..2020-10-20 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR 0.5 -> test SR 1.161 ret +0.085 trades 48
+   fold 2 2020-10-21..2022-04-12 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 0.759 -> test SR 1.664 ret +0.297 trades 12
+   fold 3 2022-04-13..2023-10-02 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR 0.903 -> test SR -0.754 ret -0.033 trades 22
+   fold 4 2023-10-03..2025-03-24 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 1.639 -> test SR 1.343 ret +0.130 trades 28
+   fold 5 2025-03-25..2026-09-14 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 1.055 -> test SR 0.209 ret +0.013 trades 30
 
-######## SOL/USDT:USDT  weight 20%  2349 bars  2020-04-10 00:00:00+00:00 .. 2026-09-14 00:00:00+00:00  (365 bars/year)
-costs: spread 0.06 fee 0.001 slippage 0.007925 funding L/S +0.0000/+0.0000  contract 1.0/0.01/0.01
+######## SOL/USDT:USDT  weight 15%  2349 bars  2020-04-10 00:00:00+00:00 .. 2026-09-14 00:00:00+00:00  (365 bars/year)
+costs: spread 0.05 fee 0.001 slippage 0.007925 funding L/S +0.0000/+0.0000  contract 1.0/0.01/0.01
 
 == SOL/USDT:USDT in-sample, fixed params {'lookbacks': [20, 60, 120], 'target_vol': 0.1, 'vol_span': 20} ==
   bars                   2348
   years                  6.43
-  start_equity           1000.0
-  end_equity             1543.99
-  total_return           0.544
-  cagr                   0.0699
-  ann_vol                0.0638
-  sharpe                 1.09
-  sortino                1.093
-  max_drawdown           -0.0857
-  calmar                 0.815
+  start_equity           750.0
+  end_equity             1166.59
+  total_return           0.5555
+  cagr                   0.0711
+  ann_vol                0.0637
+  sharpe                 1.109
+  sortino                1.114
+  max_drawdown           -0.0856
+  calmar                 0.83
   psr_gt_0               0.998
   trades                 48
-  total_cost             56.87
+  total_cost             37.59
   total_swap             0.0
-  pnl_per_trading_day    0.23
+  pnl_per_trading_day    0.18
   worst_bar              -0.0483
   best_bar               0.0532
   time_in_market         0.43
-  avg_abs_lots           7.7101
+  avg_abs_lots           5.8098
   halted_at              None
 
 == SOL/USDT:USDT walk-forward OUT-OF-SAMPLE (both directions) ==
   bars                   1448
   years                  3.97
-  start_equity           1000.0
-  end_equity             1136.55
-  total_return           0.1365
-  cagr                   0.0328
+  start_equity           750.0
+  end_equity             849.05
+  total_return           0.1321
+  cagr                   0.0318
   ann_vol                0.0383
-  sharpe                 0.862
-  sortino                0.647
-  max_drawdown           -0.035
-  calmar                 0.936
-  psr_gt_0               0.964
-  trades                 109
-  total_cost             7.07
+  sharpe                 0.835
+  sortino                0.641
+  max_drawdown           -0.0392
+  calmar                 0.809
+  psr_gt_0               0.959
+  trades                 113
+  total_cost             5.08
   total_swap             0.0
-  pnl_per_trading_day    0.09
-  worst_bar              -0.0197
+  pnl_per_trading_day    0.07
+  worst_bar              -0.0198
   best_bar               0.0186
   dsr                    0.0
   selector               robust
   n_trials               32
   windows:
-   2022-04-10..2022-10-08 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=on | train SR 1.795 -> test SR 0.0 ret +0.000 mdd 0.000 trades 0
-   2022-10-09..2023-04-08 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=on | train SR 2.741 -> test SR 0.0 ret +0.000 mdd 0.000 trades 0
-   2023-04-09..2023-10-07 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR 2.199 -> test SR -1.218 ret -0.005 mdd -0.007 trades 7
-   2023-10-08..2024-04-06 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR 0.41 -> test SR 3.188 ret +0.174 mdd -0.033 trades 29
-   2024-04-07..2024-10-05 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR 1.781 -> test SR -0.95 ret -0.006 mdd -0.010 trades 24
-   2024-10-06..2025-04-05 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=on | train SR 0.359 -> test SR 1.166 ret +0.003 mdd -0.002 trades 20
-   2025-04-06..2025-10-04 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=on | train SR -0.228 -> test SR -2.034 ret -0.023 mdd -0.024 trades 23
-   2025-10-05..2026-04-04 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -0.629 -> test SR -1.143 ret -0.001 mdd -0.002 trades 6
-  SOL/USDT:USDT long-only walk-forward: CAGR +3.3% Sharpe 0.862 DSR 0.0 MaxDD -3.5% trades 109 cost 7.07
-  SOL/USDT:USDT short-only walk-forward: CAGR -0.2% Sharpe -0.264 DSR 0.0 MaxDD -1.6% trades 70 cost 2.12
+   2022-04-10..2022-10-08 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=on | train SR 1.81 -> test SR 0.0 ret +0.000 mdd 0.000 trades 0
+   2022-10-09..2023-04-08 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=on | train SR 2.751 -> test SR 0.0 ret +0.000 mdd 0.000 trades 0
+   2023-04-09..2023-10-07 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR 2.21 -> test SR -1.206 ret -0.005 mdd -0.007 trades 7
+   2023-10-08..2024-04-06 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR 0.407 -> test SR 3.191 ret +0.175 mdd -0.033 trades 29
+   2024-04-07..2024-10-05 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR 1.794 -> test SR -0.965 ret -0.006 mdd -0.010 trades 24
+   2024-10-06..2025-04-05 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=on | train SR 0.35 -> test SR 1.147 ret +0.003 mdd -0.002 trades 20
+   2025-04-06..2025-10-04 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=on | train SR -0.253 -> test SR -2.013 ret -0.023 mdd -0.024 trades 23
+   2025-10-05..2026-04-04 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -0.266 -> test SR -3.128 ret -0.006 mdd -0.006 trades 10
+  SOL/USDT:USDT long-only walk-forward: CAGR +3.2% Sharpe 0.835 DSR 0.0 MaxDD -3.9% trades 113 cost 5.08
+  SOL/USDT:USDT short-only walk-forward: CAGR -0.2% Sharpe -0.263 DSR 0.0 MaxDD -1.6% trades 70 cost 1.51
 
-== SOL/USDT:USDT purged 6-fold CV (embargo 450 bars) ==/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/scripts/run_backtest.py:231: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
-  aligned = pd.concat(curves, axis=1).ffill()
-
+== SOL/USDT:USDT purged 6-fold CV (embargo 450 bars) ==
   folds                  6
   embargo_bars           450
-  mean_oos_sharpe        0.501
-  median_oos_sharpe      0.393
+  mean_oos_sharpe        0.513
+  median_oos_sharpe      0.429
   positive_folds         4
-  worst_fold_sharpe      -0.43
-  total_oos_trades       149
-   fold 0 2020-04-10..2021-05-05 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 0.799 -> test SR 0.771 ret +0.066 trades 20
-   fold 1 2021-05-06..2022-06-01 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 0.738 -> test SR 1.157 ret +0.115 trades 19
-   fold 2 2022-06-02..2023-06-27 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 0.605 -> test SR 0.0 ret +0.000 trades 0
-   fold 3 2023-06-28..2024-07-23 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=on | train SR 2.265 -> test SR 1.495 ret +0.164 trades 56
-   fold 4 2024-07-24..2025-08-18 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=on | train SR 1.354 -> test SR 0.014 ret +0.000 trades 42
-   fold 5 2025-08-19..2026-09-14 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR 1.704 -> test SR -0.43 ret -0.007 trades 12
+  worst_fold_sharpe      -0.432
+  total_oos_trades       147
+   fold 0 2020-04-10..2021-05-05 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 0.525 -> test SR 0.854 ret +0.073 trades 20
+   fold 1 2021-05-06..2022-06-01 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 0.686 -> test SR 1.157 ret +0.115 trades 19
+   fold 2 2022-06-02..2023-06-27 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 0.609 -> test SR 0.0 ret +0.000 trades 0
+   fold 3 2023-06-28..2024-07-23 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=on | train SR 2.285 -> test SR 1.493 ret +0.164 trades 56
+   fold 4 2024-07-24..2025-08-18 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=on | train SR 1.357 -> test SR 0.005 ret -0.000 trades 40
+   fold 5 2025-08-19..2026-09-14 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR 1.714 -> test SR -0.432 ret -0.007 trades 12
 
-######## XRP/USDT:USDT  weight 20%  3232 bars  2017-11-09 00:00:00+00:00 .. 2026-09-14 00:00:00+00:00  (365 bars/year)
-costs: spread 0.0011 fee 0.001 slippage 5.3e-05 funding L/S +0.0000/+0.0000  contract 1.0/0.01/0.01
+######## XRP/USDT:USDT  weight 15%  3232 bars  2017-11-09 00:00:00+00:00 .. 2026-09-14 00:00:00+00:00  (365 bars/year)
+costs: spread 0.0017 fee 0.001 slippage 5.3e-05 funding L/S +0.0000/+0.0000  contract 1.0/0.01/0.01
 
 == XRP/USDT:USDT in-sample, fixed params {'lookbacks': [20, 60, 120], 'target_vol': 0.1, 'vol_span': 20} ==
   bars                   3231
   years                  8.85
-  start_equity           1000.0
-  end_equity             1706.46
-  total_return           0.7065
-  cagr                   0.0622
-  ann_vol                0.0777
-  sharpe                 0.814
-  sortino                1.018
-  max_drawdown           -0.0864
-  calmar                 0.72
+  start_equity           750.0
+  end_equity             1270.0
+  total_return           0.6933
+  cagr                   0.0613
+  ann_vol                0.0775
+  sharpe                 0.805
+  sortino                1.013
+  max_drawdown           -0.0873
+  calmar                 0.702
   psr_gt_0               1.0
-  trades                 85
-  total_cost             23.81
+  trades                 84
+  total_cost             21.71
   total_swap             0.0
-  pnl_per_trading_day    0.22
+  pnl_per_trading_day    0.16
   worst_bar              -0.0398
-  best_bar               0.1177
-  time_in_market         0.318
-  avg_abs_lots           159.0626
+  best_bar               0.1175
+  time_in_market         0.319
+  avg_abs_lots           116.169
   halted_at              None
 
 == XRP/USDT:USDT walk-forward OUT-OF-SAMPLE (both directions) ==
   bars                   2353
   years                  6.45
-  start_equity           1000.0
-  end_equity             1259.33
-  total_return           0.2593
-  cagr                   0.0364
-  ann_vol                0.0441
-  sharpe                 0.833
-  sortino                0.926
-  max_drawdown           -0.0478
-  calmar                 0.762
-  psr_gt_0               0.997
-  trades                 135
-  total_cost             18.75
+  start_equity           750.0
+  end_equity             984.83
+  total_return           0.3131
+  cagr                   0.0432
+  ann_vol                0.0557
+  sharpe                 0.787
+  sortino                0.85
+  max_drawdown           -0.0886
+  calmar                 0.487
+  psr_gt_0               0.992
+  trades                 136
+  total_cost             19.01
   total_swap             0.0
-  pnl_per_trading_day    0.11
+  pnl_per_trading_day    0.1
   worst_bar              -0.0184
-  best_bar               0.0578
+  best_bar               0.0577
   dsr                    0.0
   selector               robust
   n_trials               32
   windows:
-   2019-11-09..2020-05-08 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=on | train SR -0.197 -> test SR -2.064 ret -0.002 mdd -0.002 trades 7
-   2020-05-09..2020-11-06 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -1.395 -> test SR 2.137 ret +0.067 mdd -0.026 trades 18
-   2020-11-07..2021-05-07 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=on | train SR -0.04 -> test SR 2.018 ret +0.111 mdd -0.014 trades 23
-   2021-05-08..2021-11-05 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 1.665 -> test SR 0.526 ret +0.016 mdd -0.042 trades 6
-   2021-11-06..2022-05-06 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 1.048 -> test SR -3.333 ret -0.015 mdd -0.017 trades 5
-   2022-05-07..2022-11-04 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR -0.686 -> test SR 0.35 ret +0.001 mdd -0.002 trades 8
-   2022-11-05..2023-05-05 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR -1.245 -> test SR -1.865 ret -0.009 mdd -0.009 trades 15
-   2023-05-06..2023-11-03 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR -2.261 -> test SR 1.375 ret +0.006 mdd -0.005 trades 16
-   2023-11-04..2024-05-03 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR -1.184 -> test SR -1.126 ret -0.020 mdd -0.039 trades 11
-   2024-05-04..2024-11-01 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=on | train SR -0.273 -> test SR -2.081 ret -0.001 mdd -0.001 trades 4
-   2024-11-02..2025-05-02 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=on | train SR -1.208 -> test SR 2.358 ret +0.065 mdd -0.027 trades 12
-   2025-05-03..2025-10-31 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -0.129 -> test SR 1.492 ret +0.022 mdd -0.016 trades 10
-   2025-11-01..2026-05-01 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=on | train SR 2.079 -> test SR 0.0 ret +0.000 mdd 0.000 trades 0
-  XRP/USDT:USDT long-only walk-forward: CAGR +3.6% Sharpe 0.833 DSR 0.0 MaxDD -4.8% trades 135 cost 18.75
-  XRP/USDT:USDT short-only walk-forward: CAGR -0.9% Sharpe -0.256 DSR 0.0 MaxDD -6.9% trades 111 cost 10.66
+   2019-11-09..2020-05-08 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=on | train SR -0.237 -> test SR -2.113 ret -0.002 mdd -0.002 trades 7
+   2020-05-09..2020-11-06 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -0.749 -> test SR 1.92 ret +0.060 mdd -0.027 trades 18
+   2020-11-07..2021-05-07 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=on | train SR -0.084 -> test SR 2.011 ret +0.110 mdd -0.014 trades 23
+   2021-05-08..2021-11-05 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 1.709 -> test SR 0.523 ret +0.016 mdd -0.043 trades 6
+   2021-11-06..2022-05-06 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 1.117 -> test SR -3.352 ret -0.015 mdd -0.017 trades 5
+   2022-05-07..2022-11-04 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR -0.719 -> test SR 0.285 ret +0.001 mdd -0.002 trades 8
+   2022-11-05..2023-05-05 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR -1.306 -> test SR -1.943 ret -0.004 mdd -0.005 trades 15
+   2023-05-06..2023-11-03 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -2.298 -> test SR -0.783 ret -0.018 mdd -0.038 trades 15
+   2023-11-04..2024-05-03 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -1.291 -> test SR -1.673 ret -0.052 mdd -0.067 trades 10
+   2024-05-04..2024-11-01 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=on | train SR -0.328 -> test SR -2.1 ret -0.001 mdd -0.001 trades 4
+   2024-11-02..2025-05-02 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=on | train SR -1.33 -> test SR 2.352 ret +0.065 mdd -0.028 trades 12
+   2025-05-03..2025-10-31 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=on | train SR -0.392 -> test SR 2.401 ret +0.133 mdd -0.025 trades 13
+   2025-11-01..2026-05-01 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=on | train SR 2.069 -> test SR 0.0 ret +0.000 mdd 0.000 trades 0
+  XRP/USDT:USDT long-only walk-forward: CAGR +4.3% Sharpe 0.787 DSR 0.0 MaxDD -8.9% trades 136 cost 19.01
+  XRP/USDT:USDT short-only walk-forward: CAGR -0.2% Sharpe -0.026 DSR 0.0 MaxDD -6.8% trades 106 cost 9.46
 
 == XRP/USDT:USDT purged 6-fold CV (embargo 450 bars) ==
   folds                  6
   embargo_bars           450
-  mean_oos_sharpe        0.251
-  median_oos_sharpe      0.347
+  mean_oos_sharpe        0.268
+  median_oos_sharpe      0.345
   positive_folds         4
-  worst_fold_sharpe      -1.063
+  worst_fold_sharpe      -0.882
   total_oos_trades       143
-   fold 0 2017-11-09..2019-04-30 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=on | train SR 0.931 -> test SR 0.36 ret +0.018 trades 6
-   fold 1 2019-05-01..2020-10-20 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=on | train SR 0.639 -> test SR -0.436 ret -0.006 trades 21
-   fold 2 2020-10-21..2022-04-12 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=on | train SR 0.716 -> test SR 0.889 ret +0.089 trades 18
-   fold 3 2022-04-13..2023-10-02 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR 1.13 -> test SR -1.063 ret -0.011 trades 36
-   fold 4 2023-10-03..2025-03-24 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR 0.969 -> test SR 1.424 ret +0.136 trades 42
-   fold 5 2025-03-25..2026-09-14 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=on | train SR 0.357 -> test SR 0.333 ret +0.014 trades 20
+   fold 0 2017-11-09..2019-04-30 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=on conf=on | train SR 0.924 -> test SR 0.358 ret +0.018 trades 6
+   fold 1 2019-05-01..2020-10-20 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=on | train SR 0.63 -> test SR -0.475 ret -0.007 trades 21
+   fold 2 2020-10-21..2022-04-12 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=on | train SR 0.708 -> test SR 0.886 ret +0.088 trades 18
+   fold 3 2022-04-13..2023-10-02 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR 1.124 -> test SR -0.882 ret -0.007 trades 36
+   fold 4 2023-10-03..2025-03-24 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR 0.956 -> test SR 1.387 ret +0.133 trades 42
+   fold 5 2025-03-25..2026-09-14 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=on | train SR 0.344 -> test SR 0.332 ret +0.014 trades 20
+
+######## TRX/USDT:USDT  weight 15%  3232 bars  2017-11-09 00:00:00+00:00 .. 2026-09-14 00:00:00+00:00  (365 bars/year)
+costs: spread 2e-05 fee 0.001 slippage 7e-06 funding L/S +0.0000/+0.0000  contract 1.0/1.0/1.0
+
+== TRX/USDT:USDT in-sample, fixed params {'lookbacks': [20, 60, 120], 'target_vol': 0.1, 'vol_span': 20} ==
+  bars                   3231
+  years                  8.85
+  start_equity           750.0
+  end_equity             1302.79
+  total_return           0.737
+  cagr                   0.0644
+  ann_vol                0.0841
+  sharpe                 0.783
+  sortino                0.921
+  max_drawdown           -0.1181
+  calmar                 0.545
+  psr_gt_0               0.996
+  trades                 162
+  total_cost             39.37
+  total_swap             0.0
+  pnl_per_trading_day    0.17
+  worst_bar              -0.0319
+  best_bar               0.1094
+  time_in_market         0.474
+  avg_abs_lots           1860.6112
+  halted_at              None
+
+== TRX/USDT:USDT walk-forward OUT-OF-SAMPLE (both directions) ==
+  bars                   2353
+  years                  6.45
+  start_equity           750.0
+  end_equity             1129.17
+  total_return           0.5056
+  cagr                   0.0655
+  ann_vol                0.0932
+  sharpe                 0.725
+  sortino                1.103
+  max_drawdown           -0.1166
+  calmar                 0.562
+  psr_gt_0               0.995
+  trades                 217
+  total_cost             31.06
+  total_swap             0.0
+  pnl_per_trading_day    0.16
+  worst_bar              -0.0231
+  best_bar               0.1706
+  dsr                    0.0
+  selector               robust
+  n_trials               32
+  windows:
+   2019-11-09..2020-05-08 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 0.303 -> test SR 0.404 ret +0.011 mdd -0.047 trades 3
+   2020-05-09..2020-11-06 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -0.45 -> test SR 0.876 ret +0.032 mdd -0.041 trades 8
+   2020-11-07..2021-05-07 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR -0.101 -> test SR 1.57 ret +0.083 mdd -0.056 trades 12/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/scripts/run_backtest.py:234: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  aligned = pd.concat(curves, axis=1).ffill()
+/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/scripts/run_backtest.py:321: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  sleeve_rets = pd.concat({k: v.pct_change() for k, v in (wf_curves or is_curves).items()}, axis=1).dropna(how="all").fillna(0.0)
+
+   2021-05-08..2021-11-05 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 0.57 -> test SR -1.634 ret -0.038 mdd -0.047 trades 11
+   2021-11-06..2022-05-06 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=0.0 er=on conf=off | train SR -0.39 -> test SR -1.78 ret -0.007 mdd -0.007 trades 9
+   2022-05-07..2022-11-04 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -0.97 -> test SR -1.683 ret -0.011 mdd -0.012 trades 17
+   2022-11-05..2023-05-05 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -1.654 -> test SR -0.261 ret -0.009 mdd -0.048 trades 23
+   2023-05-06..2023-11-03 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR -1.701 -> test SR 2.089 ret +0.107 mdd -0.048 trades 28
+   2023-11-04..2024-05-03 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=on | train SR -0.054 -> test SR 1.173 ret +0.055 mdd -0.090 trades 18
+   2024-05-04..2024-11-01 lb=[40, 120, 250] tv=0.1 thr=0.15 entry=1.0 er=off conf=on | train SR 0.494 -> test SR -1.351 ret -0.022 mdd -0.039 trades 19
+   2024-11-02..2025-05-02 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=on | train SR 0.67 -> test SR 1.73 ret +0.218 mdd -0.007 trades 27
+   2025-05-03..2025-10-31 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=on | train SR 1.537 -> test SR 0.716 ret +0.021 mdd -0.027 trades 24
+   2025-11-01..2026-05-01 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=on | train SR 0.94 -> test SR 0.072 ret +0.001 mdd -0.025 trades 18
+  TRX/USDT:USDT long-only walk-forward: CAGR +6.6% Sharpe 0.725 DSR 0.0 MaxDD -11.7% trades 217 cost 31.06
+  TRX/USDT:USDT short-only walk-forward: CAGR -0.3% Sharpe -0.167 DSR 0.0 MaxDD -4.4% trades 94 cost 2.91
+
+== TRX/USDT:USDT purged 6-fold CV (embargo 450 bars) ==
+  folds                  6
+  embargo_bars           450
+  mean_oos_sharpe        0.433
+  median_oos_sharpe      0.546
+  positive_folds         5
+  worst_fold_sharpe      -0.855
+  total_oos_trades       296
+   fold 0 2017-11-09..2019-04-30 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 0.625 -> test SR 1.145 ret +0.200 trades 40
+   fold 1 2019-05-01..2020-10-20 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=on | train SR 0.851 -> test SR -0.855 ret -0.046 trades 48
+   fold 2 2020-10-21..2022-04-12 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=off conf=off | train SR 0.515 -> test SR 0.067 ret +0.003 trades 19
+   fold 3 2022-04-13..2023-10-02 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=off conf=off | train SR 0.769 -> test SR 0.43 ret +0.039 trades 64
+   fold 4 2023-10-03..2025-03-24 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=0.0 er=on conf=on | train SR 0.691 -> test SR 1.148 ret +0.088 trades 72
+   fold 5 2025-03-25..2026-09-14 lb=[20, 60, 120] tv=0.1 thr=0.15 entry=1.0 er=on conf=off | train SR 0.735 -> test SR 0.662 ret +0.057 trades 53
 
 == PORTFOLIO walk-forward OOS (weighted sleeves) ==
   bars                   7131
   years                  19.54
   start_equity           5000.0
-  end_equity             7459.51
-  total_return           0.4919
-  cagr                   0.0207
-  ann_vol                0.0227
-  sharpe                 0.913
-  sortino                0.919
-  max_drawdown           -0.0444
-  calmar                 0.466
+  end_equity             7874.52
+  total_return           0.5749
+  cagr                   0.0235
+  ann_vol                0.0239
+  sharpe                 0.986
+  sortino                1.015
+  max_drawdown           -0.0524
+  calmar                 0.449
   psr_gt_0               1.0
-  trades                 1252
+  trades                 1536
   total_cost             0.0
   total_swap             0.0
-  pnl_per_trading_day    0.34
-  worst_bar              -0.0111
-  best_bar               0.0181
+  pnl_per_trading_day    0.4
+  worst_bar              -0.012
+  best_bar               0.0211
 
 == PORTFOLIO dynamic (long/short sleeves, weights from trailing OOS Sharpe) ==
   bars                   7131
   years                  19.54
   start_equity           5000.0
-  end_equity             8071.58
-  total_return           0.6143
-  cagr                   0.0248
-  ann_vol                0.0351
-  sharpe                 0.716
-  sortino                0.526
-  max_drawdown           -0.0738
-  calmar                 0.336
-  psr_gt_0               0.999
-  trades                 1987
+  end_equity             7342.05
+  total_return           0.4684
+  cagr                   0.0199
+  ann_vol                0.0368
+  sharpe                 0.553
+  sortino                0.417
+  max_drawdown           -0.1027
+  calmar                 0.193
+  psr_gt_0               0.993
+  trades                 2320
   total_cost             0.0
   total_swap             0.0
-  pnl_per_trading_day    0.43
-  worst_bar              -0.0191
-  best_bar               0.0301
-  final weights: {'XAU-long': 0.0, 'XAU-short': 0.0, 'BTC-long': 0.556, 'BTC-short': 0.0, 'ETH-long': 0.416, 'ETH-short': 0.0, 'SOL-long': 0.028, 'SOL-short': 0.0, 'XRP-long': 0.0, 'XRP-short': 0.0}
-   {'from': '2025-10-05 00:00:00+00:00', 'XAU-long': np.float64(0.0), 'XAU-short': np.float64(0.0), 'BTC-long': 0.6, 'BTC-short': np.float64(0.0), 'ETH-long': np.float64(0.369), 'ETH-short': np.float64(0.0), 'SOL-long': np.float64(0.031), 'SOL-short': np.float64(0.0), 'XRP-long': np.float64(0.0), 'XRP-short': np.float64(0.0)}
-   {'from': '2025-11-01 00:00:00+00:00', 'XAU-long': np.float64(0.0), 'XAU-short': np.float64(0.0), 'BTC-long': np.float64(0.594), 'BTC-short': np.float64(0.0), 'ETH-long': np.float64(0.381), 'ETH-short': np.float64(0.0), 'SOL-long': np.float64(0.025), 'SOL-short': np.float64(0.0), 'XRP-long': np.float64(0.0), 'XRP-short': np.float64(0.0)}/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/scripts/run_backtest.py:318: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
-  sleeve_rets = pd.concat({k: v.pct_change() for k, v in (wf_curves or is_curves).items()}, axis=1).dropna(how="all").fillna(0.0)
-
-   {'from': '2026-02-02 00:00:00+00:00', 'XAU-long': np.float64(0.0), 'XAU-short': np.float64(0.0), 'BTC-long': np.float64(0.594), 'BTC-short': np.float64(0.0), 'ETH-long': np.float64(0.381), 'ETH-short': np.float64(0.0), 'SOL-long': np.float64(0.025), 'SOL-short': np.float64(0.0), 'XRP-long': np.float64(0.0), 'XRP-short': np.float64(0.0)}
-   {'from': '2026-03-06 00:00:00+00:00', 'XAU-long': np.float64(0.0), 'XAU-short': np.float64(0.0), 'BTC-long': np.float64(0.556), 'BTC-short': np.float64(0.0), 'ETH-long': np.float64(0.416), 'ETH-short': np.float64(0.0), 'SOL-long': np.float64(0.028), 'SOL-short': np.float64(0.0), 'XRP-long': np.float64(0.0), 'XRP-short': np.float64(0.0)}
-  static (config weights) Sharpe 0.913 vs dynamic 0.716
+  pnl_per_trading_day    0.33
+  worst_bar              -0.0327
+  best_bar               0.0242
+  final weights: {'XAU-long': 0.0, 'XAU-short': 0.0, 'BTC-long': 0.483, 'BTC-short': 0.0, 'ETH-long': 0.313, 'ETH-short': 0.0, 'SOL-long': 0.024, 'SOL-short': 0.0, 'XRP-long': 0.0, 'XRP-short': 0.0, 'TRX-long': 0.18, 'TRX-short': 0.0}
+   {'from': '2025-10-05 00:00:00+00:00', 'XAU-long': np.float64(0.0), 'XAU-short': np.float64(0.0), 'BTC-long': np.float64(0.594), 'BTC-short': np.float64(0.0), 'ETH-long': np.float64(0.254), 'ETH-short': np.float64(0.0), 'SOL-long': np.float64(0.026), 'SOL-short': np.float64(0.0), 'XRP-long': np.float64(0.0), 'XRP-short': np.float64(0.0), 'TRX-long': np.float64(0.126), 'TRX-short': np.float64(0.0)}
+   {'from': '2025-11-01 00:00:00+00:00', 'XAU-long': np.float64(0.0), 'XAU-short': np.float64(0.0), 'BTC-long': np.float64(0.521), 'BTC-short': np.float64(0.0), 'ETH-long': np.float64(0.29), 'ETH-short': np.float64(0.0), 'SOL-long': np.float64(0.023), 'SOL-short': np.float64(0.0), 'XRP-long': np.float64(0.0), 'XRP-short': np.float64(0.0), 'TRX-long': np.float64(0.167), 'TRX-short': np.float64(0.0)}
+   {'from': '2026-02-02 00:00:00+00:00', 'XAU-long': np.float64(0.0), 'XAU-short': np.float64(0.0), 'BTC-long': np.float64(0.521), 'BTC-short': np.float64(0.0), 'ETH-long': np.float64(0.29), 'ETH-short': np.float64(0.0), 'SOL-long': np.float64(0.023), 'SOL-short': np.float64(0.0), 'XRP-long': np.float64(0.0), 'XRP-short': np.float64(0.0), 'TRX-long': np.float64(0.167), 'TRX-short': np.float64(0.0)}
+   {'from': '2026-03-06 00:00:00+00:00', 'XAU-long': np.float64(0.0), 'XAU-short': np.float64(0.0), 'BTC-long': np.float64(0.483), 'BTC-short': np.float64(0.0), 'ETH-long': np.float64(0.313), 'ETH-short': np.float64(0.0), 'SOL-long': np.float64(0.024), 'SOL-short': np.float64(0.0), 'XRP-long': np.float64(0.0), 'XRP-short': np.float64(0.0), 'TRX-long': np.float64(0.18), 'TRX-short': np.float64(0.0)}
+  static (config weights) Sharpe 0.986 vs dynamic 0.553
 
 == SLEEVE CORRELATION (OOS returns) ==
-               XAU/USDT:USDT  BTC/USDT:USDT  ETH/USDT:USDT  SOL/USDT:USDT  XRP/USDT:USDT
-XAU/USDT:USDT           1.00           0.02           0.01           0.00          -0.00
-BTC/USDT:USDT           0.02           1.00           0.20           0.10           0.07
-ETH/USDT:USDT           0.01           0.20           1.00           0.06           0.27
-SOL/USDT:USDT           0.00           0.10           0.06           1.00           0.03
-XRP/USDT:USDT          -0.00           0.07           0.27           0.03           1.00
+               XAU/USDT:USDT  BTC/USDT:USDT  ETH/USDT:USDT  SOL/USDT:USDT  XRP/USDT:USDT  TRX/USDT:USDT
+XAU/USDT:USDT           1.00           0.02           0.02           0.01           0.02           0.01
+BTC/USDT:USDT           0.02           1.00           0.21           0.10           0.10           0.09
+ETH/USDT:USDT           0.02           0.21           1.00           0.06           0.29           0.23
+SOL/USDT:USDT           0.01           0.10           0.06           1.00           0.12           0.11
+XRP/USDT:USDT           0.02           0.10           0.29           0.12           1.00           0.16
+TRX/USDT:USDT           0.01           0.09           0.23           0.11           0.16           1.00
+
+== COMMON WINDOW (all sleeves live): 2022-04-10 .. 2026-09-03 (1608 bars, 4.4y) ==
 
 == WEIGHTING STUDY (same OOS returns, different mixes) ==
-  config       {'XAU/USDT:USDT': 0.1, 'BTC/USDT:USDT': 0.25, 'ETH/USDT:USDT': 0.25, 'SOL/USDT:USDT': 0.2, 'XRP/USDT:USDT': 0.2} -> Sharpe 0.951  CAGR +1.9%  vol 2.0%  MaxDD -4.3%  PSR 1.0  P(loss) 0.257
-  equal        {'XAU/USDT:USDT': 0.2, 'BTC/USDT:USDT': 0.2, 'ETH/USDT:USDT': 0.2, 'SOL/USDT:USDT': 0.2, 'XRP/USDT:USDT': 0.2} -> Sharpe 0.855  CAGR +1.7%  vol 2.0%  MaxDD -3.9%  PSR 1.0  P(loss) 0.255
-  crypto-only  {'XAU/USDT:USDT': 0.0, 'BTC/USDT:USDT': 0.25, 'ETH/USDT:USDT': 0.25, 'SOL/USDT:USDT': 0.25, 'XRP/USDT:USDT': 0.25} -> Sharpe 0.962  CAGR +1.9%  vol 2.0%  MaxDD -4.2%  PSR 1.0  P(loss) 0.272
-  gold-light   {'XAU/USDT:USDT': 0.1, 'BTC/USDT:USDT': 0.25, 'ETH/USDT:USDT': 0.25, 'SOL/USDT:USDT': 0.2, 'XRP/USDT:USDT': 0.2} -> Sharpe 0.951  CAGR +1.9%  vol 2.0%  MaxDD -4.3%  PSR 1.0  P(loss) 0.257
-  cv-weighted  {'XAU/USDT:USDT': 0.1, 'BTC/USDT:USDT': 0.25, 'ETH/USDT:USDT': 0.25, 'SOL/USDT:USDT': 0.25, 'XRP/USDT:USDT': 0.15} -> Sharpe 0.95  CAGR +1.9%  vol 2.0%  MaxDD -4.2%  PSR 1.0  P(loss) 0.258
-  old-3        {'XAU/USDT:USDT': 0.2, 'BTC/USDT:USDT': 0.4, 'ETH/USDT:USDT': 0.4, 'SOL/USDT:USDT': 0.0, 'XRP/USDT:USDT': 0.0} -> Sharpe 0.845  CAGR +2.5%  vol 3.0%  MaxDD -5.8%  PSR 1.0  P(loss) 0.279
+  config       -> voll: Sharpe  1.016 CAGR   2.3% MaxDD  -4.9% P(loss) 23%   | common: Sharpe  1.231 CAGR   3.7% MaxDD  -2.3% P(loss) 14%
+  equal        -> voll: Sharpe  0.978 CAGR   2.1% MaxDD  -4.6% P(loss) 21%   | common: Sharpe  1.259 CAGR   3.8% MaxDD  -2.2% P(loss) 12%
+  crypto-only  -> voll: Sharpe   0.92 CAGR   2.0% MaxDD  -5.1% P(loss) 29%   | common: Sharpe  0.975 CAGR   2.7% MaxDD  -3.1% P(loss) 24%
+  gold-light   -> voll: Sharpe  0.992 CAGR   2.1% MaxDD  -5.2% P(loss) 25%   | common: Sharpe  1.053 CAGR   2.8% MaxDD  -3.1% P(loss) 20%
+  cv-weighted  -> voll: Sharpe  0.997 CAGR   2.1% MaxDD  -5.1% P(loss) 24%   | common: Sharpe  1.073 CAGR   2.8% MaxDD  -3.0% P(loss) 20%
+  btc-30       -> voll: Sharpe  1.028 CAGR   2.4% MaxDD  -5.0% P(loss) 23%   | common: Sharpe  1.217 CAGR   3.6% MaxDD  -2.4% P(loss) 15%
+  btc-40       -> voll: Sharpe  1.016 CAGR   2.7% MaxDD  -5.3% P(loss) 24%   | common: Sharpe  1.152 CAGR   3.5% MaxDD  -2.5% P(loss) 16%
+  btc-50       -> voll: Sharpe  0.994 CAGR   2.9% MaxDD  -6.5% P(loss) 25%   | common: Sharpe  1.102 CAGR   3.5% MaxDD  -2.4% P(loss) 17%
+  no-gold-6    -> voll: Sharpe  0.963 CAGR   2.3% MaxDD  -4.8% P(loss) 26%   | common: Sharpe   1.16 CAGR   3.6% MaxDD  -2.6% P(loss) 17%
+  old-3        -> voll: Sharpe  0.932 CAGR   2.8% MaxDD  -7.3% P(loss) 25%   | common: Sharpe   0.87 CAGR   2.9% MaxDD  -3.7% P(loss) 24%
 
 == Block bootstrap, 1-year horizon (static portfolio bar returns) ==
   horizon_bars           365
   sims                   2000
   block                  20
-  return_p05             -0.0184
-  return_p50             0.0149
-  return_p95             0.0844
-  maxdd_p05              -0.0312
-  maxdd_p50              -0.0158
-  maxdd_p95              -0.0065
-  prob_loss              0.276
+  return_p05             -0.017
+  return_p50             0.0181
+  return_p95             0.0851
+  maxdd_p05              -0.0315
+  maxdd_p50              -0.0161
+  maxdd_p95              -0.0072
+  prob_loss              0.243
   prob_dd_gt_20pct       0.0
-  vol target 10% (scale 4.41x): CAGR +9.0%  MaxDD -18.4%  1y-DD p05 -0.1347  P(loss) 0.278  ≈ 1.24/Tag auf 5000
-  vol target 15% (scale 6.61x): CAGR +13.4%  MaxDD -26.4%  1y-DD p05 -0.1967  P(loss) 0.285  ≈ 1.84/Tag auf 5000
-  vol target 20% (scale 8.81x): CAGR +17.7%  MaxDD -33.8%  1y-DD p05 -0.2563  P(loss) 0.293  ≈ 2.42/Tag auf 5000
+  vol target 10% (scale 4.18x): CAGR +9.8%  MaxDD -20.7%  1y-DD p05 -0.1302  P(loss) 0.244  ≈ 1.34/Tag auf 5000
+  vol target 15% (scale 6.28x): CAGR +14.6%  MaxDD -29.8%  1y-DD p05 -0.1905  P(loss) 0.251  ≈ 2.01/Tag auf 5000
+  vol target 20% (scale 8.37x): CAGR +19.4%  MaxDD -38.1%  1y-DD p05 -0.2467  P(loss) 0.253  ≈ 2.66/Tag auf 5000
+
+== COST STRESS (walk-forward OOS at multiplied costs) ==
+  1.5x Kosten: XAU SR 0.308  BTC SR 1.185  ETH SR 0.88  SOL SR 0.845  XRP SR 0.748  TRX SR 0.614
+  2.0x Kosten: XAU SR 0.19  BTC SR 1.271  ETH SR 0.939  SOL SR 0.823  XRP SR 0.673  TRX SR 0.305
 
 == QUALITY GATES (targets for the next version, not guarantees) ==
-  FAIL  XAU median purged-CV Sharpe > 0.5             0.449
+  FAIL  XAU median purged-CV Sharpe > 0.5             0.429
   PASS  XAU positive folds >= 4/6                     4
   PASS  BTC median purged-CV Sharpe > 0.5             1.064
   PASS  BTC positive folds >= 4/6                     5
-  PASS  ETH median purged-CV Sharpe > 0.5             0.665
-  FAIL  ETH positive folds >= 4/6                     3
-  FAIL  SOL median purged-CV Sharpe > 0.5             0.393
+  PASS  ETH median purged-CV Sharpe > 0.5             0.685
+  PASS  ETH positive folds >= 4/6                     4
+  FAIL  SOL median purged-CV Sharpe > 0.5             0.429
   PASS  SOL positive folds >= 4/6                     4
-  FAIL  XRP median purged-CV Sharpe > 0.5             0.347
+  FAIL  XRP median purged-CV Sharpe > 0.5             0.345
   PASS  XRP positive folds >= 4/6                     4
-  FAIL  portfolio Sharpe > 1.0                        0.913
+  PASS  TRX median purged-CV Sharpe > 0.5             0.546
+  PASS  TRX positive folds >= 4/6                     5
+  FAIL  portfolio Sharpe > 1.0                        0.986
   PASS  portfolio PSR > 0.95                          1.0
-  PASS  portfolio MaxDD > -15%                        -0.0444
-  FAIL  bootstrap P(loss 1y) < 20%                    0.276
-  -> 8/14 passed
+  PASS  portfolio MaxDD > -15%                        -0.0524
+  FAIL  bootstrap P(loss 1y) < 20%                    0.243
+  -> 11/16 passed
 
 written: reports/report.json, equity_*.csv, trades_insample_*.csv, backtest.png

@@ -1,16 +1,16 @@
 {
- "symbol": "XAU/USDT:USDT",
- "history_source": "bitfinex:XAUT/USDT",
+ "symbol": "TRX/USDT:USDT",
+ "history_source": "bitfinex:ETH/USDT",
  "bars": 2190,
  "years": 6.0,
  "first": "2020-09-15 00:00:00+00:00",
  "last": "2026-09-13 00:00:00+00:00",
  "contract_size": 1.0,
- "min_lot": 0.001,
- "lot_step": 0.001,
+ "min_lot": 1.0,
+ "lot_step": 1.0,
  "max_lot": 1000000000.0,
- "spread": 0.9,
- "price": 4306.66,
+ "spread": 2e-05,
+ "price": 0.339,
  "fee_pct": 0.001,
- "funding_annual": 0.30047895
+ "funding_annual": -0.07254374999999999
 }

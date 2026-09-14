@@ -79,7 +79,8 @@ risk:
 exchange:
   id: phemex
   demo: true                 # testnet-api.phemex.com; false = Echtgeld, braucht --allow-real-account
-  leverage: 3
+  leverage: 10               # nur Margin-Plumbing: Risiko steuert exposure_scale, nicht dieser Wert.
+                             # Bei 24x Skalierung braucht das Portfolio bis 5,5x Notional -> 3x Boersenhebel waere zu eng (Margin-Call).
   api_key: ""                # leer lassen – GitHub Secret EXCHANGE_API_KEY
   api_secret: ""             # EXCHANGE_API_SECRET
   api_passphrase: ""         # nur OKX/KuCoin/Bitget; Phemex hat keine

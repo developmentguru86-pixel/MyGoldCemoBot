@@ -1,18 +1,18 @@
 {
  "last_bar": {
-  "XAU/USDT:USDT": "2026-09-17 00:00:00+00:00",
-  "BTC/USDT:USDT": "2026-09-17 00:00:00+00:00",
-  "ETH/USDT:USDT": "2026-09-17 00:00:00+00:00",
-  "SOL/USDT:USDT": "2026-09-17 00:00:00+00:00",
-  "XRP/USDT:USDT": "2026-09-17 00:00:00+00:00",
-  "TRX/USDT:USDT": "2026-09-17 00:00:00+00:00"
+  "XAU/USDT:USDT": "2026-09-18 00:00:00+00:00",
+  "BTC/USDT:USDT": "2026-09-18 00:00:00+00:00",
+  "ETH/USDT:USDT": "2026-09-18 00:00:00+00:00",
+  "SOL/USDT:USDT": "2026-09-18 00:00:00+00:00",
+  "XRP/USDT:USDT": "2026-09-18 00:00:00+00:00",
+  "TRX/USDT:USDT": "2026-09-18 00:00:00+00:00"
  },
  "start_equity": 9999.2961414,
- "last_actual_equity": 9975.45769206,
+ "last_actual_equity": 9973.6428194784,
  "risk": {
   "hwm": 5000,
-  "day": "2026-09-17",
-  "day_start_equity": 4976.6446469,
+  "day": "2026-09-18",
+  "day_start_equity": 4975.5074528000005,
   "halted": false,
   "halted_reason": "",
   "day_halted": false,
@@ -35,16 +35,16 @@
    "fees": 0.0
   },
   "BTC/USDT:USDT": {
-   "lots": 0.0,
-   "avg": 0.0,
+   "lots": 0.019,
+   "avg": 81036.75,
    "realized": 0.0,
-   "fees": 0.0
+   "fees": 1.53969825
   },
   "ETH/USDT:USDT": {
-   "lots": 0.48,
-   "avg": 2458.4176875,
+   "lots": 0.54,
+   "avg": 2475.579611111111,
    "realized": -34.02021000000004,
-   "fees": 2.8958842000000002
+   "fees": 3.0526567000000004
   },
   "SOL/USDT:USDT": {
    "lots": 9.81,
@@ -53,10 +53,10 @@
    "fees": 0.9784675500000001
   },
   "XRP/USDT:USDT": {
-   "lots": 0.0,
-   "avg": 0.0,
+   "lots": 174.42,
+   "avg": 1.4044,
    "realized": 0.0,
-   "fees": 0.0
+   "fees": 0.244955448
   },
   "TRX/USDT:USDT": {
    "lots": 0.0,

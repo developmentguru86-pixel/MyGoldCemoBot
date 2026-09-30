@@ -1,4 +1,4 @@
-2026-09-29T00:27:18.432608+00:00
+2026-09-30T00:29:17.888101+00:00
 /work/MyGoldCemoBot/MyGoldCemoBot/goldbot/live.py", line 191, in poll
     self.on_bar_close(sym, closed, bar_time)
   File "/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/goldbot/live.py", line 241, in on_bar_close

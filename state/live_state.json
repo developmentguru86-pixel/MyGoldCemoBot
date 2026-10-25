@@ -1,18 +1,18 @@
 {
  "last_bar": {
-  "XAU/USDT:USDT": "2026-10-23 00:00:00+00:00",
-  "BTC/USDT:USDT": "2026-10-23 00:00:00+00:00",
-  "ETH/USDT:USDT": "2026-10-23 00:00:00+00:00",
-  "SOL/USDT:USDT": "2026-10-23 00:00:00+00:00",
-  "XRP/USDT:USDT": "2026-10-23 00:00:00+00:00",
-  "TRX/USDT:USDT": "2026-10-23 00:00:00+00:00"
+  "XAU/USDT:USDT": "2026-10-24 00:00:00+00:00",
+  "BTC/USDT:USDT": "2026-10-24 00:00:00+00:00",
+  "ETH/USDT:USDT": "2026-10-24 00:00:00+00:00",
+  "SOL/USDT:USDT": "2026-10-24 00:00:00+00:00",
+  "XRP/USDT:USDT": "2026-10-24 00:00:00+00:00",
+  "TRX/USDT:USDT": "2026-10-24 00:00:00+00:00"
  },
  "start_equity": 9999.2961414,
- "last_actual_equity": 9404.604948160366,
+ "last_actual_equity": 9403.385321380365,
  "risk": {
   "hwm": 5000.594445529647,
-  "day": "2026-10-23",
-  "day_start_equity": 4405.308806760366,
+  "day": "2026-10-24",
+  "day_start_equity": 4404.089179980365,
   "halted": false,
   "halted_reason": "",
   "day_halted": false,

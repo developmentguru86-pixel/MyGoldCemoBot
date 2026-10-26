@@ -1,33 +1,38 @@
-2026-10-21T04:31:26.546465+00:00
-  File "/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/goldbot/live.py", line 191, in poll
-    self.on_bar_close(sym, closed, bar_time)
-  File "/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/goldbot/live.py", line 241, in on_bar_close
-    res = self.broker.set_target_position(sym, tgt_lots, comment=f"goldbot {bar_time[:16]}")
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/goldbot/broker/ccxt_broker.py", line 336, in set_target_position
-    executed.append(self._order(symbol, "buy" if delta > 0 else "sell", abs(delta), reduce))
-                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/goldbot/broker/ccxt_broker.py", line 286, in _order
-    o = self.ex.create_order(symbol, "market", side, amt, params=params)
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/ccxt/phemex.py", line 2775, in create_order
-    response = self.privatePostGOrders(self.extend(request, orderParams))
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-26T04:32:11.912194+00:00
+ine 183, in <module>
+    rc = action_trade(cfg, mode, a.allow_real_account)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/scripts/run_once.py", line 39, in action_trade
+    trader.preflight()
+  File "/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/goldbot/live.py", line 154, in preflight
+    self.info[sym] = self.broker.get_symbol_info(sym)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/goldbot/broker/ccxt_broker.py", line 190, in get_symbol_info
+    m = self._m(symbol)
+        ^^^^^^^^^^^^^^^
+  File "/home/runner/work/MyGoldCemoBot/MyGoldCemoBot/goldbot/broker/ccxt_broker.py", line 87, in _m
+    self.ex.load_markets()
+  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/ccxt/base/exchange.py", line 1914, in load_markets
+    markets = self.fetch_markets(params)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/ccxt/phemex.py", line 1075, in fetch_markets
+    v1ProductsPromise = self.v1GetExchangePublicProducts(params)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/ccxt/base/types.py", line 43, in unbound_method
     return _self.request(self.path, self.api, self.method, params, config=self.config)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/ccxt/base/exchange.py", line 5989, in request
+  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/ccxt/base/exchange.py", line 6018, in request
     return self.fetch2(path, api, method, params, config)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/ccxt/base/exchange.py", line 5985, in fetch2
+  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/ccxt/base/exchange.py", line 6014, in fetch2
     raise e
-  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/ccxt/base/exchange.py", line 5966, in fetch2
+  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/ccxt/base/exchange.py", line 5995, in fetch2
     response = self.fetch(request['url'], request['method'], request['headers'], request['body'])
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/ccxt/base/exchange.py", line 678, in fetch
-    self.handle_errors(http_status_code, http_status_text, url, method, headers, http_response, json_response, request_headers, request_body)
-  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/ccxt/phemex.py", line 5529, in handle_errors
-    self.throw_exactly_matched_exception(self.exceptions['exact'], errorCode, feedback)
-  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/ccxt/base/exchange.py", line 6400, in throw_exactly_matched_exception
-    raise exact[string](message)
-ccxt.base.errors.InsufficientFunds: phemex {"code":11082,"msg":"TE_CANNOT_COVER_ESTIMATE_ORDER_LOSS","data":null}
+  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/ccxt/base/exchange.py", line 650, in fetch
+    skip_further_error_handling = self.handle_errors(http_status_code, http_status_text, url, method, headers, http_response, json_response, request_headers, request_body)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/ccxt/phemex.py", line 5552, in handle_errors
+    raise ExchangeError(feedback)  # unknown message
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ccxt.base.errors.ExchangeError: phemex {"msg":"please try again later! Unable to find instance for phemex-user","code":10500}
